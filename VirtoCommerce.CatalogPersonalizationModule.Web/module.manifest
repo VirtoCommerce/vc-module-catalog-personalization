@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<module>
+    <id>VirtoCommerce.CatalogPersonalizationModule.Web</id>
+    <version>1.0.0</version>
+    <platformVersion>2.13.9</platformVersion>
+
+    <title>VirtoCommerce.CatalogPersonalizationModule.Web</title>
+    <description>Enter your module description here.</description>
+    <authors>
+        <author>Virto Commerce</author>
+        <author>Artyom Androsov</author>
+    </authors>
+    <owners>
+        <owner>Virto Commerce</owner>
+    </owners>
+    <projectUrl>https://github.com/VirtoCommerce/vc-module-catalog-personalization</projectUrl>
+    <iconUrl>https://github.com/VirtoCommerce/vc-module-catalog-personalization/raw/dev/VirtoCommerce.CatalogPersonalizationModule.Web/Content/logo.png</iconUrl>
+    <releaseNotes>First version.</releaseNotes>
+    <copyright>Copyright © 2011-2017 Virto Commerce. All rights reserved</copyright>
+    <tags>catalog personalization products</tags>
+
+    <assemblyFile>VirtoCommerce.CatalogPersonalizationModule.Web.dll</assemblyFile>
+    <moduleType>VirtoCommerce.CatalogPersonalizationModule.Web.Module, VirtoCommerce.CatalogPersonalizationModule.Web</moduleType>
+
+    <styles>
+        <directory virtualPath="$/Content/css" searchPattern="*.css" searchSubdirectories="true" />
+    </styles>
+    <scripts>
+        <directory virtualPath="$/Scripts" searchPattern="*.js" searchSubdirectories="true" />
+    </scripts>
+
+    <settings>
+    </settings>
+</module>
