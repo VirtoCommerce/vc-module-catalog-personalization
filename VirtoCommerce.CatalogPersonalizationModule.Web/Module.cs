@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Practices.Unity;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Repositories;
+using VirtoCommerce.CatalogPersonalizationModule.Data.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Services;
 using VirtoCommerce.CatalogPersonalizationModule.Web.ExportImport;
+using VirtoCommerce.Domain.Search;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Settings;
@@ -51,25 +55,25 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
 
             #region Search
 
-            //var productIndexingConfigurations = _container.Resolve<IndexDocumentConfiguration[]>();
-            //if (productIndexingConfigurations != null)
-            //{
-            //    var productCompletenessDocumentSource = new IndexDocumentSource
-            //    {
-            //        ChangesProvider = _container.Resolve<ProductCompletenessChangesProvider>(),
-            //        DocumentBuilder = _container.Resolve<ProductCompletenessDocumentBuilder>(),
-            //    };
+            var taggedItemsIndexingConfigurations = _container.Resolve<IndexDocumentConfiguration[]>();
+            if (taggedItemsIndexingConfigurations != null)
+            {
+                var productCompletenessDocumentSource = new IndexDocumentSource
+                {
+                    ChangesProvider = _container.Resolve<CatalogTaggedItemIndexator>(),
+                    DocumentBuilder = _container.Resolve<CatalogTaggedItemIndexator>(),
+                };
 
-            //    foreach (var configuration in productIndexingConfigurations.Where(c => c.DocumentType == KnownDocumentTypes.Product))
-            //    {
-            //        if (configuration.RelatedSources == null)
-            //        {
-            //            configuration.RelatedSources = new List<IndexDocumentSource>();
-            //        }
+                foreach (var configuration in taggedItemsIndexingConfigurations.Where(c => c.DocumentType == KnownDocumentTypes.Category || c.DocumentType == KnownDocumentTypes.Product))
+                {
+                    if (configuration.RelatedSources == null)
+                    {
+                        configuration.RelatedSources = new List<IndexDocumentSource>();
+                    }
 
-            //        configuration.RelatedSources.Add(productCompletenessDocumentSource);
-            //    }
-            //}
+                    configuration.RelatedSources.Add(productCompletenessDocumentSource);
+                }
+            }
 
             #endregion
         }
