@@ -8,6 +8,7 @@
     <description>Enter your module description here.</description>
     <authors>
         <author>Virto Commerce</author>
+        <author>Eugeney Tarincev</author>
         <author>Artyom Androsov</author>
     </authors>
     <owners>
@@ -30,5 +31,14 @@
     </scripts>
 
     <settings>
+        <group name="Personalization|General">
+            <setting>
+                <name>Personalization.ExportImport.Description</name>
+                <valueType>string</valueType>
+                <defaultValue>Export/Import tagged items</defaultValue>
+                <title>Export/Import description</title>
+                <description>Module description in platform export/import wizard</description>
+            </setting>
+        </group>
     </settings>
 </module>
