@@ -133,10 +133,12 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Content\css\catalog-personalization.css" />
-    <Content Include="Scripts\blades\helloWorld_blade1.js" />
-    <Content Include="Scripts\blades\helloWorld_blade1.tpl.html" />
+    <Content Include="Scripts\blades\tag-list.tpl.html" />
+    <Content Include="Scripts\blades\tag-list.js" />
     <Content Include="Scripts\catalog-personalization.js" />
     <Content Include="Scripts\resources\catalog-personalization-api.js" />
+    <Content Include="Scripts\widgets\tagsWidget.js" />
+    <Content Include="Scripts\widgets\tagsWidget.tpl.html" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs">

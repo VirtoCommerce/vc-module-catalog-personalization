@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <module>
-    <id>VirtoCommerce.CatalogPersonalizationModule.Web</id>
+    <id>VirtoCommerce.CatalogPersonalization</id>
     <version>1.0.0</version>
     <platformVersion>2.13.9</platformVersion>
 
-    <title>VirtoCommerce.CatalogPersonalizationModule.Web</title>
+    <title>Catalog personalization module</title>
     <description>Enter your module description here.</description>
     <authors>
         <author>Virto Commerce</author>
@@ -39,6 +39,27 @@
                 <title>Export/Import description</title>
                 <description>Module description in platform export/import wizard</description>
             </setting>
+            <setting>
+                <name>Personalization.Tags</name>
+                <valueType>string</valueType>
+                <defaultValue>New</defaultValue>
+                <title>Tags dictionary</title>
+                <description>All available tags values</description>
+                <isArray>true</isArray>
+                <arrayValues>
+                    <value>TV</value>
+                    <value>Audio</value>
+                    <value>Camcorders</value>
+                    <value>Cell phones</value>
+                    <value>Drones</value>
+                </arrayValues>
+            </setting>
         </group>
     </settings>
+
+    <permissions>
+        <group name="CatalogPersonalization">
+            <permission id="personalization:update" name="Update tagged item" description=""/>
+        </group>
+    </permissions>
 </module>

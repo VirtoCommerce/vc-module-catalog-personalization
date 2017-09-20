@@ -1,5 +1,21 @@
 ﻿{
-    "catalog-personalization": {
-        "main-menu-title": "Personalization"
+    "personalization": {
+        "main-menu-title": "Personalization",
+        "blades": {
+            "tag-list": {
+                "labels": {
+                    "title": "Tags",
+                    "select-tags": "Select tags to assign",
+                    "available-tags": "Available tags",
+                    "assigned-tags": "Assigned tags",
+                    "no-assigned": "No tags assigned"
+                }
+            }
+        },
+        "widgets": {
+            "tagsWidget": {
+                "title": "Tags"
+            }
+        }
     }
 }

@@ -1,3 +1,20 @@
-﻿body
-{
+﻿.head-select {
+    width: 80%;
+}
+
+button.btn.head-button {
+    background: #43b0e6;
+    color: #fff;
+    height: 30px;
+    line-height: 28px;
+    padding: 0 10px;
+    width: 15%;
+}
+
+    button.btn.head-button:hover {
+        background: #43b0e6;
+    }
+
+td.table-col.checkbox {
+    width: 1%;
 }

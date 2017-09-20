@@ -1,0 +1,42 @@
+﻿<div class="blade-content">
+    <div class="blade-inner">
+        <div class="inner-block">
+            <fieldset style="margin-top: 12px;">
+                <legend>{{ 'personalization.blades.tag-list.labels.select-tags' | translate }}</legend>
+                <div class="form-group">
+                    <label class="form-label">{{ 'personalization.blades.tag-list.labels.available-tags' | translate }} <a href="" ng-click="editTagsDictionary()" class="form-edit" va-permission="pricing:read"><i class="form-ico fa fa-pencil"></i></a></label>
+                    <div class="form-input">
+                        <ui-select ng-model="blade.selectedTag" class="head-select">
+                            <ui-select-match placeholder="{{ 'personalization.blades.tag-list.labels.select-tags' | translate }}">{{$select.selected}}</ui-select-match>
+                            <ui-select-choices repeat="x in blade.availableTags | filter: $select.search">
+                                <span ng-bind-html="x | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <button class="btn head-button" type="button" ng-disabled="!blade.selectedTag" ng-click="blade.assignTag(blade.selectedTag)">Add</button>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="sub-t">{{ 'personalization.blades.tag-list.labels.assigned-tags' | translate }}</div>
+            <div class="table-wrapper">
+                <table class="table">
+                    <tbody>
+                        <tr class="table-item" ng-repeat="data in blade.assignedTags">
+                            <td class="table-col checkbox">
+                                <label class="form-control __checkbox">
+                                    <input type="checkbox" ng-model="data.$selected">
+                                    <span class="check"></span>
+                                </label>
+                            </td>
+                            <td class="table-col" ng-click='blade.selectNode(data)'>
+                                <span class="table-t">{{data.value}}</span>
+                                <span class="table-descr">{{data.value}}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="note" ng-if="!blade.assignedTags.length">{{ 'personalization.blades.tag-list.labels.no-assigned' | translate }}</p>
+        </div>
+    </div>
+</div>

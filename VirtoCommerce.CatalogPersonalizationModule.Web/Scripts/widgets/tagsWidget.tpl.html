@@ -1,0 +1,7 @@
+﻿<div class="gridster-cnt" ng-click="openBlade()">
+    <div class="cnt-inner">
+        <div class="list-count" ng-if="loading">...</div>
+        <div class="list-count" ng-if="!loading">{{ data >= 0 ? data : 'N/A'  }}</div>
+        <div class="list-t" ng-if="!loading">{{ 'personalization.widgets.tagsWidget.title' | translate }}</div>
+    </div>
+</div>

@@ -32,13 +32,13 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
             base.OnModelCreating(modelBuilder);
         }
 
-        public IQueryable<TaggedItemEntity> TaggedItems => throw new System.NotImplementedException();
+        public IQueryable<TaggedItemEntity> TaggedItems => GetAsQueryable<TaggedItemEntity>().Include(x => x.Tags);
 
-        public IQueryable<TagEntity> Tags => throw new System.NotImplementedException();
+        public IQueryable<TagEntity> Tags => GetAsQueryable<TagEntity>();
 
         public TaggedItemEntity[] GetTaggedItemsByIds(string[] ids)
         {
-            return TaggedItems.Where(x => ids.Contains(x.Id)).ToArray();
+            return TaggedItems.Where(x => ids.Contains(x.ObjectId)).ToArray();
         }
 
         public void DeleteTaggedItems(string[] ids)
