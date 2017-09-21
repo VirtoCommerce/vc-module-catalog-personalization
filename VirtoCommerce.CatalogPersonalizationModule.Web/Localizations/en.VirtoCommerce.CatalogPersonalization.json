@@ -8,7 +8,8 @@
                     "select-tags": "Select tags to assign",
                     "available-tags": "Available tags",
                     "assigned-tags": "Assigned tags",
-                    "no-assigned": "No tags assigned"
+                    "no-assigned": "No tags assigned",
+                    "add-btn": "Add"
                 }
             }
         },

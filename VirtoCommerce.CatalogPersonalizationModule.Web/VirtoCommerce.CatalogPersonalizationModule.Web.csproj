@@ -115,7 +115,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Localizations\en.VirtoCommerce.CatalogPersonalization.json" />
+    <Content Include="Localizations\en.VirtoCommerce.CatalogPersonalization.json" />
     <None Include="module.ignore" />
     <None Include="packages.config" />
     <None Include="app.config" />

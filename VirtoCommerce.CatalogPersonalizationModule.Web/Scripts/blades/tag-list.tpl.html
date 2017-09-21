@@ -12,7 +12,7 @@
                                 <span ng-bind-html="x | highlight: $select.search"></span>
                             </ui-select-choices>
                         </ui-select>
-                        <button class="btn head-button" type="button" ng-disabled="!blade.selectedTag" ng-click="blade.assignTag(blade.selectedTag)">Add</button>
+                        <button class="btn head-button" type="button" ng-disabled="!blade.selectedTag" ng-click="blade.assignTag(blade.selectedTag)">{{ 'personalization.blades.tag-list.labels.add-btn' | translate }}</button>
                     </div>
                 </div>
             </fieldset>
