@@ -37,7 +37,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.ExportImport
             var backupObject = backupStream.DeserializeJson<BackupObject>();
             var progressInfo = new ExportImportProgressInfo();
 
-            progressInfo.Description = String.Format("{0} tagged items importing...", backupObject.TaggedItems.Count());
+            progressInfo.Description = String.Format("{0} tagged items importing...", backupObject.TaggedItems.Count);
             progressCallback(progressInfo);
 
             _taggedItemService.SaveTaggedItems(backupObject.TaggedItems.ToArray());

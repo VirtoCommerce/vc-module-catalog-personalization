@@ -2,32 +2,20 @@
     .controller('virtoCommerce.catalogPersonalizationModule.tagListController', ['$scope', 'platformWebApp.bladeNavigationService', 'platformWebApp.ui-grid.extension', 'platformWebApp.dialogService', 'platformWebApp.settings', 'virtoCommerce.personalizationModule.personalizationApi', '$timeout',
         function ($scope, bladeNavigationService, gridOptionExtension, dialogService, settings, personalizationApi, $timeout) {
             var blade = $scope.blade;
-            blade.allTags = [];
-            blade.assignedTags = [];
-            blade.origAssignedTags = [];
-            blade.availableTags = [];
-            blade.selectedTag = undefined;
+            blade.tagsDictionary = [];
+            blade.origEntity = undefined;
+            blade.currentEntity = undefined;
 
             var settingKey = 'Personalization.Tags';
-            var moduleId = 'VirtoCommerce.CatalogPersonalization';
             blade.updatePermission = 'personalization:update';
             
-            settings.getValues({ id: settingKey }, function (allTags) {
-                blade.allTags = allTags;
+            settings.getValues({ id: settingKey }, function (tagsDictionary) {
+                blade.tagsDictionary = tagsDictionary;
 
                 personalizationApi.taggedItem({ id: blade.item.id }, function (result) {
-                    blade.taggedItem = result.taggedItem || {};
-                    var itemTags = [];
-
-                    if (blade.taggedItem && blade.taggedItem.tags) {
-                        itemTags = blade.taggedItem.tags;
-                        blade.assignedTags = blade.convertToTagObjects(itemTags);
-                        blade.origAssignedTags = angular.copy(blade.assignedTags);
-                    }
-
-                    blade.availableTags = _.filter(blade.allTags, function (x) {
-                        return _.all(itemTags, function (curr) { return curr !== x; });
-                    });
+                    blade.currentEntity = result.taggedItem || {};
+                    blade.currentEntity.tags = blade.currentEntity.tags || [];
+                    blade.origEntity = angular.copy(blade.currentEntity);
 
                     blade.isLoading = false;
                 });
@@ -43,10 +31,10 @@
                     onClose: function (doCloseBlade) {
                         doCloseBlade();
                         blade.isLoading = true;
-                        settings.getValues({ id: settingKey }, function (allTags) {
-                            blade.allTags = allTags;
-                            blade.availableTags = _.filter(allTags, function (x) {
-                                return _.all(blade.assignedTags, function (curr) { return curr.value !== x; });
+                        settings.getValues({ id: settingKey }, function (tagsDictionary) {
+                            blade.tagsDictionary = tagsDictionary;
+                            blade.availableTags = _.filter(tagsDictionary, function (x) {
+                                return _.all(blade.currentEntity.tags, function (curr) { return curr !== x; });
                             });
                             blade.isLoading = false;
                         });
@@ -54,30 +42,9 @@
                 };
                 bladeNavigationService.showBlade(editTagsDictionaryBlade, blade);
             }
-
-            blade.convertToTagObjects = function (tags) {
-                var tagsList = [];
-
-                _.each(tags, function (tag) {
-                    var tagObj = blade.getTagObject(tag);
-                    tagsList.push(tagObj);
-                });
-
-                return tagsList;
-            }
-
-            blade.getTagObject = function (tag) {
-                var tagObj = {
-                    value: tag
-                };
-                return tagObj;
-            }
             
             blade.assignTag = function (selectedTag) {
-                var tagObj = blade.getTagObject(selectedTag);
-                blade.assignedTags.push(tagObj);
-
-                blade.availableTags = _.without(blade.availableTags, selectedTag);
+                blade.currentEntity.tags.push(selectedTag);
                 blade.selectedTag = undefined;
             }
 
@@ -86,7 +53,7 @@
             }
 
             function isDirty() {
-                return !angular.equals(blade.assignedTags, blade.origAssignedTags);
+                return !angular.equals(blade.currentEntity, blade.origEntity);
             }
 
             function isItemsChecked() {
@@ -96,14 +63,14 @@
             $scope.saveChanges = function () {
                 blade.isLoading = true;
 
-                blade.taggedItem.entityId = blade.item.id;
-                blade.taggedItem.label = blade.item.name;
-                blade.taggedItem.entityType = blade.item.type;
-                blade.taggedItem.tags = _.map(blade.assignedTags, function (tagObj) { return tagObj.value; });
+                blade.currentEntity.entityId = blade.item.id;
+                blade.currentEntity.label = blade.item.name;
+                blade.currentEntity.entityType = blade.item.type;
 
-                personalizationApi.update(blade.taggedItem,
+                personalizationApi.update(blade.currentEntity,
                     function (result) {
-                        blade.origAssignedTags = angular.copy(blade.assignedTags);
+                        blade.currentEntity = result;
+                        blade.origEntity = angular.copy(blade.currentEntity);
                         blade.isLoading = false;
                     },
                     function (error) {
@@ -115,12 +82,8 @@
             function deleteChecked() {
                 _.each(blade.assignedTags.slice(), function (x) {
                     if (x.$selected) {
-                        blade.assignedTags.splice(blade.assignedTags.indexOf(x), 1);
+                        blade.currentEntity.tags.splice(blade.currentEntity.tags.indexOf(x.value), 1);
                     }
-                });
-
-                blade.availableTags = _.filter(blade.allTags, function (x) {
-                    return _.all(blade.assignedTags, function (curr) { return curr !== x; });
                 });
             }
 
@@ -136,12 +99,8 @@
                     name: "platform.commands.reset",
                     icon: 'fa fa-undo',
                     executeMethod: function () {
-                        //Reset assigned tags
-                        angular.copy(blade.origAssignedTags, blade.assignedTags);
-                        //Reset availableTags
-                        blade.availableTags = _.filter(blade.allTags, function (x) {
-                            return _.all(blade.assignedTags, function (curr) { return curr !== x; });
-                        });
+                        //Reset assigned tags and availableTags
+                        angular.copy(blade.origEntity, blade.currentEntity);
                         //Unselect selected
                         blade.selectedTag = undefined;
                         _.each(blade.assignedTags, function (x) {
@@ -159,4 +118,17 @@
                     canExecuteMethod: isItemsChecked
                 }
             ];
+
+            $scope.$watchCollection('blade.currentEntity.tags', function (tags) {
+                if (!tags) {
+                    blade.assignedTags = [];
+                    blade.availableTags = blade.tagsDictionary;
+                }
+                else {
+                    blade.assignedTags = _.map(tags, function (tag) { return { value: tag }; });
+                    blade.availableTags = _.filter(blade.tagsDictionary, function (x) {
+                        return _.all(tags, function (curr) { return curr !== x; });
+                    });
+                }
+            });
         }]);

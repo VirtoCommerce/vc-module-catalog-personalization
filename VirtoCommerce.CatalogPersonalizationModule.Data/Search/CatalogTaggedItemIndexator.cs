@@ -104,7 +104,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Search
             return result;
         }
 
-        protected virtual IndexDocument CreateDocument(string entityId, string entityType, IList<TaggedItem> taggedItems)
+        protected virtual IndexDocument CreateDocument(string entityId, string entityType, IEnumerable<TaggedItem> taggedItems)
         {
             var document = new IndexDocument(entityId);
 

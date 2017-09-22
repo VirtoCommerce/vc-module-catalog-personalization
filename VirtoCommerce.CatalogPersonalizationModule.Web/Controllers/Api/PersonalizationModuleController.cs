@@ -31,7 +31,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         public IHttpActionResult GetTagsCount(string id)
         {
             var taggedItem = _taggedItemService.GetTaggedItemsByIds(new[] { id }).FirstOrDefault();
-            var count = taggedItem?.Tags.Count() ?? 0;
+            var count = taggedItem?.Tags.Count ?? 0;
 
             return Ok(new { count });
         }
