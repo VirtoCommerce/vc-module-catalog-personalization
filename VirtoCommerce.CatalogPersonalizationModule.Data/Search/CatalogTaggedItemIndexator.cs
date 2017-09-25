@@ -15,15 +15,11 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Search
         public const string ChangeLogObjectType = nameof(TaggedItemEntity);
 
         private readonly ITaggedItemService _taggedItemService;
-        private readonly ITaggedItemSearchService _taggedItemSearchService;
         private readonly IChangeLogService _changeLogService;
 
-        public CatalogTaggedItemIndexator(ITaggedItemService taggedItemService,
-            ITaggedItemSearchService taggedItemSearchService,
-            IChangeLogService changeLogService)
+        public CatalogTaggedItemIndexator(ITaggedItemService taggedItemService, IChangeLogService changeLogService)
         {
             _taggedItemService = taggedItemService;
-            _taggedItemSearchService = taggedItemSearchService;
             _changeLogService = changeLogService;
         }
 

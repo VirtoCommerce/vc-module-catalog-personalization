@@ -16,7 +16,9 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
             _taggedItemService = taggedItemService;
         }
 
-        // GET: api/personalization/taggeditem/{id}
+        /// <summary>
+        /// GET: api/personalization/taggeditem/{id}
+        /// </summary>
         [HttpGet]
         [Route("taggeditem/{id}")]
         public IHttpActionResult GetTaggedItem(string id)
@@ -25,7 +27,9 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
             return Ok(new { taggedItem });
         }
 
-        // GET: api/personalization/taggeditem/{id}/tags/count
+        /// <summary>
+        /// GET: api/personalization/taggeditem/{id}/tags/count
+        /// </summary>
         [HttpGet]
         [Route("taggeditem/{id}/tags/count")]
         public IHttpActionResult GetTagsCount(string id)
@@ -36,7 +40,9 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
             return Ok(new { count });
         }
 
-        // PUT: api/personalization/taggeditem
+        /// <summary>
+        /// PUT: api/personalization/taggeditem
+        /// </summary>
         [HttpPut]
         [Route("taggeditem")]
         public IHttpActionResult UpdateTaggedItem(TaggedItem taggedItem)
@@ -44,7 +50,5 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
             _taggedItemService.SaveTaggedItems(new[] { taggedItem });
             return StatusCode(HttpStatusCode.NoContent);
         }
-
-
     }
 }

@@ -11,6 +11,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
 
         protected override void Seed(Repositories.PersonalizationRepositoryImpl context)
         {
+            // Do nothing because we needn't seed anything yet.
         }
     }
 }
