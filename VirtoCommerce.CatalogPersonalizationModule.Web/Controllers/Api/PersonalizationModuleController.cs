@@ -23,7 +23,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         [Route("taggeditem/{id}")]
         public IHttpActionResult GetTaggedItem(string id)
         {
-            var taggedItem = _taggedItemService.GetTaggedItemsByIds(new[] { id }).FirstOrDefault();
+            var taggedItem = _taggedItemService.GetTaggedItemsByObjectIds(new[] { id }).FirstOrDefault();
             return Ok(new { taggedItem });
         }
 
@@ -34,7 +34,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         [Route("taggeditem/{id}/tags/count")]
         public IHttpActionResult GetTagsCount(string id)
         {
-            var taggedItem = _taggedItemService.GetTaggedItemsByIds(new[] { id }).FirstOrDefault();
+            var taggedItem = _taggedItemService.GetTaggedItemsByObjectIds(new[] { id }).FirstOrDefault();
             var count = taggedItem?.Tags.Count ?? 0;
 
             return Ok(new { count });

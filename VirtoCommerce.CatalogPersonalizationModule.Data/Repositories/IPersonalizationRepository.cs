@@ -10,6 +10,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
         IQueryable<TagEntity> Tags { get; }
 
         TaggedItemEntity[] GetTaggedItemsByIds(string[] ids);
+        TaggedItemEntity[] GetTaggedItemsByObjectIds(string[] ids);
         void DeleteTaggedItems(string[] ids);
     }
 }

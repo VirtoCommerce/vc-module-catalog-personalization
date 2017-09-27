@@ -85,12 +85,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IPersonalizationRepository.cs" />
     <Compile Include="Repositories\PersonalizationRepositoryImpl.cs" />
-    <Compile Include="Search\CatalogTaggedItemIndexator.cs" />
+    <Compile Include="Search\TaggedItemIndexChangesProvider.cs" />
+    <Compile Include="Search\TaggedItemIndexDocumentBuilder.cs" />
     <Compile Include="Services\PersonalizationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.CatalogPersonalizationModule.Core\VirtoCommerce.CatalogPersonalizationModule.Core.csproj">

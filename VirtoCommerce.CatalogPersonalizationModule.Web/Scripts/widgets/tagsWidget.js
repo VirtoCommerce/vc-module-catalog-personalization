@@ -20,12 +20,12 @@
                 //Catalog or category
                 if (blade.origEntity) {
                     blade.itemData.name = blade.origEntity.name;
-                    blade.itemData.type = blade.origEntity.seoObjectType ? blade.origEntity.seoObjectType : blade.id == "catalogEdit" ? "Catalog" : "N/A";
+                    blade.itemData.type = "Category";
                 }
                 //Product
                 else if (blade.item) {
                     blade.itemData.name = blade.item.name;
-                    blade.itemData.type = blade.item.productType;
+                    blade.itemData.type = "Product";
                 }
 
                 var taggetItemBlade = {

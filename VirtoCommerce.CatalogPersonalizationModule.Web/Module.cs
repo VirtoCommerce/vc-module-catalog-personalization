@@ -55,23 +55,24 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
 
             #region Search
 
-            var taggedItemsIndexingConfigurations = _container.Resolve<IndexDocumentConfiguration[]>();
-            if (taggedItemsIndexingConfigurations != null)
+            // Add tagged items document source to the category or product indexing configuration
+            var documentIndexingConfigurations = _container.Resolve<IndexDocumentConfiguration[]>();
+            if (documentIndexingConfigurations != null)
             {
-                var productCompletenessDocumentSource = new IndexDocumentSource
+                var taggedItemIndexDocumentSource = new IndexDocumentSource
                 {
-                    ChangesProvider = _container.Resolve<CatalogTaggedItemIndexator>(),
-                    DocumentBuilder = _container.Resolve<CatalogTaggedItemIndexator>(),
+                    ChangesProvider = _container.Resolve<TaggedItemIndexChangesProvider>(),
+                    DocumentBuilder = _container.Resolve<TaggedItemIndexDocumentBuilder>(),
                 };
 
-                foreach (var configuration in taggedItemsIndexingConfigurations.Where(c => c.DocumentType == KnownDocumentTypes.Category || c.DocumentType == KnownDocumentTypes.Product))
+                foreach (var configuration in documentIndexingConfigurations.Where(c => c.DocumentType == KnownDocumentTypes.Product || c.DocumentType == KnownDocumentTypes.Category))
                 {
                     if (configuration.RelatedSources == null)
                     {
                         configuration.RelatedSources = new List<IndexDocumentSource>();
                     }
 
-                    configuration.RelatedSources.Add(productCompletenessDocumentSource);
+                    configuration.RelatedSources.Add(taggedItemIndexDocumentSource);
                 }
             }
 

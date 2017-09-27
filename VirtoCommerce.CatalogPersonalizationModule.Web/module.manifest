@@ -3,6 +3,10 @@
     <id>VirtoCommerce.CatalogPersonalization</id>
     <version>1.0.0</version>
     <platformVersion>2.13.9</platformVersion>
+    <dependencies>
+        <dependency id="VirtoCommerce.Core" version="2.24.0" />
+        <dependency id="VirtoCommerce.Customer" version="2.13.0" />
+    </dependencies>
 
     <title>Catalog personalization module</title>
     <description>Enter your module description here.</description>
@@ -38,21 +42,6 @@
                 <defaultValue>Export/Import tagged items</defaultValue>
                 <title>Export/Import description</title>
                 <description>Module description in platform export/import wizard</description>
-            </setting>
-            <setting>
-                <name>Personalization.Tags</name>
-                <valueType>string</valueType>
-                <defaultValue>New</defaultValue>
-                <title>Tags dictionary</title>
-                <description>All available tags values</description>
-                <isArray>true</isArray>
-                <arrayValues>
-                    <value>TV</value>
-                    <value>Audio</value>
-                    <value>Camcorders</value>
-                    <value>Cell phones</value>
-                    <value>Drones</value>
-                </arrayValues>
             </setting>
         </group>
     </settings>

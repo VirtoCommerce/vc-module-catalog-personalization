@@ -34,6 +34,19 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
             return retVal;
         }
 
+        public TaggedItem[] GetTaggedItemsByObjectIds(string[] ids)
+        {
+            TaggedItem[] retVal = null;
+            if (ids != null)
+            {
+                using (var repository = _repositoryFactory())
+                {
+                    retVal = repository.GetTaggedItemsByObjectIds(ids).Select(x => x.ToModel(AbstractTypeFactory<TaggedItem>.TryCreateInstance())).ToArray();
+                }
+            }
+            return retVal;
+        }
+
         public void SaveTaggedItems(TaggedItem[] taggedItems)
         {
             var pkMap = new PrimaryKeyResolvingMap();
@@ -77,6 +90,11 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                 if (!string.IsNullOrWhiteSpace(criteria.EntityType))
                 {
                     query = query.Where(x => x.ObjectType == criteria.EntityType);
+                }
+
+                if (!criteria.Ids.IsNullCollection())
+                {
+                    query = query.Where(x => criteria.Ids.Contains(x.Id));
                 }
 
                 if (criteria.ChangedFrom.HasValue)

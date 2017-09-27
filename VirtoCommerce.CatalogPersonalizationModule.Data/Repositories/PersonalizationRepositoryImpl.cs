@@ -38,6 +38,11 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
 
         public TaggedItemEntity[] GetTaggedItemsByIds(string[] ids)
         {
+            return TaggedItems.Where(x => ids.Contains(x.Id)).ToArray();
+        }
+
+        public TaggedItemEntity[] GetTaggedItemsByObjectIds(string[] ids)
+        {
             return TaggedItems.Where(x => ids.Contains(x.ObjectId)).ToArray();
         }
 

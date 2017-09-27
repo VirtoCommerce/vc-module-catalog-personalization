@@ -8,5 +8,6 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Core.Model.Search
         public string EntityId { get; set; }
         public DateTime? ChangedFrom { get; set; }
         public string EntityType { get; set; }
+        public string[] Ids { get; set; }
     }
 }

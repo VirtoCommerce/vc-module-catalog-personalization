@@ -5,6 +5,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Core.Services
     public interface ITaggedItemService
     {
         TaggedItem[] GetTaggedItemsByIds(string[] ids);
+        TaggedItem[] GetTaggedItemsByObjectIds(string[] ids);
 
         void SaveTaggedItems(TaggedItem[] taggedItems);
 

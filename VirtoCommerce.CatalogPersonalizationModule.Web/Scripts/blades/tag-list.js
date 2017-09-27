@@ -6,7 +6,7 @@
             blade.origEntity = undefined;
             blade.currentEntity = undefined;
 
-            var settingKey = 'Personalization.Tags';
+            var settingKey = 'Customer.MemberGroups';
             blade.updatePermission = 'personalization:update';
             
             settings.getValues({ id: settingKey }, function (tagsDictionary) {
