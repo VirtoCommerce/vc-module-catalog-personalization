@@ -59,20 +59,36 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
             var documentIndexingConfigurations = _container.Resolve<IndexDocumentConfiguration[]>();
             if (documentIndexingConfigurations != null)
             {
-                var taggedItemIndexDocumentSource = new IndexDocumentSource
+                //Category indexing
+                var taggedItemCategoryDocumentSource = new IndexDocumentSource
                 {
                     ChangesProvider = _container.Resolve<TaggedItemIndexChangesProvider>(),
-                    DocumentBuilder = _container.Resolve<TaggedItemIndexDocumentBuilder>(),
+                    DocumentBuilder = _container.Resolve<TaggedItemCategoryDocumentBuilder>(),
                 };
-
-                foreach (var configuration in documentIndexingConfigurations.Where(c => c.DocumentType == KnownDocumentTypes.Product || c.DocumentType == KnownDocumentTypes.Category))
+                foreach (var configuration in documentIndexingConfigurations.Where(c => c.DocumentType == KnownDocumentTypes.Category))
                 {
                     if (configuration.RelatedSources == null)
                     {
                         configuration.RelatedSources = new List<IndexDocumentSource>();
                     }
 
-                    configuration.RelatedSources.Add(taggedItemIndexDocumentSource);
+                    configuration.RelatedSources.Add(taggedItemCategoryDocumentSource);
+                }
+
+                //Product indexing
+                var taggedItemProductDocumentSource = new IndexDocumentSource
+                {
+                    ChangesProvider = _container.Resolve<TaggedItemIndexChangesProvider>(),
+                    DocumentBuilder = _container.Resolve<TaggedItemProductDocumentBuilder>(),
+                };
+                foreach (var configuration in documentIndexingConfigurations.Where(c => c.DocumentType == KnownDocumentTypes.Product))
+                {
+                    if (configuration.RelatedSources == null)
+                    {
+                        configuration.RelatedSources = new List<IndexDocumentSource>();
+                    }
+
+                    configuration.RelatedSources.Add(taggedItemProductDocumentSource);
                 }
             }
 

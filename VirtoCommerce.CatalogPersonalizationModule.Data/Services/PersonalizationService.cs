@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model;
@@ -9,6 +10,7 @@ using VirtoCommerce.CatalogPersonalizationModule.Data.Repositories;
 using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Data.Infrastructure;
+using VirtoCommerce.CatalogPersonalizationModule.Data.Common;
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
 {
@@ -36,15 +38,18 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
 
         public TaggedItem[] GetTaggedItemsByObjectIds(string[] ids)
         {
-            TaggedItem[] retVal = null;
+            var retVal = new List<TaggedItem>();
             if (ids != null)
             {
                 using (var repository = _repositoryFactory())
                 {
-                    retVal = repository.GetTaggedItemsByObjectIds(ids).Select(x => x.ToModel(AbstractTypeFactory<TaggedItem>.TryCreateInstance())).ToArray();
+                    foreach (var chunkIds in ids.SplitList(50))
+                    {
+                        retVal.AddRange(repository.GetTaggedItemsByObjectIds(chunkIds).Select(x => x.ToModel(AbstractTypeFactory<TaggedItem>.TryCreateInstance())));
+                    }
                 }
             }
-            return retVal;
+            return retVal.ToArray();
         }
 
         public void SaveTaggedItems(TaggedItem[] taggedItems)

@@ -75,6 +75,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Common\Utils.cs" />
     <Compile Include="Migrations\201709141509436_Initial.cs" />
     <Compile Include="Migrations\201709141509436_Initial.Designer.cs">
       <DependentUpon>201709141509436_Initial.cs</DependentUpon>
@@ -85,8 +86,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IPersonalizationRepository.cs" />
     <Compile Include="Repositories\PersonalizationRepositoryImpl.cs" />
+    <Compile Include="Search\TaggedItemProductDocumentBuilder.cs" />
+    <Compile Include="Search\TaggedItemCategoryDocumentBuilder.cs" />
     <Compile Include="Search\TaggedItemIndexChangesProvider.cs" />
-    <Compile Include="Search\TaggedItemIndexDocumentBuilder.cs" />
     <Compile Include="Services\PersonalizationService.cs" />
   </ItemGroup>
   <ItemGroup>
