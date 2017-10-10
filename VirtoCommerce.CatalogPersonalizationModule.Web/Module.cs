@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Practices.Unity;
+using VirtoCommerce.CatalogModule.Data.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Repositories;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Search;
+using VirtoCommerce.CatalogPersonalizationModule.Data.Search.Indexing;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Services;
 using VirtoCommerce.CatalogPersonalizationModule.Web.ExportImport;
 using VirtoCommerce.Domain.Search;
@@ -47,6 +49,9 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
                 new ChangeLogInterceptor(_container.Resolve<Func<IPlatformRepository>>(), ChangeLogPolicy.Cumulative, new[] { typeof(TaggedItemEntity).Name }))));
             _container.RegisterType<ITaggedItemService, PersonalizationService>();
             _container.RegisterType<ITaggedItemSearchService, PersonalizationService>();
+
+            //_container.RegisterType<ProductSearchUserGroupsRequestBuilder>();
+            _container.RegisterType<ISearchRequestBuilder, ProductSearchUserGroupsRequestBuilder>(nameof(ProductSearchRequestBuilder));
         }
 
         public override void PostInitialize()

@@ -8,7 +8,7 @@ using VirtoCommerce.CatalogPersonalizationModule.Data.Model;
 using VirtoCommerce.Domain.Search;
 using VirtoCommerce.Platform.Core.ChangeLog;
 
-namespace VirtoCommerce.CatalogPersonalizationModule.Data.Search
+namespace VirtoCommerce.CatalogPersonalizationModule.Data.Search.Indexing
 {
     public class TaggedItemIndexChangesProvider : IIndexDocumentChangesProvider
     {

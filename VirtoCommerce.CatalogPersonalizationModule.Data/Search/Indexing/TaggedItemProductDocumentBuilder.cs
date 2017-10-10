@@ -8,7 +8,7 @@ using VirtoCommerce.Domain.Catalog.Services;
 using VirtoCommerce.Domain.Search;
 using VirtoCommerce.Platform.Core.Common;
 
-namespace VirtoCommerce.CatalogPersonalizationModule.Data.Search
+namespace VirtoCommerce.CatalogPersonalizationModule.Data.Search.Indexing
 {
     public class TaggedItemProductDocumentBuilder : IIndexDocumentBuilder
     {
