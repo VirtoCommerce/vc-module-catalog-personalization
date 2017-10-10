@@ -89,6 +89,10 @@
     <Compile Include="Migrations\201709141509436_Initial.Designer.cs">
       <DependentUpon>201709141509436_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710101605498_Tag-Max-Length.cs" />
+    <Compile Include="Migrations\201710101605498_Tag-Max-Length.Designer.cs">
+      <DependentUpon>201710101605498_Tag-Max-Length.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\TagEntity.cs" />
     <Compile Include="Model\TaggedItemEntity.cs" />
@@ -118,6 +122,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201709141509436_Initial.resx">
       <DependentUpon>201709141509436_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710101605498_Tag-Max-Length.resx">
+      <DependentUpon>201710101605498_Tag-Max-Length.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -6,6 +6,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Model
     public class TagEntity : Entity
     {
         [Required]
+        [StringLength(128)]
         public string Tag { get; set; }
 
         #region Navigation Properties
