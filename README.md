@@ -1,10 +1,10 @@
 # VirtoCommerce.CatalogPersonalization
-VirtoCommerce.CatalogPersonalization module adds personalisation feature to the products catalog so that store owner now could define different user experiences for one catalog categories and products.
-
+VirtoCommerce.CatalogPersonalization module adds personalization feature to the products catalog so that store owner now could define different user experiences for one catalog categories and products.
+  
 Key features:
-* control the visibility of catalog objects such as Product and Categories, through manual tagging of these objects with special property `Tags` which can contains multiple predefined values which also may be defined for customer profile
+* control the visibility of catalog objects such as Product and Categories, through manual tagging of these objects with special property `Tags` which can contain multiple predefined values which also may be defined for customer profile
 * inheritance `Tags` between catalogs objects depend on catalog taxonomy (categories inherit this property from parent catalog or category, products inherit this property from parent category)
-* allow to use `UserGroups` from customer profile to products or categories filtration in the storefront search
+* allow using `UserGroups` from customer profile to products or categories filtration in the storefront search
 
 Managing catalog tags:
 ![catalog-tags](https://user-images.githubusercontent.com/7536694/31444159-ab3ba8ce-ae9b-11e7-9705-313c93784508.gif)
