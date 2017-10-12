@@ -1,19 +1,37 @@
 # VirtoCommerce.CatalogPersonalization
 VirtoCommerce.CatalogPersonalization module adds personalization feature to the products catalog so that store owner now could define different user experiences for one catalog categories and products.
-  
-Key features:
+
+### Key features:
 * control the visibility of catalog objects such as Product and Categories, through manual tagging of these objects with special property `Tags` which can contain multiple predefined values which also may be defined for customer profile
 * inheritance `Tags` between catalogs objects depend on catalog taxonomy (categories inherit this property from parent catalog or category, products inherit this property from parent category)
-* allow using `UserGroups` from customer profile to products or categories filtration in the storefront search
+* allow using `User groups` from customer profile to products or categories filtration in the storefront search
 
-Managing catalog tags:
-![catalog-tags](https://user-images.githubusercontent.com/7536694/31444159-ab3ba8ce-ae9b-11e7-9705-313c93784508.gif)
+### Example:
 
-Managing category and product tags:
-![category-product-tags](https://user-images.githubusercontent.com/7536694/31444403-7773b738-ae9c-11e7-807e-b6e9aca7cddb.gif)
+<details><summary>Managing catalog tags</summary><p>
+  
+![catalog-tags](https://user-images.githubusercontent.com/7536694/31497152-6510aac0-af5e-11e7-9e99-8f3f2d45cca3.gif) </p></details>
 
-Managing user groups:
-![user-groups](https://user-images.githubusercontent.com/7536694/31445959-9fa693e4-ae9f-11e7-8568-b1ff7ff32da1.gif)
+<details><summary>Managing category and product tags</summary><p>
+
+![category-product-tags](https://user-images.githubusercontent.com/7536694/31497224-b5e4b1a8-af5e-11e7-90a1-918f120efddd.gif) </p></details>
+
+#### Important! Don't forget to rebuild search indexes for categories and products after tagging process.
+
+<details><summary>Rebuild indexes</summary><p>
+
+![indexation](https://user-images.githubusercontent.com/7536694/31497248-d12a5efe-af5e-11e7-8938-b39d2b03ad1e.gif) </p></details>
+
+<details><summary>Managing user groups</summary><p>
+
+![user-groups](https://user-images.githubusercontent.com/7536694/31497349-252148ce-af5f-11e7-9c4b-a2c9545fd853.gif) </p></details>
+
+##### As the result, products are displayed to the user only from the category that belongs to his `User group`.
+
+<details><summary>Result view</summary><p>
+
+![result](https://user-images.githubusercontent.com/7536694/31497775-53d994a4-af60-11e7-8544-90ccdf32f82a.gif) </p></details>
+
 
 # Installation
 Installing the module:
