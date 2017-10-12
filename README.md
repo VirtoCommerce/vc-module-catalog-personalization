@@ -6,12 +6,11 @@ VirtoCommerce.CatalogPersonalization module adds personalization feature to the 
 * inheritance `Tags` between catalogs objects depend on catalog taxonomy (categories inherit this property from parent catalog or category, products inherit this property from parent category)
 * allow using `User groups` from customer profile to products or categories filtration in the storefront search
 
-### Examples:
+### Example:
 
 <details><summary>Managing catalog tags</summary><p>
   
 ![catalog-tags](https://user-images.githubusercontent.com/7536694/31497152-6510aac0-af5e-11e7-9e99-8f3f2d45cca3.gif) </p></details>
-
 
 <details><summary>Managing category and product tags</summary><p>
 
@@ -27,9 +26,9 @@ VirtoCommerce.CatalogPersonalization module adds personalization feature to the 
 
 ![user-groups](https://user-images.githubusercontent.com/7536694/31497349-252148ce-af5f-11e7-9c4b-a2c9545fd853.gif) </p></details>
 
-As the result, products are displayed to the user only from the category that belongs to his `User group`.
+##### As the result, products are displayed to the user only from the category that belongs to his `User group`.
 
-<details><summary>Managing user groups</summary><p>
+<details><summary>Result view</summary><p>
 
 ![result](https://user-images.githubusercontent.com/7536694/31497775-53d994a4-af60-11e7-8544-90ccdf32f82a.gif) </p></details>
 
