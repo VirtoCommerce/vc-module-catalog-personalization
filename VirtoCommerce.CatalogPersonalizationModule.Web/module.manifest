@@ -10,9 +10,8 @@
     </dependencies>
 
     <title>Catalog personalization module</title>
-    <description>Enter your module description here.</description>
+    <description>Personalization feature for the products and categories.</description>
     <authors>
-        <author>Virto Commerce</author>
         <author>Eugeney Tarincev</author>
         <author>Artyom Androsov</author>
     </authors>
@@ -23,7 +22,7 @@
     <iconUrl>https://github.com/VirtoCommerce/vc-module-catalog-personalization/raw/dev/VirtoCommerce.CatalogPersonalizationModule.Web/Content/logo.png</iconUrl>
     <releaseNotes>First version.</releaseNotes>
     <copyright>Copyright © 2011-2017 Virto Commerce. All rights reserved</copyright>
-    <tags>catalog personalization products</tags>
+    <tags>catalog personalization products categories</tags>
 
     <assemblyFile>VirtoCommerce.CatalogPersonalizationModule.Web.dll</assemblyFile>
     <moduleType>VirtoCommerce.CatalogPersonalizationModule.Web.Module, VirtoCommerce.CatalogPersonalizationModule.Web</moduleType>
