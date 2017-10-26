@@ -47,12 +47,12 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Search.Indexing
             
             if (tags.IsNullOrEmpty())
             {
-                tags = new[] { "__any" };
+                tags = new[] { Constants.UserGroupDefaultValue };
             }
 
             foreach (var tag in tags)
             {
-                document.Add(new IndexDocumentField("user_groups", tag) { IsRetrievable = true, IsFilterable = true });
+                document.Add(new IndexDocumentField(Constants.UserGroupKey, tag) { IsRetrievable = true, IsFilterable = true });
             }
 
             return document;
