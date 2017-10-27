@@ -12,23 +12,13 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Search
         {
             var result = new List<StringKeyValues>();
 
-            if (criteria.UserGroups != null)
+            if (criteria.UserGroups != null && criteria.UserGroups.Any())
             {
-                var nameValueDelimeter = new[] { ':' };
-                var valuesDelimeter = new[] { ',' };
+                var userGroupValues = criteria.UserGroups.ToList();
+                userGroupValues.Add(Constants.UserGroupDefaultValue);
 
-                StringKeyValues userGroupInfo = criteria.UserGroups
-                    .Select(item => item.Split(nameValueDelimeter, 2))
-                    .Where(item => item.Length == 2)
-                    .Select(item => new StringKeyValues { Key = item[0], Values = item[1].Split(valuesDelimeter, StringSplitOptions.RemoveEmptyEntries) })
-                    .FirstOrDefault();
-
-                if (userGroupInfo != null) {
-                    var values = userGroupInfo.Values.ToList();
-                    values.Add(Constants.UserGroupDefaultValue);
-                    userGroupInfo.Values = values.ToArray();
-                    result.Add(userGroupInfo);
-                }
+                StringKeyValues userGroupCriteria = new StringKeyValues { Key = Constants.UserGroupKey, Values = userGroupValues.ToArray() };
+                result.Add(userGroupCriteria);
             }
 
             return result;
