@@ -26,7 +26,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Search.Indexing
             var outlineIds = categories.GetObjectsOutlineIds();
             var taggedItems = _taggedItemService.GetTaggedItemsByObjectIds(outlineIds);
 
-            IDictionary<string, string[]> combinedData = categories.CombineObjectsWithTags(taggedItems);
+            var combinedData = categories.CombineObjectsWithTags(taggedItems);
 
             IList<IndexDocument> result = categories
                 .Select(c => CreateDocument(c, combinedData[c.Id]))
@@ -46,7 +46,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Search.Indexing
 
             foreach (var tag in tags)
             {
-                document.Add(new IndexDocumentField("user_groups", tag) { IsRetrievable = true, IsFilterable = true });
+                document.Add(new IndexDocumentField(Constants.UserGroupsFieldName, tag) { IsRetrievable = true, IsFilterable = true });
             }
 
             return document;
