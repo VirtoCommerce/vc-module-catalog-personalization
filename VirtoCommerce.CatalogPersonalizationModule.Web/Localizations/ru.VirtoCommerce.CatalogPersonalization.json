@@ -1,0 +1,22 @@
+﻿{
+    "personalization": {
+        "main-menu-title": "Персонализация",
+        "blades": {
+            "tag-list": {
+                "labels": {
+                    "title": "Теги",
+                    "select-tags": "Выберите теги",
+                    "available-tags": "Доступные теги",
+                    "assigned-tags": "Заданные теги",
+                    "no-assigned": "Теги не заданы",
+                    "add-btn": "Добавить"
+                }
+            }
+        },
+        "widgets": {
+            "tagsWidget": {
+                "title": "Теги"
+            }
+        }
+    }
+}
