@@ -46,7 +46,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Search.Indexing
 
             foreach (var tag in tags)
             {
-                document.Add(new IndexDocumentField(Constants.UserGroupsFieldName, tag) { IsRetrievable = true, IsFilterable = true });
+                document.Add(new IndexDocumentField(Constants.UserGroupsFieldName, tag) { IsRetrievable = true, IsFilterable = true, IsCollection = true });
             }
 
             return document;
