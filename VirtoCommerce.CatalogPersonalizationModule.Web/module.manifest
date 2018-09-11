@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <module>
     <id>VirtoCommerce.CatalogPersonalization</id>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
+
     <platformVersion>2.13.9</platformVersion>
     <dependencies>
         <dependency id="VirtoCommerce.Core" version="2.24.13" />
@@ -11,6 +12,7 @@
 
     <title>Catalog personalization module</title>
     <description>Personalization feature for the products and categories.</description>
+
     <authors>
         <author>Eugeney Tarincev</author>
         <author>Artyom Androsov</author>
@@ -19,6 +21,7 @@
     <owners>
         <owner>Virto Commerce</owner>
     </owners>
+
     <projectUrl>https://github.com/VirtoCommerce/vc-module-catalog-personalization</projectUrl>
     <iconUrl>https://github.com/VirtoCommerce/vc-module-catalog-personalization/raw/dev/VirtoCommerce.CatalogPersonalizationModule.Web/Content/logo.png</iconUrl>
     <releaseNotes>First version.</releaseNotes>
