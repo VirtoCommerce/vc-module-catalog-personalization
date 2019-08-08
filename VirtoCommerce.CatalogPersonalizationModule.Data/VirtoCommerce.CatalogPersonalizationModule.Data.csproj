@@ -100,6 +100,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IPersonalizationRepository.cs" />
     <Compile Include="Repositories\PersonalizationRepositoryImpl.cs" />
+    <Compile Include="Search\CategorySearchUserGroupsRequestBuilder.cs" />
     <Compile Include="Search\ProductSearchUserGroupsRequestBuilder.cs" />
     <Compile Include="Search\Indexing\TaggedItemProductDocumentBuilder.cs" />
     <Compile Include="Search\Indexing\TaggedItemCategoryDocumentBuilder.cs" />
