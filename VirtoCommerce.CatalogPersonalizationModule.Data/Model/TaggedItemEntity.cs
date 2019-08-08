@@ -7,96 +7,113 @@ using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Data.Model
 {
-    public class TaggedItemEntity : AuditableEntity
-    {
-        public TaggedItemEntity()
-        {
-            Tags = new NullCollection<TagEntity>();
-        }
+	public class TaggedItemEntity : AuditableEntity
+	{
+		public TaggedItemEntity()
+		{
+			Tags = new NullCollection<TagEntity>();
+			Outlines = new NullCollection<TaggedItemOutlineEntity>();
+		}
 
-        [Required]
-        [StringLength(128)]
-        public string Label { get; set; }
+		[Required]
+		[StringLength(128)]
+		public string Label { get; set; }
 
-        [Required]
-        [StringLength(128)]
-        public string ObjectType { get; set; }
+		[Required]
+		[StringLength(128)]
+		public string ObjectType { get; set; }
 
-        [Required]
-        [StringLength(128)]
-        public string ObjectId { get; set; }
+		[Required]
+		[StringLength(128)]
+		public string ObjectId { get; set; }
 
-        #region Navigation Properties
+		#region Navigation Properties
 
-        public virtual ObservableCollection<TagEntity> Tags { get; set; }
+		public virtual ObservableCollection<TagEntity> Tags { get; set; }
 
-        #endregion
+		public virtual ObservableCollection<TaggedItemOutlineEntity> Outlines { get; set; }
 
-        public virtual TaggedItem ToModel(TaggedItem taggedItem)
-        {
-            if (taggedItem == null)
-                throw new ArgumentNullException(nameof(taggedItem));
+		#endregion
 
-            taggedItem.Id = Id;
+		public virtual TaggedItem ToModel(TaggedItem taggedItem)
+		{
+			if (taggedItem == null)
+				throw new ArgumentNullException(nameof(taggedItem));
 
-            taggedItem.CreatedBy = CreatedBy;
-            taggedItem.CreatedDate = CreatedDate;
-            taggedItem.ModifiedBy = ModifiedBy;
-            taggedItem.ModifiedDate = ModifiedDate;
+			taggedItem.Id = Id;
 
-            taggedItem.Label = Label;
-            taggedItem.EntityType = ObjectType;
-            taggedItem.EntityId = ObjectId;
-            taggedItem.Tags = Tags.Select(x => x.Tag).ToList();
+			taggedItem.CreatedBy = CreatedBy;
+			taggedItem.CreatedDate = CreatedDate;
+			taggedItem.ModifiedBy = ModifiedBy;
+			taggedItem.ModifiedDate = ModifiedDate;
 
-            return taggedItem;
-        }
+			taggedItem.Label = Label;
+			taggedItem.EntityType = ObjectType;
+			taggedItem.EntityId = ObjectId;
+			taggedItem.Tags = Tags.Select(x => x.Tag).ToList();
+			taggedItem.Outlines = Outlines.Select(x => x.ToModel(AbstractTypeFactory<TaggedItemOutline>.TryCreateInstance())).ToList();
 
-        public virtual TaggedItemEntity FromModel(TaggedItem taggedItem, PrimaryKeyResolvingMap pkMap)
-        {
-            if (taggedItem == null)
-                throw new ArgumentNullException(nameof(taggedItem));
-            if (pkMap == null)
-                throw new ArgumentNullException(nameof(pkMap));
+			return taggedItem;
+		}
 
-            pkMap.AddPair(taggedItem, this);
+		public virtual TaggedItemEntity FromModel(TaggedItem taggedItem, PrimaryKeyResolvingMap pkMap)
+		{
+			if (taggedItem == null)
+				throw new ArgumentNullException(nameof(taggedItem));
+			if (pkMap == null)
+				throw new ArgumentNullException(nameof(pkMap));
 
-            Id = taggedItem.Id;
+			pkMap.AddPair(taggedItem, this);
 
-            CreatedBy = taggedItem.CreatedBy;
-            CreatedDate = taggedItem.CreatedDate;
-            ModifiedBy = taggedItem.ModifiedBy;
-            ModifiedDate = taggedItem.ModifiedDate;
+			Id = taggedItem.Id;
 
-            Label = taggedItem.Label;
-            ObjectType = taggedItem.EntityType;
-            ObjectId = taggedItem.EntityId;
+			CreatedBy = taggedItem.CreatedBy;
+			CreatedDate = taggedItem.CreatedDate;
+			ModifiedBy = taggedItem.ModifiedBy;
+			ModifiedDate = taggedItem.ModifiedDate;
 
-            if (taggedItem.Tags != null)
-            {
-                Tags = new ObservableCollection<TagEntity>(taggedItem.Tags.Select(x => new TagEntity
-                {
-                    Tag = x
-                }));
-            }
+			Label = taggedItem.Label;
+			ObjectType = taggedItem.EntityType;
+			ObjectId = taggedItem.EntityId;
 
-            return this;
-        }
+			if (taggedItem.Tags != null)
+			{
+				Tags = new ObservableCollection<TagEntity>(taggedItem.Tags.Select(x => new TagEntity
+				{
+					Tag = x
+				}));
+			}
 
-        public virtual void Patch(TaggedItemEntity taggedItemEntity)
-        {
-            if (taggedItemEntity == null)
-                throw new ArgumentNullException(nameof(taggedItemEntity));
+			if (taggedItem.Outlines != null)
+			{
+				Outlines = new ObservableCollection<TaggedItemOutlineEntity>(taggedItem.Outlines.Select(x =>
+					AbstractTypeFactory<TaggedItemOutlineEntity>.TryCreateInstance().FromModel(x)
+				));
+			}
 
-            taggedItemEntity.Label = Label;
-            taggedItemEntity.ObjectType = ObjectType;
-            taggedItemEntity.ObjectId = ObjectId;
+			return this;
+		}
 
-            if (!Tags.IsNullCollection())
-            {
-                var tagComparer = AnonymousComparer.Create((TagEntity x) => x.Tag);
-                Tags.Patch(taggedItemEntity.Tags, tagComparer, (sourceTag, targetTag) => targetTag.Tag = sourceTag.Tag);
-            }
-        }
-    }
+		public virtual void Patch(TaggedItemEntity taggedItemEntity)
+		{
+			if (taggedItemEntity == null)
+				throw new ArgumentNullException(nameof(taggedItemEntity));
+
+			taggedItemEntity.Label = Label;
+			taggedItemEntity.ObjectType = ObjectType;
+			taggedItemEntity.ObjectId = ObjectId;
+
+			if (!Tags.IsNullCollection())
+			{
+				var tagComparer = AnonymousComparer.Create((TagEntity x) => x.Tag);
+				Tags.Patch(taggedItemEntity.Tags, tagComparer, (sourceTag, targetTag) => targetTag.Tag = sourceTag.Tag);
+			}
+
+			if (!Outlines.IsNullCollection())
+			{
+				var outlineComparer = AnonymousComparer.Create((TaggedItemOutlineEntity x) => x.Outline);
+				Outlines.Patch(taggedItemEntity.Outlines, outlineComparer, (sourceTag, targetTag) => targetTag.Outline.Equals(sourceTag.Outline, StringComparison.OrdinalIgnoreCase));
+			}
+		}
+	}
 }

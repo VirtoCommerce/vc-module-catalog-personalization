@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="Model\Search\TaggedItemSearchCriteria.cs" />
     <Compile Include="Model\TaggedItem.cs" />
+    <Compile Include="Model\TaggedItemOutline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ITaggedItemSearchService.cs" />
     <Compile Include="Services\ITaggedItemService.cs" />
