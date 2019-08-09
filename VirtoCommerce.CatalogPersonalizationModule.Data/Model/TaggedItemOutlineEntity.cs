@@ -32,10 +32,15 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Model
 			return taggedItemOutline;
 		}
 
-		public virtual TaggedItemOutlineEntity FromModel(TaggedItemOutline taggedItemOutline)
+		public virtual TaggedItemOutlineEntity FromModel(TaggedItemOutline taggedItemOutline, PrimaryKeyResolvingMap pkMap)
 		{
 			if (taggedItemOutline == null)
 				throw new ArgumentNullException(nameof(taggedItemOutline));
+
+			if (pkMap == null)
+				throw new ArgumentNullException(nameof(pkMap));
+
+			pkMap.AddPair(taggedItemOutline, this);
 
 			Id = taggedItemOutline.Id;
 
@@ -43,6 +48,15 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Model
 			TaggedItemId = taggedItemOutline.TaggedItemId;
 
 			return this;
+		}
+
+		public virtual void Patch(TaggedItemOutlineEntity taggedItemOutlineEntity)
+		{
+			if (taggedItemOutlineEntity == null)
+				throw new ArgumentNullException(nameof(taggedItemOutlineEntity));
+
+			taggedItemOutlineEntity.Outline = Outline;
+			taggedItemOutlineEntity.TaggedItemId = TaggedItemId;
 		}
 	}
 }

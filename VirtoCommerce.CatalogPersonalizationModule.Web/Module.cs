@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Unity;
+﻿using Hangfire;
+using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using VirtoCommerce.CatalogPersonalizationModule.Data.Repositories;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Search.Indexing;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Services;
+using VirtoCommerce.CatalogPersonalizationModule.Web.BackgroundJobs;
 using VirtoCommerce.CatalogPersonalizationModule.Web.ExportImport;
 using VirtoCommerce.Domain.Search;
 using VirtoCommerce.Platform.Core.ExportImport;
@@ -49,6 +51,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
 				new ChangeLogInterceptor(_container.Resolve<Func<IPlatformRepository>>(), ChangeLogPolicy.Cumulative, new[] { typeof(TaggedItemEntity).Name }))));
 			_container.RegisterType<ITaggedItemService, PersonalizationService>();
 			_container.RegisterType<ITaggedItemSearchService, PersonalizationService>();
+			_container.RegisterType<ITaggedItemOutlineService, PersonalizationService>();
 
 			//_container.RegisterType<ProductSearchUserGroupsRequestBuilder>();
 			_container.RegisterType<ISearchRequestBuilder, ProductSearchUserGroupsRequestBuilder>(nameof(ProductSearchRequestBuilder));
@@ -97,6 +100,16 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
 					configuration.RelatedSources.Add(taggedItemProductDocumentSource);
 				}
 			}
+
+			#endregion
+
+			#region Outlines synchronization
+
+			// Enable or disable periodic search index builders
+			var settingsManager = _container.Resolve<ISettingsManager>();
+
+			var cronExpression = settingsManager.GetValue("VirtoCommerce.Personalization.Synchronization.CronExpression", "0/15 * * * *");
+			RecurringJob.AddOrUpdate<TaggedItemOutlinesSynchronizationJob>(TaggedItemOutlinesSynchronizationJob.JobId, x => x.Run(), cronExpression);
 
 			#endregion
 		}

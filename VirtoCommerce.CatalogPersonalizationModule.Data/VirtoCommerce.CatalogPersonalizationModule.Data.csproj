@@ -94,9 +94,9 @@
     <Compile Include="Migrations\201710101605498_Tag-Max-Length.Designer.cs">
       <DependentUpon>201710101605498_Tag-Max-Length.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201908081636166_TaggedItemOutline.cs" />
-    <Compile Include="Migrations\201908081636166_TaggedItemOutline.Designer.cs">
-      <DependentUpon>201908081636166_TaggedItemOutline.cs</DependentUpon>
+    <Compile Include="Migrations\201908090858522_AddTaggedItemOutlines.cs" />
+    <Compile Include="Migrations\201908090858522_AddTaggedItemOutlines.Designer.cs">
+      <DependentUpon>201908090858522_AddTaggedItemOutlines.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\TagEntity.cs" />
@@ -132,8 +132,8 @@
     <EmbeddedResource Include="Migrations\201710101605498_Tag-Max-Length.resx">
       <DependentUpon>201710101605498_Tag-Max-Length.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201908081636166_TaggedItemOutline.resx">
-      <DependentUpon>201908081636166_TaggedItemOutline.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201908090858522_AddTaggedItemOutlines.resx">
+      <DependentUpon>201908090858522_AddTaggedItemOutlines.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

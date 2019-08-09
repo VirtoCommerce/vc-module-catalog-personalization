@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.SqlClient;
 using System.Linq;
+using VirtoCommerce.CatalogPersonalizationModule.Core.Model.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Model;
 using VirtoCommerce.Platform.Data.Infrastructure;
 using VirtoCommerce.Platform.Data.Infrastructure.Interceptors;
@@ -28,6 +31,8 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
 
 			modelBuilder.Entity<TaggedItemOutlineEntity>().HasKey(x => x.Id).Property(x => x.Id);
 			modelBuilder.Entity<TaggedItemOutlineEntity>().HasRequired(x => x.TaggedItem).WithMany(x => x.Outlines).HasForeignKey(x => x.TaggedItemId).WillCascadeOnDelete(true);
+			modelBuilder.Entity<TaggedItemOutlineEntity>().Property(x => x.Outline)
+				.HasColumnAnnotation(IndexAnnotation.AnnotationName, new IndexAnnotation(new IndexAttribute() { IsUnique = false }));
 			modelBuilder.Entity<TaggedItemOutlineEntity>().ToTable("TaggedItemOutline");
 
 			modelBuilder.Entity<TaggedItemEntity>().HasKey(x => x.Id).Property(x => x.Id);
@@ -36,15 +41,24 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
 			base.OnModelCreating(modelBuilder);
 		}
 
-		public IQueryable<TaggedItemEntity> TaggedItems => GetAsQueryable<TaggedItemEntity>().Include(x => x.Tags).Include(x => x.Outlines);
+		public IQueryable<TaggedItemEntity> TaggedItems => GetAsQueryable<TaggedItemEntity>().Include(x => x.Tags);
 
 		public IQueryable<TagEntity> Tags => GetAsQueryable<TagEntity>();
 
-		public IQueryable<TaggedItemOutlineEntity> TagItemOutlines => GetAsQueryable<TaggedItemOutlineEntity>();
+		public IQueryable<TaggedItemOutlineEntity> TaggedItemOutlines => GetAsQueryable<TaggedItemOutlineEntity>();
 
-		public TaggedItemEntity[] GetTaggedItemsByIds(string[] ids)
+		public TaggedItemEntity[] GetTaggedItemsByIds(string[] ids) => GetTaggedItemsByIds(ids, null);
+
+		public TaggedItemEntity[] GetTaggedItemsByIds(string[] ids, string responseGroup)
 		{
-			return TaggedItems.Where(x => ids.Contains(x.Id)).ToArray();
+			var result = TaggedItems.Where(x => ids.Contains(x.Id)).ToArray();
+
+			if (responseGroup == TaggedItemResponseGroup.WithOutlines.ToString())
+			{
+				var outlines = TaggedItemOutlines.Where(x => ids.Contains(x.TaggedItemId)).ToArray();
+			}
+
+			return result;
 		}
 
 		public TaggedItemEntity[] GetTaggedItemsByObjectIds(string[] ids)
@@ -73,6 +87,22 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
 				Text = string.Format(commandTemplate, parameterNames),
 				Parameters = parameters.OfType<object>().ToArray(),
 			};
+		}
+
+		public string[] GetTagsByOutlinePart(string outlinePart)
+		{
+			var queryResult = ObjectContext.ExecuteStoreQuery<string>(
+@"SELECT DISTINCT t.[Tag]
+  FROM[dbo].[TaggedItemOutline] o
+  INNER JOIN[dbo].[Tag] t ON t.[TaggedItemId] = o.[TaggedItemId]
+  WHERE o.Outline LIKE '%'+@p0+'%'", outlinePart);
+
+			return queryResult.ToArray();
+		}
+
+		public void DeleteTaggedItemOutlines(string[] ids)
+		{
+			ExecuteStoreCommand("DELETE FROM [TaggedItemOutline] WHERE Id IN ({0})", ids);
 		}
 
 		protected class Command

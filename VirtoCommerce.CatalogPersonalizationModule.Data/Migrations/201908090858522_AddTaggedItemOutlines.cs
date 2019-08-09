@@ -2,7 +2,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
 {
 	using System.Data.Entity.Migrations;
 
-	public partial class TaggedItemOutline : DbMigration
+	public partial class AddTaggedItemOutlines : DbMigration
 	{
 		public override void Up()
 		{
@@ -16,6 +16,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
 				})
 				.PrimaryKey(t => t.Id)
 				.ForeignKey("dbo.TaggedItem", t => t.TaggedItemId, cascadeDelete: true)
+				.Index(t => t.Outline)
 				.Index(t => t.TaggedItemId);
 
 		}
@@ -24,6 +25,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
 		{
 			DropForeignKey("dbo.TaggedItemOutline", "TaggedItemId", "dbo.TaggedItem");
 			DropIndex("dbo.TaggedItemOutline", new[] { "TaggedItemId" });
+			DropIndex("dbo.TaggedItemOutline", new[] { "Outline" });
 			DropTable("dbo.TaggedItemOutline");
 		}
 	}

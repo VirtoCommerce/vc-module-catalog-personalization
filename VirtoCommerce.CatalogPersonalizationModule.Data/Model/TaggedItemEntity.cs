@@ -87,7 +87,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Model
 			if (taggedItem.Outlines != null)
 			{
 				Outlines = new ObservableCollection<TaggedItemOutlineEntity>(taggedItem.Outlines.Select(x =>
-					AbstractTypeFactory<TaggedItemOutlineEntity>.TryCreateInstance().FromModel(x)
+					AbstractTypeFactory<TaggedItemOutlineEntity>.TryCreateInstance().FromModel(x, pkMap)
 				));
 			}
 

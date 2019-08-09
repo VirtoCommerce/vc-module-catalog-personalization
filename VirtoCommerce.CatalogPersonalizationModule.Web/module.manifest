@@ -1,58 +1,71 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <module>
-    <id>VirtoCommerce.CatalogPersonalization</id>
-    <version>1.0.3</version>
+	<id>VirtoCommerce.CatalogPersonalization</id>
+	<version>1.0.3</version>
 
-    <platformVersion>2.13.9</platformVersion>
-    <dependencies>
-        <dependency id="VirtoCommerce.Core" version="2.24.13" />
-        <dependency id="VirtoCommerce.Customer" version="2.13.0" />
-        <dependency id="VirtoCommerce.Catalog" version="2.20.1" />
-    </dependencies>
+	<platformVersion>2.13.9</platformVersion>
+	<dependencies>
+		<dependency id="VirtoCommerce.Core" version="2.24.13" />
+		<dependency id="VirtoCommerce.Customer" version="2.13.0" />
+		<dependency id="VirtoCommerce.Catalog" version="2.20.1" />
+	</dependencies>
 
-    <title>Catalog personalization module</title>
-    <description>Personalization feature for the products and categories.</description>
+	<title>Catalog personalization module</title>
+	<description>Personalization feature for the products and categories.</description>
 
-    <authors>
-        <author>Eugeney Tarincev</author>
-        <author>Artyom Androsov</author>
-        <author>Artem Dudarev</author>
-    </authors>
-    <owners>
-        <owner>Virto Commerce</owner>
-    </owners>
+	<authors>
+		<author>Eugeney Tarincev</author>
+		<author>Artyom Androsov</author>
+		<author>Artem Dudarev</author>
+	</authors>
+	<owners>
+		<owner>Virto Commerce</owner>
+	</owners>
 
-    <projectUrl>https://github.com/VirtoCommerce/vc-module-catalog-personalization</projectUrl>
-    <iconUrl>https://github.com/VirtoCommerce/vc-module-catalog-personalization/raw/dev/VirtoCommerce.CatalogPersonalizationModule.Web/Content/logo.png</iconUrl>
-    <releaseNotes>First version.</releaseNotes>
-    <copyright>Copyright © 2011-2018 Virto Commerce. All rights reserved</copyright>
-    <tags>catalog personalization products categories</tags>
+	<projectUrl>https://github.com/VirtoCommerce/vc-module-catalog-personalization</projectUrl>
+	<iconUrl>https://github.com/VirtoCommerce/vc-module-catalog-personalization/raw/dev/VirtoCommerce.CatalogPersonalizationModule.Web/Content/logo.png</iconUrl>
+	<releaseNotes>First version.</releaseNotes>
+	<copyright>Copyright © 2011-2018 Virto Commerce. All rights reserved</copyright>
+	<tags>catalog personalization products categories</tags>
 
-    <assemblyFile>VirtoCommerce.CatalogPersonalizationModule.Web.dll</assemblyFile>
-    <moduleType>VirtoCommerce.CatalogPersonalizationModule.Web.Module, VirtoCommerce.CatalogPersonalizationModule.Web</moduleType>
+	<assemblyFile>VirtoCommerce.CatalogPersonalizationModule.Web.dll</assemblyFile>
+	<moduleType>VirtoCommerce.CatalogPersonalizationModule.Web.Module, VirtoCommerce.CatalogPersonalizationModule.Web</moduleType>
 
-    <styles>
-        <directory virtualPath="$/Content/css" searchPattern="*.css" searchSubdirectories="true" />
-    </styles>
-    <scripts>
-        <directory virtualPath="$/Scripts" searchPattern="*.js" searchSubdirectories="true" />
-    </scripts>
+	<styles>
+		<directory virtualPath="$/Content/css" searchPattern="*.css" searchSubdirectories="true" />
+	</styles>
+	<scripts>
+		<directory virtualPath="$/Scripts" searchPattern="*.js" searchSubdirectories="true" />
+	</scripts>
 
-    <settings>
-        <group name="Personalization|General">
-            <setting>
-                <name>Personalization.ExportImport.Description</name>
-                <valueType>string</valueType>
-                <defaultValue>Export/Import tagged items</defaultValue>
-                <title>Export/Import description</title>
-                <description>Module description in platform export/import wizard</description>
-            </setting>
-        </group>
-    </settings>
+	<settings>
+		<group name="Personalization|General">
+			<setting>
+				<name>Personalization.ExportImport.Description</name>
+				<valueType>string</valueType>
+				<defaultValue>Export/Import tagged items</defaultValue>
+				<title>Export/Import description</title>
+				<description>Module description in platform export/import wizard</description>
+			</setting>
+			<setting>
+				<name>VirtoCommerce.Personalization.Synchronization.CronExpression</name>
+				<valueType>string</valueType>
+				<defaultValue>0/15 * * * *</defaultValue>
+				<title>Synchronization job cron expression (requires restart)</title>
+				<description>
+					<![CDATA[ 
+						x minutes use "0/x * * * *"
+						x hourse use "0 */x * * *" you can set minutes also "15 */x * * *"
+						x days "0 0 */x * *"   
+						]]>
+				</description>
+			</setting>
+		</group>
+	</settings>
 
-    <permissions>
-        <group name="CatalogPersonalization">
-            <permission id="personalization:update" name="Update tagged item" description=""/>
-        </group>
-    </permissions>
+	<permissions>
+		<group name="CatalogPersonalization">
+			<permission id="personalization:update" name="Update tagged item" description=""/>
+		</group>
+	</permissions>
 </module>

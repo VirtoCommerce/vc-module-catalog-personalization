@@ -7,13 +7,13 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class TaggedItemOutline : IMigrationMetadata
+    public sealed partial class AddTaggedItemOutlines : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(TaggedItemOutline));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddTaggedItemOutlines));
         
         string IMigrationMetadata.Id
         {
-            get { return "201908081636166_TaggedItemOutline"; }
+            get { return "201908090858522_AddTaggedItemOutlines"; }
         }
         
         string IMigrationMetadata.Source
