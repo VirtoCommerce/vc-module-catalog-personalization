@@ -13,28 +13,28 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Test.Indexations
     [Trait("Category", "CI")]
     public class ProductDocumentIndexationTests : IndexationTestsBase
     {
-        [Theory]
-        [MemberData(nameof(TestDocumentsDataGenerator.GetData), MemberType = typeof(TestDocumentsDataGenerator))]
-        public async Task TestProductDocumentBuilder(TestDocumentInputData inputData)
-        {
-            var documentBuilder = new TaggedItemProductDocumentBuilder(GetItemService(inputData.AllProducts), GetTaggedItemService(inputData.TaggedItems));
-            var products = inputData.Products;
-            var productIds = products.Select(p => p.Id).ToList();
+        //[Theory]
+        //[MemberData(nameof(TestDocumentsDataGenerator.GetData), MemberType = typeof(TestDocumentsDataGenerator))]
+        //public async Task TestProductDocumentBuilder(TestDocumentInputData inputData)
+        //{
+        //    var documentBuilder = new TaggedItemProductDocumentBuilder(GetItemService(inputData.AllProducts), GetTaggedItemService(inputData.TaggedItems));
+        //    var products = inputData.Products;
+        //    var productIds = products.Select(p => p.Id).ToList();
 
-            var documents = await documentBuilder.GetDocumentsAsync(productIds);
+        //    var documents = await documentBuilder.GetDocumentsAsync(productIds);
 
-            Assert.Equal(documents.Count, products.Count);
+        //    Assert.Equal(documents.Count, products.Count);
 
-            foreach (var product in products)
-            {
-                var document = documents.FirstOrDefault(d => d.Id.EqualsInvariant(product.Id));
-                Assert.NotNull(document);
-                Assert.Equal(1, document.Fields.Count);
+        //    foreach (var product in products)
+        //    {
+        //        var document = documents.FirstOrDefault(d => d.Id.EqualsInvariant(product.Id));
+        //        Assert.NotNull(document);
+        //        Assert.Equal(1, document.Fields.Count);
 
-                var field = document.Fields.First();
-                Assert.Equal(field.Values.Count, inputData.TagsCount);
-            }
-        }
+        //        var field = document.Fields.First();
+        //        Assert.Equal(field.Values.Count, inputData.TagsCount);
+        //    }
+        //}
     }
 
     public class TestDocumentInputData

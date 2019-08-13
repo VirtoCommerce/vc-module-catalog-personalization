@@ -2,13 +2,13 @@
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Core.Services
 {
-    public interface ITaggedItemService
-    {
-        TaggedItem[] GetTaggedItemsByIds(string[] ids);
-        TaggedItem[] GetTaggedItemsByObjectIds(string[] ids);
-
+    /// <summary>
+    /// Provides the APIs for managing tagged items in a persistence store.
+    /// </summary>
+	public interface ITaggedItemService
+	{
+		TaggedItem[] GetTaggedItemsByIds(string[] ids, string responseGroup = null);
         void SaveTaggedItems(TaggedItem[] taggedItems);
-
-        void DeleteTaggedItems(string[] ids);
-    }
+		void DeleteTaggedItems(string[] ids);
+	}
 }

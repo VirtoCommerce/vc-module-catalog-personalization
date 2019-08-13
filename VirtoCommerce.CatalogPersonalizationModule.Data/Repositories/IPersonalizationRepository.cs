@@ -4,13 +4,14 @@ using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
 {
-    public interface IPersonalizationRepository : IRepository
-    {
-        IQueryable<TaggedItemEntity> TaggedItems { get; }
-        IQueryable<TagEntity> Tags { get; }
+	public interface IPersonalizationRepository : IRepository
+	{
+		IQueryable<TaggedItemEntity> TaggedItems { get; }
+		IQueryable<TagEntity> Tags { get; }
+		IQueryable<TaggedItemOutlineEntity> TaggedItemOutlines { get; }
 
-        TaggedItemEntity[] GetTaggedItemsByIds(string[] ids);
-        TaggedItemEntity[] GetTaggedItemsByObjectIds(string[] ids);
+		TaggedItemEntity[] GetTaggedItemsByIds(string[] ids, string responseGroup);
         void DeleteTaggedItems(string[] ids);
-    }
+
+	}
 }
