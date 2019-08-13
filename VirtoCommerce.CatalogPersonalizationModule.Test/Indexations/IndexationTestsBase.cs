@@ -1,14 +1,12 @@
 ﻿using Moq;
 using System.Collections.Generic;
 using System.Linq;
-using VirtoCommerce.CatalogPersonalizationModule.Core.Model;
-using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
 using VirtoCommerce.Domain.Catalog.Model;
 using VirtoCommerce.Domain.Catalog.Services;
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Test.Indexations
 {
-	public abstract class IndexationTestsBase
+    public abstract class IndexationTestsBase
 	{
 		protected ICategoryService GetCategoryService(IList<Category> categories)
 		{
@@ -26,20 +24,6 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Test.Indexations
 			return service.Object;
 		}
 
-		protected ITaggedItemService GetTaggedItemService(IList<TaggedItem> taggedItems)
-		{
-			var service = new Mock<ITaggedItemService>();
-			service.Setup(x => x.GetTaggedItemsByObjectIds(It.IsAny<string[]>()))
-				.Returns<string[]>((ids) => taggedItems.Where(p => ids.Contains(p.EntityId)).ToArray());
-			return service.Object;
-		}
-
-		protected ITaggedItemOutlineService GetTaggedItemOutlineService(IList<TaggedItemOutline> taggedItemOutlines)
-		{
-			var service = new Mock<ITaggedItemOutlineService>();
-			service.Setup(x => x.GetTagsByOutlinePart(It.IsAny<string>()))
-				.Returns<string>((part) => taggedItemOutlines.Where(p => p.Outline.Contains(part)).Select(x => x.TaggedItemId).ToArray());
-			return service.Object;
-		}
+		
 	}
 }

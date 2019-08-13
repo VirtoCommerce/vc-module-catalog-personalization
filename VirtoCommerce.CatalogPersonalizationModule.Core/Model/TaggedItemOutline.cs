@@ -6,6 +6,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Core.Model
 	{
 		public string Outline { get; set; }
 
-		public string TaggedItemId { get; set; }
+        public TaggedItem TaggedItem { get; set; }
+        public string TaggedItemId { get; set; }
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure.Annotations;
@@ -6,6 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Model;
+using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Data.Infrastructure;
 using VirtoCommerce.Platform.Data.Infrastructure.Interceptors;
 
@@ -47,26 +49,24 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
 
 		public IQueryable<TaggedItemOutlineEntity> TaggedItemOutlines => GetAsQueryable<TaggedItemOutlineEntity>();
 
-		public TaggedItemEntity[] GetTaggedItemsByIds(string[] ids) => GetTaggedItemsByIds(ids, null);
-
 		public TaggedItemEntity[] GetTaggedItemsByIds(string[] ids, string responseGroup)
 		{
-			var result = TaggedItems.Where(x => ids.Contains(x.Id)).ToArray();
+            var result = Array.Empty<TaggedItemEntity>();
+            if (!ids.IsNullOrEmpty())
+            {
+                var taggedItemrespGroup = EnumUtility.SafeParse(responseGroup, TaggedItemResponseGroup.Full);
 
-			if (responseGroup == TaggedItemResponseGroup.WithOutlines.ToString())
-			{
-				var outlines = TaggedItemOutlines.Where(x => ids.Contains(x.TaggedItemId)).ToArray();
-			}
+                result = TaggedItems.Where(x => ids.Contains(x.Id)).ToArray();
 
+                if (taggedItemrespGroup.HasFlag(TaggedItemResponseGroup.WithOutlines))
+                {
+                    var outlines = TaggedItemOutlines.Where(x => ids.Contains(x.TaggedItemId)).ToArray();
+                }
+            }
 			return result;
 		}
 
-		public TaggedItemEntity[] GetTaggedItemsByObjectIds(string[] ids)
-		{
-			return TaggedItems.Where(x => ids.Contains(x.ObjectId)).ToArray();
-		}
-
-		public void DeleteTaggedItems(string[] ids)
+        public void DeleteTaggedItems(string[] ids)
 		{
 			ExecuteStoreCommand("DELETE FROM TaggedItem WHERE Id IN ({0})", ids);
 		}
@@ -89,17 +89,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
 			};
 		}
 
-		public string[] GetTagsByOutlinePart(string outlinePart)
-		{
-			var queryResult = ObjectContext.ExecuteStoreQuery<string>(
-@"SELECT DISTINCT t.[Tag]
-  FROM[dbo].[TaggedItemOutline] o
-  INNER JOIN[dbo].[Tag] t ON t.[TaggedItemId] = o.[TaggedItemId]
-  WHERE o.Outline LIKE '%'+@p0+'%'", outlinePart);
-
-			return queryResult.ToArray();
-		}
-
+   
 		public void DeleteTaggedItemOutlines(string[] ids)
 		{
 			ExecuteStoreCommand("DELETE FROM [TaggedItemOutline] WHERE Id IN ({0})", ids);

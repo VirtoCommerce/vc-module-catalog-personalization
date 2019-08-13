@@ -50,9 +50,14 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Model
 			taggedItem.Label = Label;
 			taggedItem.EntityType = ObjectType;
 			taggedItem.EntityId = ObjectId;
-			taggedItem.Tags = Tags.Select(x => x.Tag).ToList();
-			taggedItem.Outlines = Outlines.Select(x => x.ToModel(AbstractTypeFactory<TaggedItemOutline>.TryCreateInstance())).ToList();
-
+            if (!taggedItem.Tags.IsNullCollection())
+            {
+                taggedItem.Tags = Tags.Select(x => x.Tag).ToList();
+            }
+            if (!taggedItem.Outlines.IsNullCollection())
+            {
+                taggedItem.Outlines = Outlines.Select(x => x.ToModel(AbstractTypeFactory<TaggedItemOutline>.TryCreateInstance())).ToList();
+            }
 			return taggedItem;
 		}
 

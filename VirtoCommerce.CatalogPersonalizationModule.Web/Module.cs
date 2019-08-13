@@ -13,6 +13,7 @@ using VirtoCommerce.CatalogPersonalizationModule.Data.Services;
 using VirtoCommerce.CatalogPersonalizationModule.Web.BackgroundJobs;
 using VirtoCommerce.CatalogPersonalizationModule.Web.ExportImport;
 using VirtoCommerce.Domain.Search;
+using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Settings;
@@ -51,28 +52,56 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
 				new ChangeLogInterceptor(_container.Resolve<Func<IPlatformRepository>>(), ChangeLogPolicy.Cumulative, new[] { typeof(TaggedItemEntity).Name }))));
 			_container.RegisterType<ITaggedItemService, PersonalizationService>();
 			_container.RegisterType<ITaggedItemSearchService, PersonalizationService>();
-			_container.RegisterType<ITaggedItemOutlineService, PersonalizationService>();
+            _container.RegisterType<ITaggedEntitiesServiceFactory, TaggedEntitiesServiceFactory>();
+            _container.RegisterType<ITaggedItemOutlinesSynchronizator, TaggedItemOutlinesSynchronizator>();
 
-			//_container.RegisterType<ProductSearchUserGroupsRequestBuilder>();
-			_container.RegisterType<ISearchRequestBuilder, ProductSearchUserGroupsRequestBuilder>(nameof(ProductSearchRequestBuilder));
+                  
+            _container.RegisterType<ISearchRequestBuilder, ProductSearchUserGroupsRequestBuilder>(nameof(ProductSearchRequestBuilder));
 			_container.RegisterType<ISearchRequestBuilder, CategorySearchUserGroupsRequestBuilder>(nameof(CategorySearchRequestBuilder));
-		}
+
+
+            var settingsManager = _container.Resolve<ISettingsManager>();
+            var tagsInheritancePolicy = settingsManager.GetValue("VirtoCommerce.Personalization.TagsInheritancePolicy", "DownTree");
+            if (tagsInheritancePolicy.EqualsInvariant("DownTree"))
+            {
+                _container.RegisterType<ITagPropagationPolicy, DownTreeTagPropagationPolicy>();
+            }
+            else
+            {
+                _container.RegisterType<ITagPropagationPolicy, UpTreeTagPropagationPolicy>();
+
+            }
+
+        }
 
 		public override void PostInitialize()
 		{
 			base.PostInitialize();
 
-			#region Search
+            var settingsManager = _container.Resolve<ISettingsManager>();
 
-			// Add tagged items document source to the category or product indexing configuration
-			var documentIndexingConfigurations = _container.Resolve<IndexDocumentConfiguration[]>();
+            var tagsInheritancePolicy = settingsManager.GetValue("VirtoCommerce.Personalization.TagsInheritancePolicy", "DownTree");
+            if (tagsInheritancePolicy.EqualsInvariant("UpTree"))
+            {
+                var cronExpression = settingsManager.GetValue("VirtoCommerce.Personalization.Synchronization.CronExpression", "0/15 * * * *");
+                RecurringJob.AddOrUpdate<TaggedItemOutlinesSynchronizationJob>(TaggedItemOutlinesSynchronizationJob.JobId, x => x.Run(), cronExpression);
+            }
+            else
+            {
+                RecurringJob.RemoveIfExists(TaggedItemOutlinesSynchronizationJob.JobId);
+            }
+
+            #region Search
+
+            // Add tagged items document source to the category or product indexing configuration
+            var documentIndexingConfigurations = _container.Resolve<IndexDocumentConfiguration[]>();
 			if (documentIndexingConfigurations != null)
 			{
-				//Category indexing
-				var taggedItemCategoryDocumentSource = new IndexDocumentSource
-				{
-					ChangesProvider = _container.Resolve<TaggedItemIndexChangesProvider>(),
-					DocumentBuilder = _container.Resolve<TaggedItemCategoryDocumentBuilder>(),
+                //Category indexing
+                var taggedItemCategoryDocumentSource = new IndexDocumentSource
+                {
+                    ChangesProvider = _container.Resolve<TaggedItemIndexChangesProvider>(),
+                    DocumentBuilder = _container.Resolve<CategoryTaggedItemDocumentBuilder>()
 				};
 				foreach (var configuration in documentIndexingConfigurations.Where(c => c.DocumentType == KnownDocumentTypes.Category))
 				{
@@ -84,12 +113,12 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
 					configuration.RelatedSources.Add(taggedItemCategoryDocumentSource);
 				}
 
-				//Product indexing
-				var taggedItemProductDocumentSource = new IndexDocumentSource
-				{
-					ChangesProvider = _container.Resolve<TaggedItemIndexChangesProvider>(),
-					DocumentBuilder = _container.Resolve<TaggedItemProductDocumentBuilder>(),
-				};
+                //Product indexing
+                var taggedItemProductDocumentSource = new IndexDocumentSource
+                {
+                    ChangesProvider = _container.Resolve<TaggedItemIndexChangesProvider>(),
+                    DocumentBuilder = _container.Resolve<ProductTaggedItemDocumentBuilder>()
+                };
 				foreach (var configuration in documentIndexingConfigurations.Where(c => c.DocumentType == KnownDocumentTypes.Product))
 				{
 					if (configuration.RelatedSources == null)
@@ -100,25 +129,16 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
 					configuration.RelatedSources.Add(taggedItemProductDocumentSource);
 				}
 			}
+            #endregion
+           
 
-			#endregion
+        }
 
-			#region Outlines synchronization
+        #endregion
 
-			// Enable or disable periodic search index builders
-			var settingsManager = _container.Resolve<ISettingsManager>();
+        #region ISupportExportImportModule Members
 
-			var cronExpression = settingsManager.GetValue("VirtoCommerce.Personalization.Synchronization.CronExpression", "0/15 * * * *");
-			RecurringJob.AddOrUpdate<TaggedItemOutlinesSynchronizationJob>(TaggedItemOutlinesSynchronizationJob.JobId, x => x.Run(), cronExpression);
-
-			#endregion
-		}
-
-		#endregion
-
-		#region ISupportExportImportModule Members
-
-		public void DoExport(System.IO.Stream outStream, PlatformExportManifest manifest, Action<ExportImportProgressInfo> progressCallback)
+        public void DoExport(System.IO.Stream outStream, PlatformExportManifest manifest, Action<ExportImportProgressInfo> progressCallback)
 		{
 			var exportJob = _container.Resolve<PersonalizationExportImport>();
 			exportJob.DoExport(outStream, progressCallback);

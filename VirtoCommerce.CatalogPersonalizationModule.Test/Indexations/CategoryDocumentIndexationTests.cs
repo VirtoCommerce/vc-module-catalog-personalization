@@ -12,28 +12,28 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Test.Indexations
 	[Trait("Category", "CI")]
 	public class CategoryDocumentIndexationTests : IndexationTestsBase
 	{
-		[Theory]
-		[MemberData(nameof(TestCategoriesDataGenerator.GetData), MemberType = typeof(TestCategoriesDataGenerator))]
-		public async Task TestCategoryDocumentBuilder(TestCategoryInputData inputData)
-		{
-			var documentBuilder = new TaggedItemCategoryDocumentBuilder(GetCategoryService(inputData.AllCategories), GetTaggedItemService(inputData.TaggedItems), GetTaggedItemOutlineService(new List<TaggedItemOutline>()));
-			var categories = inputData.Categories;
-			var categoryIds = categories.Select(p => p.Id).ToList();
+		//[Theory]
+		//[MemberData(nameof(TestCategoriesDataGenerator.GetData), MemberType = typeof(TestCategoriesDataGenerator))]
+		//public async Task TestCategoryDocumentBuilder(TestCategoryInputData inputData)
+		//{
+		//	var documentBuilder = new TaggedItemCategoryDocumentBuilder(GetCategoryService(inputData.AllCategories), GetTaggedItemService(inputData.TaggedItems), GetTaggedItemOutlineService(new List<TaggedItemOutline>()));
+		//	var categories = inputData.Categories;
+		//	var categoryIds = categories.Select(p => p.Id).ToList();
 
-			var documents = await documentBuilder.GetDocumentsAsync(categoryIds);
+		//	var documents = await documentBuilder.GetDocumentsAsync(categoryIds);
 
-			Assert.Equal(documents.Count, categories.Count);
+		//	Assert.Equal(documents.Count, categories.Count);
 
-			foreach (var category in categories)
-			{
-				var document = documents.FirstOrDefault(d => d.Id.EqualsInvariant(category.Id));
-				Assert.NotNull(document);
-				Assert.Equal(1, document.Fields.Count);
+		//	foreach (var category in categories)
+		//	{
+		//		var document = documents.FirstOrDefault(d => d.Id.EqualsInvariant(category.Id));
+		//		Assert.NotNull(document);
+		//		Assert.Equal(1, document.Fields.Count);
 
-				var field = document.Fields.First();
-				Assert.Equal(field.Values.Count, inputData.TagsCount);
-			}
-		}
+		//		var field = document.Fields.First();
+		//		Assert.Equal(field.Values.Count, inputData.TagsCount);
+		//	}
+		//}
 	}
 
 	public class TestCategoryInputData
