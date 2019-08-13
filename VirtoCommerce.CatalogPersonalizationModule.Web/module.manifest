@@ -56,6 +56,9 @@
           <value>DownTree</value>
           <value>UpTree</value>
         </allowedValues>
+        <description>
+          DownTree - propagates all tags assigned to categories for all their descendants. UpTree - propagates tags up to hierarchy from descendants to parents
+        </description>
       </setting>
 			<setting>
 				<name>VirtoCommerce.Personalization.Synchronization.CronExpression</name>
