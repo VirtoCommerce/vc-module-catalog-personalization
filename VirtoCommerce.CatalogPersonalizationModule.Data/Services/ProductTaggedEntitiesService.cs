@@ -1,4 +1,4 @@
-﻿using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
+using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
 using VirtoCommerce.Domain.Catalog.Model;
 using VirtoCommerce.Domain.Catalog.Services;
 using VirtoCommerce.Platform.Core.Common;

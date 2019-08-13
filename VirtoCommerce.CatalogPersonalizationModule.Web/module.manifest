@@ -1,8 +1,7 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <module>
 	<id>VirtoCommerce.CatalogPersonalization</id>
 	<version>1.0.3</version>
-
 	<platformVersion>2.13.40</platformVersion>
 	<dependencies>
 		<dependency id="VirtoCommerce.Core" version="2.24.13" />
@@ -64,7 +63,7 @@
 				<name>VirtoCommerce.Personalization.Synchronization.CronExpression</name>
 				<valueType>string</valueType>
 				<defaultValue>0/15 * * * *</defaultValue>
-				<title>Job cron expression for synchronize the outlines of tagged entities. Valid only for the selected UpTree tag propagation policy. (requires restart)</title>
+				<title>Job cron expression for synchronize the outlines of tagged entities. Valid only when the UpTree propagation policy is selected. (requires restart)</title>
 				<description>
 					<![CDATA[ 
 						x minutes use "0/x * * * *"

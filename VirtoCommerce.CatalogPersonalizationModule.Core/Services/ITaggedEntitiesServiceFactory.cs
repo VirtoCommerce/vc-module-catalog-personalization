@@ -1,4 +1,4 @@
-﻿namespace VirtoCommerce.CatalogPersonalizationModule.Core.Services
+namespace VirtoCommerce.CatalogPersonalizationModule.Core.Services
 {
     /// <summary>
     /// Creates an ITaggedEntitiesService instance based on the given type name string.

@@ -1,9 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
+using VirtoCommerce.CatalogPersonalizationModule.Data.Common;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Repositories;
 using VirtoCommerce.Domain.Catalog.Model;
+using VirtoCommerce.Domain.Catalog.Services;
+using VirtoCommerce.Domain.Search;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Data.Infrastructure;
 
@@ -13,10 +16,15 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
     {
         private readonly Func<IPersonalizationRepository> _repositoryFactory;
         private readonly ITaggedItemService _taggedItemService;
-        public UpTreeTagPropagationPolicy(Func<IPersonalizationRepository> repositoryFactory, ITaggedItemService taggedItemService)
+        private readonly ICatalogSearchService _catalogSearchService;
+        public UpTreeTagPropagationPolicy(
+            Func<IPersonalizationRepository> repositoryFactory,
+            ITaggedItemService taggedItemService,
+            ICatalogSearchService catalogSearchService)
         {
             _repositoryFactory = repositoryFactory;
             _taggedItemService = taggedItemService;
+            _catalogSearchService = catalogSearchService;
         }
 
         public Dictionary<string, HashSet<string>> GetResultingTags(IEntity[] entities)
@@ -56,8 +64,26 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                                                                        .Select(i => i.TaggedItem.Id)
                                                                        .Distinct()
                                                                        .ToArray();
+
                         taggedItems = _taggedItemService.GetTaggedItemsByIds(taggedItemIds);
                         result[category.Id].AddRange(taggedItems.SelectMany(x => x.Tags));
+
+                        //Also need to propagate __any tag up the hierarchy if category contains  products that aren't tagged
+                        //Using for this a comparison  of the count of tagged products in the module storage and the real products count from original store of catalog subsystem 
+                        //TODO: Find a better solution hot to known what category contains not tagged products
+                        var criteria = new SearchCriteria
+                        {
+                            ResponseGroup = SearchResponseGroup.WithProducts,
+                            CategoryId = category.Id,
+                            SearchInChildren = true,
+                            Take = 0,
+                        };
+                        var allCategoryProductsCount = _catalogSearchService.Search(criteria).ProductsTotalCount;
+                        var allCategoryTaggedProductsCount = taggedItems.Where(x => x.EntityType.EqualsInvariant(KnownDocumentTypes.Product) && x.Tags.Any()).Count();
+                        if (allCategoryProductsCount > allCategoryTaggedProductsCount)
+                        {
+                            result[category.Id].Add(Constants.UserGroupsAnyValue);
+                        }
                     }
                 }
             }

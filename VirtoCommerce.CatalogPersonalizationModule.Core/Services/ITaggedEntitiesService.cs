@@ -1,4 +1,4 @@
-﻿using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Core.Services
 {
