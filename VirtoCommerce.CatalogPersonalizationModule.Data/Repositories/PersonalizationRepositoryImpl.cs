@@ -33,8 +33,6 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
 
 			modelBuilder.Entity<TaggedItemOutlineEntity>().HasKey(x => x.Id).Property(x => x.Id);
 			modelBuilder.Entity<TaggedItemOutlineEntity>().HasRequired(x => x.TaggedItem).WithMany(x => x.Outlines).HasForeignKey(x => x.TaggedItemId).WillCascadeOnDelete(true);
-			modelBuilder.Entity<TaggedItemOutlineEntity>().Property(x => x.Outline)
-				.HasColumnAnnotation(IndexAnnotation.AnnotationName, new IndexAnnotation(new IndexAttribute() { IsUnique = false }));
 			modelBuilder.Entity<TaggedItemOutlineEntity>().ToTable("TaggedItemOutline");
 
 			modelBuilder.Entity<TaggedItemEntity>().HasKey(x => x.Id).Property(x => x.Id);
