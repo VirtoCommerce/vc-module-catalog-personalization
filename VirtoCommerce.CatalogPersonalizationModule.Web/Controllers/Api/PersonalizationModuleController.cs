@@ -5,6 +5,7 @@ using System.Web.Http.Description;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
+using VirtoCommerce.Domain.Commerce.Model.Search;
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
 {
@@ -72,7 +73,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         /// </summary>
         [HttpPost]
         [Route("search")]
-        [ResponseType(typeof(TaggedItemSearchCriteria))]
+        [ResponseType(typeof(GenericSearchResult<TaggedItem>))]
         public IHttpActionResult Search(TaggedItemSearchCriteria criteria)
         {
             var searchResult = _searchService.SearchTaggedItems(criteria);
