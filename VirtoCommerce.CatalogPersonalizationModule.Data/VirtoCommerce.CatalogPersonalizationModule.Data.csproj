@@ -107,6 +107,10 @@
     <Compile Include="Migrations\201908130739314_AddTaggedItemOutlines.Designer.cs">
       <DependentUpon>201908130739314_AddTaggedItemOutlines.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908131243339_AddIndexToOutline.cs" />
+    <Compile Include="Migrations\201908131243339_AddIndexToOutline.Designer.cs">
+      <DependentUpon>201908131243339_AddIndexToOutline.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\TagEntity.cs" />
     <Compile Include="Model\TaggedItemEntity.cs" />
@@ -150,6 +154,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908130739314_AddTaggedItemOutlines.resx">
       <DependentUpon>201908130739314_AddTaggedItemOutlines.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908131243339_AddIndexToOutline.resx">
+      <DependentUpon>201908131243339_AddIndexToOutline.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
