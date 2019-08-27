@@ -1,9 +1,11 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Net;
 using System.Web.Http;
+using System.Web.Http.Description;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
+using VirtoCommerce.Domain.Commerce.Model.Search;
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
 {
@@ -65,6 +67,17 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
             _taggedItemOutlineSync.SynchronizeOutlines(new[] { taggedItem });
             return StatusCode(HttpStatusCode.NoContent);
         }
-    
+
+        /// <summary>
+        /// POST: api/personalization/search
+        /// </summary>
+        [HttpPost]
+        [Route("search")]
+        [ResponseType(typeof(GenericSearchResult<TaggedItem>))]
+        public IHttpActionResult Search(TaggedItemSearchCriteria criteria)
+        {
+            var searchResult = _searchService.SearchTaggedItems(criteria);
+            return Ok(searchResult);
+        }
     }
 }
