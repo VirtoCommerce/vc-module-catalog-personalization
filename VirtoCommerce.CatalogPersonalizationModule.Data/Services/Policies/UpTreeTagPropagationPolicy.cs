@@ -29,7 +29,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
 
         public Dictionary<string, HashSet<string>> GetResultingTags(IEntity[] entities)
         {
-            if(entities == null)
+            if (entities == null)
             {
                 throw new ArgumentNullException(nameof(entities));
             }
@@ -48,7 +48,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
 
                 var taggedItems = _taggedItemService.GetTaggedItemsByIds(taggedItemIds);
                 foreach (var taggedItem in taggedItems)
-                {                 
+                {
                     result[taggedItem.EntityId].AddRange(taggedItem.Tags);
                 }
                 //Trying to propagate  tags from children objects, use for this the saved outlines of tagged items 
@@ -79,7 +79,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                             Take = 0,
                         };
                         var allCategoryProductsCount = _catalogSearchService.Search(criteria).ProductsTotalCount;
-                        var allCategoryTaggedProductsCount = taggedItems.Where(x => x.EntityType.EqualsInvariant(KnownDocumentTypes.Product) && x.Tags.Any()).Count();
+                        var allCategoryTaggedProductsCount = taggedItems.Count(x => x.EntityType.EqualsInvariant(KnownDocumentTypes.Product) && x.Tags.Any());
                         if (allCategoryProductsCount > allCategoryTaggedProductsCount)
                         {
                             result[category.Id].Add(Constants.UserGroupsAnyValue);
