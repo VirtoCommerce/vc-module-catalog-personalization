@@ -56,6 +56,8 @@
     <Compile Include="Model\Search\TaggedItemSearchCriteria.cs" />
     <Compile Include="Model\TaggedItem.cs" />
     <Compile Include="Model\TaggedItemOutline.cs" />
+    <Compile Include="Model\TaggedItemOutlineSyncProgressInfo.cs" />
+    <Compile Include="Model\TaggedItemOutlineSyncPushNotification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ITaggedEntitiesService.cs" />
     <Compile Include="Services\ITaggedEntitiesServiceFactory.cs" />
