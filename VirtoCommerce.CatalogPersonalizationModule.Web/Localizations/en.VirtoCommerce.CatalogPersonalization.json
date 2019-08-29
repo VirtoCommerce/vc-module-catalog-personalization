@@ -1,4 +1,4 @@
-﻿{
+{
     "personalization": {
         "main-menu-title": "Personalization",
         "blades": {
@@ -11,11 +11,21 @@
                     "no-assigned": "No tags assigned",
                     "add-btn": "Add"
                 }
+          },
+            "progress": {
+                "labels": {
+                    "total": "Total count",
+                    "processed": "Processed count",
+                    "error-count": "Error count"
+                }
             }
         },
         "widgets": {
             "tagsWidget": {
                 "title": "Tags"
+            },
+            "run-sync": {
+                "title": "Synchronize outlines"
             }
         }
     }

@@ -161,10 +161,14 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Content\css\catalog-personalization.css" />
+    <Content Include="Scripts\blades\outlines-synchronization-progress.js" />
+    <Content Include="Scripts\blades\outlines-synchronization-progress.tpl.html" />
     <Content Include="Scripts\blades\tag-list.tpl.html" />
     <Content Include="Scripts\blades\tag-list.js" />
     <Content Include="Scripts\catalog-personalization.js" />
     <Content Include="Scripts\resources\catalog-personalization-api.js" />
+    <Content Include="Scripts\widgets\runOutlinesSynchronizationWidget.js" />
+    <Content Include="Scripts\widgets\runOutlinesSynchronizationWidget.tpl.html" />
     <Content Include="Scripts\widgets\tagsWidget.js" />
     <Content Include="Scripts\widgets\tagsWidget.tpl.html" />
   </ItemGroup>
@@ -175,6 +179,7 @@
     <Compile Include="BackgroundJobs\TaggedItemOutlinesSynchronizationJob.cs" />
     <Compile Include="Controllers\Api\PersonalizationModuleController.cs" />
     <Compile Include="ExportImport\PersonalizationExportImport.cs" />
+    <Compile Include="Model\TaggedItemOutlinesSynchronizationRequest.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
