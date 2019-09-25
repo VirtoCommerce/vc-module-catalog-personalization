@@ -76,6 +76,8 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                             ResponseGroup = SearchResponseGroup.WithProducts,
                             CategoryId = category.Id,
                             SearchInChildren = true,
+                            SearchInVariations = true,
+                            WithHidden = true,
                             Take = 0,
                         };
                         var allCategoryProductsCount = _catalogSearchService.Search(criteria).ProductsTotalCount;
