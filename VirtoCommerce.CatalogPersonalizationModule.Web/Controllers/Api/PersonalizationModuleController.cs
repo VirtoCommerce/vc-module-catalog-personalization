@@ -114,7 +114,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
             if (!entities.IsNullOrEmpty())
             {
                 var effectiveTagsDict = _tagPropagationPolicy.GetResultingTags(entities);
-                count = effectiveTagsDict[id].Count;
+                count = effectiveTagsDict[id].Distinct().Count();
             }
             return Ok(new { count });
         }
