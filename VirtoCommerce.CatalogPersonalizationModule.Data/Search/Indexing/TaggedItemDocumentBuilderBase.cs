@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
@@ -19,7 +19,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Search.Indexing
             _taggedEntitiesServiceFactory = taggedEntitiesServiceFactory;
         }
 
-        protected abstract string DocumentTypeName { get;  }
+        protected abstract string DocumentTypeName { get; }
 
         public Task<IList<IndexDocument>> GetDocumentsAsync(IList<string> documentIds)
         {
@@ -30,7 +30,8 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Search.Indexing
             var lookup = _tagInheritancePolicy.GetResultingTags(entities);
             foreach (var keyValue in lookup)
             {
-                var document = CreateDocument(keyValue.Key, keyValue.Value.ToArray());
+                var tags = keyValue.Value.Select(x => x.Tag).Distinct().ToArray();
+                var document = CreateDocument(keyValue.Key, tags);
                 result.Add(document);
             }
             return Task.FromResult(result);

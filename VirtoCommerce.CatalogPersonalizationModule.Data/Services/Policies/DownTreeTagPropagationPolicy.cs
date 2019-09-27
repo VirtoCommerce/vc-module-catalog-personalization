@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using VirtoCommerce.CatalogPersonalizationModule.Core.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Repositories;
 using VirtoCommerce.Domain.Catalog.Model;
@@ -20,9 +21,9 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
             _taggedItemService = taggedItemService;
         }
 
-        public Dictionary<string, HashSet<string>> GetResultingTags(IEntity[] entities)
+        public Dictionary<string, List<EffectiveTag>> GetResultingTags(IEntity[] entities)
         {
-            var result = entities.ToDictionary(x => x.Id, x => new HashSet<string>());
+            var result = entities.ToDictionary(x => x.Id, x => new List<EffectiveTag>());
 
             var entitiesIds = entities.Select(x => x.Id).ToArray();
             using (var repository = _repositoryFactory())
@@ -36,7 +37,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                 var taggedItems = _taggedItemService.GetTaggedItemsByIds(taggedItemIds);
                 foreach (var taggedItem in taggedItems)
                 {
-                    result[taggedItem.EntityId].AddRange(taggedItem.Tags);
+                    result[taggedItem.EntityId].AddRange(taggedItem.Tags.Select(x => new EffectiveTag { Tag = x, IsInherited = false }));
                 }
 
                 var allOutlineItemIds = entities.OfType<IHasOutlines>().Where(x => !x.Outlines.IsNullOrEmpty())
@@ -46,7 +47,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
 
                 taggedItemIds = repository.TaggedItems.Where(x => allOutlineItemIds.Contains(x.ObjectId)).Select(x => x.Id).ToArray();
                 taggedItems = _taggedItemService.GetTaggedItemsByIds(taggedItemIds);
-                foreach(var entity in entities)
+                foreach (var entity in entities)
                 {
                     if (entity is IHasOutlines hasOulines)
                     {
@@ -54,7 +55,11 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                                                           .Select(x => x.Id)
                                                           .Distinct(StringComparer.OrdinalIgnoreCase)
                                                           .ToArray();
-                        result[entity.Id].AddRange(taggedItems.Where(x => outlineItemsIds.Contains(x.EntityId)).SelectMany(x => x.Tags));
+                        result[entity.Id].AddRange(taggedItems
+                            .Where(x => outlineItemsIds
+                            .Contains(x.EntityId))
+                            .SelectMany(x => x.Tags
+                                .Select(y => new EffectiveTag() { IsInherited = true, Tag = y })));
                     }
                 }
             }

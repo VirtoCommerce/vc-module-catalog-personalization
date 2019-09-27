@@ -4,12 +4,14 @@ using System.Net;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Hangfire;
+using VirtoCommerce.CatalogModule.Web.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
 using VirtoCommerce.CatalogPersonalizationModule.Web.BackgroundJobs;
 using VirtoCommerce.CatalogPersonalizationModule.Web.Model;
 using VirtoCommerce.Domain.Commerce.Model.Search;
+using VirtoCommerce.Domain.Search;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.PushNotifications;
 using VirtoCommerce.Platform.Core.Security;
@@ -26,6 +28,8 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         private readonly IUserNameResolver _userNameResolver;
         private readonly IPushNotificationManager _pushNotificationManager;
         private readonly ISettingsManager _settingsManager;
+        private readonly ITagPropagationPolicy _tagPropagationPolicy;
+        private readonly ITaggedEntitiesServiceFactory _taggedEntitiesServiceFactory;
 
 
         public PersonalizationModuleController(ITaggedItemService taggedItemService,
@@ -33,7 +37,9 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
             ITaggedItemOutlinesSynchronizator taggedItemOutlineSync,
             IUserNameResolver userNameResolver,
             IPushNotificationManager pushNotificationManager,
-            ISettingsManager settingsManager)
+            ISettingsManager settingsManager,
+            ITagPropagationPolicy tagPropagationPolicy,
+            ITaggedEntitiesServiceFactory taggedEntitiesServiceFactory)
         {
             _taggedItemService = taggedItemService;
             _searchService = searchService;
@@ -41,6 +47,8 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
             _userNameResolver = userNameResolver;
             _pushNotificationManager = pushNotificationManager;
             _settingsManager = settingsManager;
+            _tagPropagationPolicy = tagPropagationPolicy;
+            _taggedEntitiesServiceFactory = taggedEntitiesServiceFactory;
         }
 
         /// <summary>
@@ -56,6 +64,33 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
                 Take = 1
             };
             var taggedItem = _searchService.SearchTaggedItems(criteria).Results.FirstOrDefault();
+
+            var entities = _taggedEntitiesServiceFactory.Create(KnownDocumentTypes.Category).GetEntitiesByIds(new[] { id });
+            if (!entities.IsNullOrEmpty())
+            {
+                var category = entities.First() as Category;
+                var effectiveTagsMap = _tagPropagationPolicy.GetResultingTags(entities);
+                var effectiveTags = effectiveTagsMap[id];
+
+                if (taggedItem == null)
+                {
+                    taggedItem = new TaggedItem
+                    {
+                        EntityId = id,
+                        EntityType = KnownDocumentTypes.Category,
+                        Label = category?.Name
+                    };
+                }
+
+                taggedItem.Tags = effectiveTags.Where(x => !x.IsInherited)
+                        .Select(x => x.Tag)
+                        .ToArray();
+                taggedItem.InheritedTags = effectiveTags.Where(x => x.IsInherited)
+                    .Select(y => y.Tag)
+                    .ToArray();
+
+            }
+
             return Ok(new { taggedItem });
         }
 
@@ -71,9 +106,16 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
                 EntityId = id,
                 Take = 1
             };
+
             var result = _searchService.SearchTaggedItems(criteria).Results.FirstOrDefault();
             var count = result?.Tags.Count ?? 0;
 
+            var entities = _taggedEntitiesServiceFactory.Create(KnownDocumentTypes.Category).GetEntitiesByIds(new[] { id });
+            if (!entities.IsNullOrEmpty())
+            {
+                var effectiveTagsDict = _tagPropagationPolicy.GetResultingTags(entities);
+                count = effectiveTagsDict[id].Count;
+            }
             return Ok(new { count });
         }
 

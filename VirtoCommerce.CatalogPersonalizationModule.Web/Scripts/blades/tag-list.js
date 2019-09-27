@@ -1,6 +1,6 @@
-﻿angular.module('virtoCommerce.catalogPersonalizationModule')
-    .controller('virtoCommerce.catalogPersonalizationModule.tagListController', ['$scope', 'platformWebApp.bladeNavigationService', 'platformWebApp.ui-grid.extension', 'platformWebApp.dialogService', 'platformWebApp.settings', 'virtoCommerce.personalizationModule.personalizationApi', '$timeout',
-        function ($scope, bladeNavigationService, gridOptionExtension, dialogService, settings, personalizationApi, $timeout) {
+angular.module('virtoCommerce.catalogPersonalizationModule')
+    .controller('virtoCommerce.catalogPersonalizationModule.tagListController', ['$scope', 'platformWebApp.bladeNavigationService', 'platformWebApp.ui-grid.extension', 'platformWebApp.dialogService', 'platformWebApp.settings', 'virtoCommerce.personalizationModule.personalizationApi', '$timeout', '$translate',
+        function ($scope, bladeNavigationService, gridOptionExtension, dialogService, settings, personalizationApi, $timeout, $translate) {
             var blade = $scope.blade;
             blade.tagsDictionary = [];
             blade.origEntity = undefined;
@@ -12,11 +12,21 @@
             settings.getValues({ id: settingKey }, function (tagsDictionary) {
                 blade.tagsDictionary = tagsDictionary;
 
-                personalizationApi.taggedItem({ id: blade.item.id }, function (result) {
-                    blade.currentEntity = result.taggedItem || {};
-                    blade.currentEntity.tags = blade.currentEntity.tags || [];
-                    blade.origEntity = angular.copy(blade.currentEntity);
+                personalizationApi.taggedItem({ id: blade.item.id },
+                    function(result) {
+                        blade.currentEntity = result.taggedItem || {};
+                        blade.currentEntity.tags = blade.currentEntity.tags || [];
+                        blade.currentEntity.inheritedTags = blade.currentEntity.inheritedTags || [];
 
+                        _.each(blade.currentEntity.inheritedTags, function(tag, idx, list) {
+                            if (tag === '__any') {
+                                $translate('personalization.tags.__any').then(function (result) {
+                                    list[idx] = result;
+                                });
+                            }
+                        });
+
+                    blade.origEntity = angular.copy(blade.currentEntity);
                     blade.isLoading = false;
                 });
             });
