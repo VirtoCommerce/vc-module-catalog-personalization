@@ -24,7 +24,9 @@
         },
         "widgets": {
             "tagsWidget": {
-                "title": "Tags"
+                "title": "Tags",
+                "assigned": "Assigned",
+                "inherited": "Inherited"
             },
             "run-sync": {
                 "title": "Synchronize outlines"
