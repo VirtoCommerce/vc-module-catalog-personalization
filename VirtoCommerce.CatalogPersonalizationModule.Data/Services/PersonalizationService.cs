@@ -7,13 +7,10 @@ using VirtoCommerce.CatalogPersonalizationModule.Core.Model.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Repositories;
-using VirtoCommerce.Domain.Catalog.Model;
-using VirtoCommerce.Domain.Catalog.Services;
 using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Domain.Search;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Data.Infrastructure;
-using Category = VirtoCommerce.CatalogModule.Web.Model.Category;
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
 {
@@ -21,15 +18,15 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
     {
         private readonly Func<IPersonalizationRepository> _repositoryFactory;
         private readonly ITagPropagationPolicy _tagPropagationPolicy;
-        private readonly IItemService _itemService;
-        private readonly ICategoryService _categoryService;
+        private readonly ITaggedEntitiesServiceFactory _taggedEntitiesServiceFactory;
 
-        public PersonalizationService(Func<IPersonalizationRepository> repositoryFactory, ITagPropagationPolicy tagPropagationPolicy, IItemService itemService, ICategoryService categoryService)
+        public PersonalizationService(Func<IPersonalizationRepository> repositoryFactory,
+            ITagPropagationPolicy tagPropagationPolicy,
+            ITaggedEntitiesServiceFactory taggedEntitiesServiceFactory)
         {
             _repositoryFactory = repositoryFactory;
             _tagPropagationPolicy = tagPropagationPolicy;
-            _itemService = itemService;
-            _categoryService = categoryService;
+            _taggedEntitiesServiceFactory = taggedEntitiesServiceFactory;
         }
 
         public TaggedItem[] GetTaggedItemsByIds(string[] ids, string responseGroup = null)
@@ -47,56 +44,6 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                 }
             }
             return retVal.ToArray();
-        }
-
-        private List<TaggedItem> EvaluateEffectiveTags(string[] ids)
-        {
-            var result = new List<TaggedItem>();
-            var entities = new List<IEntity>();
-            entities.AddRange(_itemService.GetByIds(ids, ItemResponseGroup.Outlines));
-            entities.AddRange(_categoryService.GetByIds(ids, CategoryResponseGroup.WithOutlines));
-
-            if (!entities.IsNullOrEmpty())
-            {
-                var effectiveTagsMap = _tagPropagationPolicy.GetResultingTags(entities.ToArray());
-                foreach (var entity in entities)
-                {
-                    if (effectiveTagsMap.TryGetValue(entity.Id, out List<EffectiveTag> effectiveTags))
-                    {
-                        var taggedItem = result.FirstOrDefault(x => x.EntityId == entity.Id);
-
-                        if (taggedItem == null)
-                        {
-                            var label = string.Empty;
-                            if (entity is Category category)
-                            {
-                                label = category.Name;
-                            }
-                            else if (entity is CatalogProduct product)
-                            {
-                                label = product.Name;
-                            }
-
-                            taggedItem = new TaggedItem
-                            {
-                                EntityId = entity.Id,
-                                EntityType = KnownDocumentTypes.Category,
-                                Label = label
-                            };
-                            result.Add(taggedItem);
-                        }
-
-                        taggedItem.Tags = effectiveTags.Where(x => !x.IsInherited)
-                            .Select(x => x.Tag)
-                            .ToArray();
-                        taggedItem.InheritedTags = effectiveTags.Where(x => x.IsInherited)
-                            .Select(y => y.Tag)
-                            .ToArray();
-                    }
-                }
-            }
-
-            return result;
         }
 
         public void SaveTaggedItems(TaggedItem[] taggedItems)
@@ -132,54 +79,55 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
         {
             var retVal = new GenericSearchResult<TaggedItem>();
 
-            if (criteria.ResponseGroup.Contains(TaggedItemResponseGroup.WithInheritedTags.ToString()))
+
+            using (var repository = _repositoryFactory())
             {
-                var taggedItems = EvaluateEffectiveTags(criteria.EntityIds);
-                retVal.TotalCount = taggedItems.Count;
-                retVal.Results = taggedItems;
-            }
-            else
-            {
-                using (var repository = _repositoryFactory())
+                repository.DisableChangesTracking();
+
+                var query = repository.TaggedItems;
+
+                if (!criteria.EntityIds.IsNullOrEmpty())
                 {
-                    repository.DisableChangesTracking();
+                    query = query.Where(x => criteria.EntityIds.Contains(x.ObjectId));
+                }
 
-                    var query = repository.TaggedItems;
+                if (!string.IsNullOrWhiteSpace(criteria.EntityType))
+                {
+                    query = query.Where(x => x.ObjectType == criteria.EntityType);
+                }
 
-                    if (!criteria.EntityIds.IsNullOrEmpty())
-                    {
-                        query = query.Where(x => criteria.EntityIds.Contains(x.ObjectId));
-                    }
+                if (!criteria.Ids.IsNullOrEmpty())
+                {
+                    query = query.Where(x => criteria.Ids.Contains(x.Id));
+                }
 
-                    if (!string.IsNullOrWhiteSpace(criteria.EntityType))
-                    {
-                        query = query.Where(x => x.ObjectType == criteria.EntityType);
-                    }
+                if (criteria.ChangedFrom.HasValue)
+                {
+                    query = query.Where(x => x.ModifiedDate.HasValue && x.ModifiedDate.Value.Date >= criteria.ChangedFrom.Value.Date);
+                }
 
-                    if (!criteria.Ids.IsNullOrEmpty())
-                    {
-                        query = query.Where(x => criteria.Ids.Contains(x.Id));
-                    }
+                var sortInfos = criteria.SortInfos;
+                if (sortInfos.IsNullOrEmpty())
+                {
+                    sortInfos = new[] { new SortInfo { SortColumn = ReflectionUtility.GetPropertyName<TaggedItem>(x => x.Label) } };
+                }
+                query = query.OrderBySortInfos(sortInfos);
 
-                    if (criteria.ChangedFrom.HasValue)
-                    {
-                        query = query.Where(x => x.ModifiedDate.HasValue && x.ModifiedDate.Value.Date >= criteria.ChangedFrom.Value.Date);
-                    }
+                retVal.TotalCount = query.Count();
+                query = query.Skip(criteria.Skip).Take(criteria.Take);
 
-                    var sortInfos = criteria.SortInfos;
-                    if (sortInfos.IsNullOrEmpty())
-                    {
-                        sortInfos = new[] { new SortInfo { SortColumn = ReflectionUtility.GetPropertyName<TaggedItem>(x => x.Label) } };
-                    }
-                    query = query.OrderBySortInfos(sortInfos);
+                var ids = query.Select(x => x.Id).ToArray();
+                retVal.Results = GetTaggedItemsByIds(ids, criteria.ResponseGroup).AsQueryable().OrderBySortInfos(sortInfos).ToList();
 
-                    retVal.TotalCount = query.Count();
-                    query = query.Skip(criteria.Skip).Take(criteria.Take);
-
-                    var ids = query.Select(x => x.Id).ToArray();
-                    retVal.Results = GetTaggedItemsByIds(ids, criteria.ResponseGroup).AsQueryable().OrderBySortInfos(sortInfos).ToList();
+                if (criteria.ResponseGroup.Contains(TaggedItemResponseGroup.WithInheritedTags.ToString()) &&
+                    !criteria.EntityIds.IsNullOrEmpty())
+                {
+                    var taggedItems = FillInheritedTags(criteria.EntityIds, retVal.Results.ToList());
+                    retVal.TotalCount = taggedItems.Count;
+                    retVal.Results = taggedItems;
                 }
             }
+
             return retVal;
         }
 
@@ -192,5 +140,62 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
             }
         }
 
+
+        private List<TaggedItem> FillInheritedTags(string[] entityIds, List<TaggedItem> taggedItems = null)
+        {
+            var result = taggedItems ?? new List<TaggedItem>();
+            var evaluatedEntityIds = new List<string>();
+
+            if (!result.IsNullOrEmpty())
+            {
+                evaluatedEntityIds = result.Select(x => x.EntityId).ToList();
+                foreach (var taggedItem in result)
+                {
+                    var entities = _taggedEntitiesServiceFactory.Create(taggedItem.EntityType).GetEntitiesByIds(new[] { taggedItem.EntityId }).ToList();
+                    var evaluatedItems = EvaluateEffectiveTags(entities);
+                    taggedItem.InheritedTags = evaluatedItems.FirstOrDefault(x => x.EntityId == taggedItem.EntityId)?.InheritedTags;
+                }
+            }
+
+            entityIds = entityIds.Where(ids => evaluatedEntityIds.All(evaluatedIds => evaluatedIds != ids)).ToArray();
+
+            var items = _taggedEntitiesServiceFactory.Create(KnownDocumentTypes.Product).GetEntitiesByIds(entityIds).ToList();
+
+            if (!items.IsNullOrEmpty())
+            {
+                result.AddRange(EvaluateEffectiveTags(items));
+            }
+
+            var categories = _taggedEntitiesServiceFactory.Create(KnownDocumentTypes.Category).GetEntitiesByIds(entityIds).ToList();
+
+            if (!categories.IsNullOrEmpty())
+            {
+                result.AddRange(EvaluateEffectiveTags(categories));
+            }
+            return result;
+        }
+
+        private List<TaggedItem> EvaluateEffectiveTags(List<IEntity> entities)
+        {
+            var result = new List<TaggedItem>();
+
+            var effectiveTagsMap = _tagPropagationPolicy.GetResultingTags(entities.ToArray());
+            foreach (var entity in entities)
+            {
+                if (effectiveTagsMap.TryGetValue(entity.Id, out List<EffectiveTag> effectiveTags))
+                {
+                    var taggedItem = new TaggedItem
+                    {
+                        EntityId = entity.Id,
+                        EntityType = entity.GetType().Name,
+                        Tags = effectiveTags.Where(x => !x.IsInherited).Select(x => x.Tag).ToArray(),
+                        InheritedTags = effectiveTags.Where(x => x.IsInherited).Select(y => y.Tag).ToArray()
+                    };
+                    result.Add(taggedItem);
+                }
+            }
+
+            return result;
+        }
     }
 }
