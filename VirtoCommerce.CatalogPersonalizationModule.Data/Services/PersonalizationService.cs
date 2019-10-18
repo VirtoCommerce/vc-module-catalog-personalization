@@ -157,21 +157,25 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                 }
             }
 
-            entityIds = entityIds.Where(ids => evaluatedEntityIds.All(evaluatedIds => evaluatedIds != ids)).ToArray();
+            var entityIdsWithoutTag = entityIds.Except(evaluatedEntityIds).ToArray();
 
-            var items = _taggedEntitiesServiceFactory.Create(KnownDocumentTypes.Product).GetEntitiesByIds(entityIds).ToList();
-
-            if (!items.IsNullOrEmpty())
+            if (!entityIdsWithoutTag.IsNullOrEmpty())
             {
-                result.AddRange(EvaluateEffectiveTags(items));
+                var items = _taggedEntitiesServiceFactory.Create(KnownDocumentTypes.Product).GetEntitiesByIds(entityIdsWithoutTag).ToList();
+
+                if (!items.IsNullOrEmpty())
+                {
+                    result.AddRange(EvaluateEffectiveTags(items));
+                }
+
+                var categories = _taggedEntitiesServiceFactory.Create(KnownDocumentTypes.Category).GetEntitiesByIds(entityIdsWithoutTag).ToList();
+
+                if (!categories.IsNullOrEmpty())
+                {
+                    result.AddRange(EvaluateEffectiveTags(categories));
+                }
             }
 
-            var categories = _taggedEntitiesServiceFactory.Create(KnownDocumentTypes.Category).GetEntitiesByIds(entityIds).ToList();
-
-            if (!categories.IsNullOrEmpty())
-            {
-                result.AddRange(EvaluateEffectiveTags(categories));
-            }
             return result;
         }
 

@@ -76,7 +76,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
             };
 
             var result = _searchService.SearchTaggedItems(criteria).Results.FirstOrDefault();
-            var count = result?.Tags.Union(result.InheritedTags).Distinct().Count();
+            var count = result?.Tags.Union(result.InheritedTags).Distinct().Count() ?? 0;
 
             return Ok(new { count });
         }
