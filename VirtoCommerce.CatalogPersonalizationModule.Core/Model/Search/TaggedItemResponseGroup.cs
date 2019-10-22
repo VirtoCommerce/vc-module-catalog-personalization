@@ -1,5 +1,8 @@
+using System;
+
 namespace VirtoCommerce.CatalogPersonalizationModule.Core.Model.Search
 {
+    [Flags]
     public enum TaggedItemResponseGroup
     {
         None = 0,
