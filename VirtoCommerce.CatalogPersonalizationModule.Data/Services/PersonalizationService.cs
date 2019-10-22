@@ -119,7 +119,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                 var ids = query.Select(x => x.Id).ToArray();
                 retVal.Results = GetTaggedItemsByIds(ids, criteria.ResponseGroup).AsQueryable().OrderBySortInfos(sortInfos).ToList();
 
-                var taggedItemResponseGroup = EnumUtility.SafeParseFlags(criteria.ResponseGroup, TaggedItemResponseGroup.WithInheritedTags);
+                var taggedItemResponseGroup = EnumUtility.SafeParseFlags(criteria.ResponseGroup, TaggedItemResponseGroup.Info);
 
                 if (taggedItemResponseGroup.HasFlag(TaggedItemResponseGroup.WithInheritedTags) &&
                     !criteria.EntityIds.IsNullOrEmpty())
