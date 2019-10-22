@@ -1,16 +1,17 @@
-﻿angular.module('virtoCommerce.catalogPersonalizationModule')
+angular.module('virtoCommerce.catalogPersonalizationModule')
     .controller('virtoCommerce.catalogPersonalizationModule.tagsWidgetController', ['$scope', '$filter', 'platformWebApp.bladeNavigationService', '$state', 'virtoCommerce.personalizationModule.personalizationApi',
         function ($scope, $filter, bladeNavigationService, $state, personalizationApi) {
             var blade = $scope.blade;
             blade.itemData = {};
-
+            $scope.assignedTagsCount = 0;
+            $scope.inheritedTagsCount = 0;
             function refresh() {
-                $scope.loading = true;
-                return personalizationApi.tagsCount({ id: blade.itemData.id }, function (result) {
-                    $scope.loading = false;
-                    $scope.data = result.count;
-                    return result;
-                });
+                personalizationApi.taggedItem({ id: blade.itemData.id },
+                    function (result) {
+                        $scope.loading = false;
+                        $scope.assignedTagsCount = result.taggedItem.tags ? result.taggedItem.tags.length : 0;
+                        $scope.inheritedTagsCount = result.taggedItem.inheritedTags ? result.taggedItem.inheritedTags.length : 0;
+                    });
             }
 
             $scope.openBlade = function () {

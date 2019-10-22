@@ -52,6 +52,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Model\EffectiveTag.cs" />
     <Compile Include="Model\Search\TaggedItemResponseGroup.cs" />
     <Compile Include="Model\Search\TaggedItemSearchCriteria.cs" />
     <Compile Include="Model\TaggedItem.cs" />

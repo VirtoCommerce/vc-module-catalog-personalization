@@ -53,9 +53,11 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
             var criteria = new TaggedItemSearchCriteria
             {
                 EntityId = id,
-                Take = 1
+                Take = 1,
+                ResponseGroup = TaggedItemResponseGroup.WithInheritedTags.ToString()
             };
             var taggedItem = _searchService.SearchTaggedItems(criteria).Results.FirstOrDefault();
+
             return Ok(new { taggedItem });
         }
 
@@ -69,10 +71,12 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
             var criteria = new TaggedItemSearchCriteria
             {
                 EntityId = id,
-                Take = 1
+                Take = 1,
+                ResponseGroup = TaggedItemResponseGroup.WithInheritedTags.ToString()
             };
+
             var result = _searchService.SearchTaggedItems(criteria).Results.FirstOrDefault();
-            var count = result?.Tags.Count ?? 0;
+            var count = result?.Tags.Union(result.InheritedTags).Distinct().Count() ?? 0;
 
             return Ok(new { count });
         }

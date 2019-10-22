@@ -127,6 +127,7 @@
     <Compile Include="Services\CategoryTaggedEntitiesService.cs" />
     <Compile Include="Services\Policies\DownTreeTagPropagationPolicy.cs" />
     <Compile Include="Services\PersonalizationService.cs" />
+    <Compile Include="Services\Policies\TreeTagPropagationPolicy.cs" />
     <Compile Include="Services\Policies\UpTreeTagPropagationPolicy.cs" />
     <Compile Include="Services\ProductTaggedEntitiesService.cs" />
     <Compile Include="Services\TaggedEntitiesServiceFactory.cs" />

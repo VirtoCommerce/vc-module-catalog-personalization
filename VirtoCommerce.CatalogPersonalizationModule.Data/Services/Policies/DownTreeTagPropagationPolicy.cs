@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using VirtoCommerce.CatalogPersonalizationModule.Core.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Repositories;
 using VirtoCommerce.Domain.Catalog.Model;
@@ -9,20 +10,18 @@ using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
 {
-    public class DownTreeTagPropagationPolicy : ITagPropagationPolicy
+    public class DownTreeTagPropagationPolicy : TreeTagPropagationPolicy, ITagPropagationPolicy
     {
         private readonly Func<IPersonalizationRepository> _repositoryFactory;
-        private readonly ITaggedItemService _taggedItemService;
 
-        public DownTreeTagPropagationPolicy(Func<IPersonalizationRepository> repositoryFactory, ITaggedItemService taggedItemService)
+        public DownTreeTagPropagationPolicy(Func<IPersonalizationRepository> repositoryFactory) : base(repositoryFactory)
         {
             _repositoryFactory = repositoryFactory;
-            _taggedItemService = taggedItemService;
         }
 
-        public Dictionary<string, HashSet<string>> GetResultingTags(IEntity[] entities)
+        public Dictionary<string, List<EffectiveTag>> GetResultingTags(IEntity[] entities)
         {
-            var result = entities.ToDictionary(x => x.Id, x => new HashSet<string>());
+            var result = entities.ToDictionary(x => x.Id, x => new List<EffectiveTag>());
 
             var entitiesIds = entities.Select(x => x.Id).ToArray();
             using (var repository = _repositoryFactory())
@@ -33,10 +32,10 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                 var taggedItemIds = repository.TaggedItems.Where(x => entitiesIds.Contains(x.ObjectId))
                                                           .Select(x => x.Id)
                                                           .ToArray();
-                var taggedItems = _taggedItemService.GetTaggedItemsByIds(taggedItemIds);
+                var taggedItems = GetTaggedItemsByIds(taggedItemIds);
                 foreach (var taggedItem in taggedItems)
                 {
-                    result[taggedItem.EntityId].AddRange(taggedItem.Tags);
+                    result[taggedItem.EntityId].AddRange(taggedItem.Tags.Select(x => EffectiveTag.NonInheritedTag(x)));
                 }
 
                 var allOutlineItemIds = entities.OfType<IHasOutlines>().Where(x => !x.Outlines.IsNullOrEmpty())
@@ -45,8 +44,8 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                                                 .ToArray();
 
                 taggedItemIds = repository.TaggedItems.Where(x => allOutlineItemIds.Contains(x.ObjectId)).Select(x => x.Id).ToArray();
-                taggedItems = _taggedItemService.GetTaggedItemsByIds(taggedItemIds);
-                foreach(var entity in entities)
+                taggedItems = GetTaggedItemsByIds(taggedItemIds);
+                foreach (var entity in entities)
                 {
                     if (entity is IHasOutlines hasOulines)
                     {
@@ -54,7 +53,14 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                                                           .Select(x => x.Id)
                                                           .Distinct(StringComparer.OrdinalIgnoreCase)
                                                           .ToArray();
-                        result[entity.Id].AddRange(taggedItems.Where(x => outlineItemsIds.Contains(x.EntityId)).SelectMany(x => x.Tags));
+                        result[entity.Id].AddRange(taggedItems
+                            .Where(x => outlineItemsIds
+                            .Contains(x.EntityId))
+                            .SelectMany(x => x.Tags
+                                .Select(y => EffectiveTag.InheritedTag(y))));
+
+                        // Need to remove duplicates
+                        result[entity.Id] = result[entity.Id].Distinct(AnonymousComparer.Create<EffectiveTag, string>(x => $"{x.Tag}:{x.IsInherited}")).ToList();
                     }
                 }
             }

@@ -1,4 +1,4 @@
-﻿{
+{
     "personalization": {
         "main-menu-title": "Персонализация",
         "blades": {
@@ -8,7 +8,9 @@
                     "select-tags": "Выберите теги",
                     "available-tags": "Доступные теги",
                     "assigned-tags": "Заданные теги",
+                    "inherited-tags": "Наследованные теги",
                     "no-assigned": "Теги не заданы",
+                    "no-inherited": "Нет наследованых тегов",
                     "add-btn": "Добавить"
                 }
             }
@@ -17,6 +19,9 @@
             "tagsWidget": {
                 "title": "Теги"
             }
+        },
+        "tags": {
+          "__any": "Для всех" 
         }
     }
 }

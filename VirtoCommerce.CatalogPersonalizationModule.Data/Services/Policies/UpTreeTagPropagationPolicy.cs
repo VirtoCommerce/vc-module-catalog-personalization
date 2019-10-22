@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using VirtoCommerce.CatalogPersonalizationModule.Core.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Common;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Repositories;
@@ -12,31 +13,30 @@ using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
 {
-    public class UpTreeTagPropagationPolicy : ITagPropagationPolicy
+    public class UpTreeTagPropagationPolicy : TreeTagPropagationPolicy, ITagPropagationPolicy
     {
         private readonly Func<IPersonalizationRepository> _repositoryFactory;
-        private readonly ITaggedItemService _taggedItemService;
         private readonly ICatalogSearchService _catalogSearchService;
         public UpTreeTagPropagationPolicy(
             Func<IPersonalizationRepository> repositoryFactory,
-            ITaggedItemService taggedItemService,
-            ICatalogSearchService catalogSearchService)
+            ICatalogSearchService catalogSearchService) : base(repositoryFactory)
         {
             _repositoryFactory = repositoryFactory;
-            _taggedItemService = taggedItemService;
             _catalogSearchService = catalogSearchService;
         }
 
-        public Dictionary<string, HashSet<string>> GetResultingTags(IEntity[] entities)
+        public Dictionary<string, List<EffectiveTag>> GetResultingTags(IEntity[] entities)
         {
             if (entities == null)
             {
                 throw new ArgumentNullException(nameof(entities));
             }
 
-            var result = entities.ToDictionary(x => x.Id, x => new HashSet<string>());
+            var result = entities.ToDictionary(x => x.Id, x => new List<EffectiveTag>());
 
             var entitiesIds = entities.Select(x => x.Id).ToArray();
+
+
             using (var repository = _repositoryFactory())
             {
                 repository.DisableChangesTracking();
@@ -46,10 +46,10 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                                                           .Select(x => x.Id)
                                                           .ToArray();
 
-                var taggedItems = _taggedItemService.GetTaggedItemsByIds(taggedItemIds);
+                var taggedItems = GetTaggedItemsByIds(taggedItemIds);
                 foreach (var taggedItem in taggedItems)
                 {
-                    result[taggedItem.EntityId].AddRange(taggedItem.Tags);
+                    result[taggedItem.EntityId].AddRange(taggedItem.Tags.Select(x => EffectiveTag.NonInheritedTag(x)));
                 }
                 //Trying to propagate  tags from children objects, use for this the saved outlines of tagged items 
                 foreach (var category in entities.OfType<Category>())
@@ -65,8 +65,8 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                                                                        .Distinct()
                                                                        .ToArray();
 
-                        taggedItems = _taggedItemService.GetTaggedItemsByIds(taggedItemIds);
-                        result[category.Id].AddRange(taggedItems.SelectMany(x => x.Tags));
+                        taggedItems = GetTaggedItemsByIds(taggedItemIds);
+                        result[category.Id].AddRange(taggedItems.SelectMany(x => x.Tags.Select(y => EffectiveTag.InheritedTag(y))));
 
                         //Also need to propagate __any tag up the hierarchy if category contains  products that aren't tagged
                         //Using for this a comparison  of the count of tagged products in the module storage and the real products count from original store of catalog subsystem 
@@ -84,8 +84,11 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                         var allCategoryTaggedProductsCount = taggedItems.Count(x => x.EntityType.EqualsInvariant(KnownDocumentTypes.Product) && x.Tags.Any());
                         if (allCategoryProductsCount > allCategoryTaggedProductsCount)
                         {
-                            result[category.Id].Add(Constants.UserGroupsAnyValue);
+                            result[category.Id].Add(EffectiveTag.InheritedTag(Constants.UserGroupsAnyValue));
                         }
+
+                        // Need to remove duplicates
+                        result[category.Id] = result[category.Id].Distinct(AnonymousComparer.Create<EffectiveTag, string>(x => $"{x.Tag}:{x.IsInherited}")).ToList();
                     }
                 }
             }

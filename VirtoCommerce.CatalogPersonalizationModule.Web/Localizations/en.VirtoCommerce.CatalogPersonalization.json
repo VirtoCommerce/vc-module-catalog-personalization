@@ -8,7 +8,9 @@
                     "select-tags": "Select tags to assign",
                     "available-tags": "Available tags",
                     "assigned-tags": "Assigned tags",
+                    "inherited-tags": "Inherited tags", 
                     "no-assigned": "No tags assigned",
+                    "no-inherited": "No tags inherited",
                     "add-btn": "Add"
                 }
           },
@@ -22,11 +24,16 @@
         },
         "widgets": {
             "tagsWidget": {
-                "title": "Tags"
+                "title": "Tags",
+                "assigned": "Assigned",
+                "inherited": "Inherited"
             },
             "run-sync": {
                 "title": "Synchronize outlines"
             }
-        }
+        },
+        "tags": {
+          "__any": "Everyone" 
+        } 
     }
 }

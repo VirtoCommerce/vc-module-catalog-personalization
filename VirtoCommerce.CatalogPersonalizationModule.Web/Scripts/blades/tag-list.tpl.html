@@ -1,4 +1,4 @@
-﻿<div class="blade-content">
+<div class="blade-content">
     <div class="blade-inner">
         <div class="inner-block">
             <fieldset style="margin-top: 12px;">
@@ -37,6 +37,27 @@
                 </table>
             </div>
             <p class="note" ng-if="!blade.assignedTags.length">{{ 'personalization.blades.tag-list.labels.no-assigned' | translate }}</p>
+
+            <div class="sub-t">{{ 'personalization.blades.tag-list.labels.inherited-tags' | translate }}</div>
+            <div class="table-wrapper">
+                <table class="table">
+                    <tbody>
+                    <tr class="table-item" ng-repeat="data in blade.currentEntity.inheritedTags">
+                        <td class="table-col checkbox">
+                            <label class="form-control __checkbox">
+                                <input type="checkbox" ng-model="data.$selected" ng-disabled ="true">
+                                <span class="check"></span>
+                            </label>
+                        </td>
+                        <td class="table-col" ng-click='blade.selectNode(data)'>
+                            <span class="table-t">{{data}}</span>
+                            <span class="table-descr">{{data}}</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="note" ng-if="!blade.currentEntity.inheritedTags.length">{{ 'personalization.blades.tag-list.labels.no-inherited' | translate }}</p>
         </div>
     </div>
 </div>

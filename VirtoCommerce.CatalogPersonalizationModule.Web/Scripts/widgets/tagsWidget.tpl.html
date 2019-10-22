@@ -1,7 +1,8 @@
-﻿<div class="gridster-cnt" ng-click="openBlade()">
-    <div class="cnt-inner">
-        <div class="list-count" ng-if="loading">...</div>
-        <div class="list-count" ng-if="!loading">{{ data >= 0 ? data : 'N/A'  }}</div>
-        <div class="list-t" ng-if="!loading">{{ 'personalization.widgets.tagsWidget.title' | translate }}</div>
-    </div>
+    <div class="gridster-cnt" ng-click="openBlade()">
+    <div class="list-count" ng-if="loading">...</div>
+    <ul class="list __stats" ng-if="!loading">
+        <li class="list-item"><span style="font-size:16px">{{'personalization.widgets.tagsWidget.title' | translate}}</span></li>
+        <li class="list-item">{{'personalization.widgets.tagsWidget.assigned' | translate}} <span class="list-price">{{assignedTagsCount}}</span></li>
+        <li class="list-item">{{'personalization.widgets.tagsWidget.inherited' | translate}} <span class="list-price">{{inheritedTagsCount }}</span></li>
+    </ul>
 </div>

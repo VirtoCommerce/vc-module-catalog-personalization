@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using VirtoCommerce.CatalogPersonalizationModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Core.Services
@@ -9,6 +10,6 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Core.Services
     /// </summary>
     public interface ITagPropagationPolicy
     {
-        Dictionary<string, HashSet<string>> GetResultingTags(IEntity[] entities);
+        Dictionary<string, List<EffectiveTag>> GetResultingTags(IEntity[] entities);
     }
 }
