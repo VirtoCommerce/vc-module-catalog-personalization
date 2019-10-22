@@ -121,10 +121,9 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
 
                 var taggedItemResponseGroup = EnumUtility.SafeParseFlags(criteria.ResponseGroup, TaggedItemResponseGroup.Info);
 
-                if (taggedItemResponseGroup.HasFlag(TaggedItemResponseGroup.WithInheritedTags) &&
-                    !criteria.EntityIds.IsNullOrEmpty())
+                if (taggedItemResponseGroup.HasFlag(TaggedItemResponseGroup.WithInheritedTags) && !criteria.EntityIds.IsNullOrEmpty())
                 {
-                    var taggedItems = FillInheritedTags(criteria.EntityIds, retVal.Results.ToList());
+                    var taggedItems = FillInheritedTags(criteria.EntityIds, retVal.Results);
                     retVal.TotalCount = taggedItems.Count;
                     retVal.Results = taggedItems;
                 }
@@ -143,38 +142,39 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
         }
 
 
-        private List<TaggedItem> FillInheritedTags(string[] entityIds, List<TaggedItem> taggedItems = null)
+        private List<TaggedItem> FillInheritedTags(string[] entityIds, ICollection<TaggedItem> assignedTags)
         {
-            var result = taggedItems ?? new List<TaggedItem>();
-            var evaluatedEntityIds = new List<string>();
+            var result = new List<TaggedItem>(assignedTags);
+            var entityIdsWithAssignedTags = new List<string>();
 
             if (!result.IsNullOrEmpty())
             {
-                evaluatedEntityIds = result.Select(x => x.EntityId).ToList();
+                entityIdsWithAssignedTags = result.Select(x => x.EntityId).Distinct().ToList();
+
                 foreach (var taggedItem in result)
                 {
                     var entities = _taggedEntitiesServiceFactory.Create(taggedItem.EntityType).GetEntitiesByIds(new[] { taggedItem.EntityId }).ToList();
                     var evaluatedItems = EvaluateEffectiveTags(entities);
+
                     taggedItem.InheritedTags = evaluatedItems.FirstOrDefault(x => x.EntityId == taggedItem.EntityId)?.InheritedTags;
                 }
             }
 
-            var entityIdsWithoutTag = entityIds.Except(evaluatedEntityIds).ToArray();
+            var entityIdsWithoutAssignedTags = entityIds.Except(entityIdsWithAssignedTags).ToArray();
 
-            if (!entityIdsWithoutTag.IsNullOrEmpty())
+            if (!entityIdsWithoutAssignedTags.IsNullOrEmpty())
             {
-                var items = _taggedEntitiesServiceFactory.Create(KnownDocumentTypes.Product).GetEntitiesByIds(entityIdsWithoutTag).ToList();
+                var entityTypesWithInheritance = new[] { KnownDocumentTypes.Product, KnownDocumentTypes.Category };
+                var entitiesWithoutAssignedTags = new List<IEntity>();
 
-                if (!items.IsNullOrEmpty())
+                foreach (var entityType in entityTypesWithInheritance)
                 {
-                    result.AddRange(EvaluateEffectiveTags(items));
+                    entitiesWithoutAssignedTags.AddRange(_taggedEntitiesServiceFactory.Create(entityType).GetEntitiesByIds(entityIdsWithoutAssignedTags).ToList());
                 }
 
-                var categories = _taggedEntitiesServiceFactory.Create(KnownDocumentTypes.Category).GetEntitiesByIds(entityIdsWithoutTag).ToList();
-
-                if (!categories.IsNullOrEmpty())
+                if (!entitiesWithoutAssignedTags.IsNullOrEmpty())
                 {
-                    result.AddRange(EvaluateEffectiveTags(categories));
+                    result.AddRange(EvaluateEffectiveTags(entitiesWithoutAssignedTags));
                 }
             }
 
@@ -188,7 +188,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
             var effectiveTagsMap = _tagPropagationPolicy.GetResultingTags(entities.ToArray());
             foreach (var entity in entities)
             {
-                if (effectiveTagsMap.TryGetValue(entity.Id, out List<EffectiveTag> effectiveTags))
+                if (effectiveTagsMap.TryGetValue(entity.Id, out var effectiveTags))
                 {
                     var taggedItem = new TaggedItem
                     {
