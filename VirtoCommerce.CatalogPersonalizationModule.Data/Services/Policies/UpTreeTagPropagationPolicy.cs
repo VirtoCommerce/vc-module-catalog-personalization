@@ -86,6 +86,9 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                         {
                             result[category.Id].Add(EffectiveTag.InheritedTag(Constants.UserGroupsAnyValue));
                         }
+
+                        // Need to remove duplicates
+                        result[category.Id] = result[category.Id].Distinct(AnonymousComparer.Create<EffectiveTag, string>(x => $"{x.Tag}:{x.IsInherited}")).ToList();
                     }
                 }
             }

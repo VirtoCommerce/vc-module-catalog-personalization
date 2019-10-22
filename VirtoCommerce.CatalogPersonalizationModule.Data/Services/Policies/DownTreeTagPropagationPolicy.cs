@@ -58,6 +58,9 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                             .Contains(x.EntityId))
                             .SelectMany(x => x.Tags
                                 .Select(y => EffectiveTag.InheritedTag(y))));
+
+                        // Need to remove duplicates
+                        result[entity.Id] = result[entity.Id].Distinct(AnonymousComparer.Create<EffectiveTag, string>(x => $"{x.Tag}:{x.IsInherited}")).ToList();
                     }
                 }
             }
