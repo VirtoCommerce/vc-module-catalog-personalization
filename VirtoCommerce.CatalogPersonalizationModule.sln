@@ -1,15 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtoCommerce.CatalogPersonalizationModule.Web", "VirtoCommerce.CatalogPersonalizationModule.Web\VirtoCommerce.CatalogPersonalizationModule.Web.csproj", "{CD5CD94F-FE46-4238-8AA3-EED405843F8C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CE449EE3-5B14-47D0-A840-0D8738B06E27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtoCommerce.CatalogPersonalizationModule.Core", "VirtoCommerce.CatalogPersonalizationModule.Core\VirtoCommerce.CatalogPersonalizationModule.Core.csproj", "{3F073D77-AC95-49F3-ADFB-424EBB59544A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{467ED1D9-4B7C-4ACE-8426-3393D1F8A039}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtoCommerce.CatalogPersonalizationModule.Data", "VirtoCommerce.CatalogPersonalizationModule.Data\VirtoCommerce.CatalogPersonalizationModule.Data.csproj", "{8A88CBF6-3718-4AB8-9C45-65AAB7A6FF48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.CatalogPersonalizationModule.Core", "src\VirtoCommerce.CatalogPersonalizationModule.Core\VirtoCommerce.CatalogPersonalizationModule.Core.csproj", "{F080F10B-1ABB-4EDA-9597-0E3B56BF9931}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtoCommerce.CatalogPersonalizationModule.Test", "VirtoCommerce.CatalogPersonalizationModule.Test\VirtoCommerce.CatalogPersonalizationModule.Test.csproj", "{09F44BE4-BE02-4AFF-8F34-48B5320E138B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.CatalogPersonalizationModule.Data", "src\VirtoCommerce.CatalogPersonalizationModule.Data\VirtoCommerce.CatalogPersonalizationModule.Data.csproj", "{3DAA1FA1-78B0-4719-9AE9-E94B3FC65068}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.CatalogPersonalizationModule.Web", "src\VirtoCommerce.CatalogPersonalizationModule.Web\VirtoCommerce.CatalogPersonalizationModule.Web.csproj", "{DF2936F2-8CB8-4782-8A68-014C84A5F473}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.CatalogPersonalizationModule.Test", "tests\VirtoCommerce.CatalogPersonalizationModule.Test\VirtoCommerce.CatalogPersonalizationModule.Test.csproj", "{B3791403-385C-46FB-A241-4E2A45232F23}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,25 +21,31 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CD5CD94F-FE46-4238-8AA3-EED405843F8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CD5CD94F-FE46-4238-8AA3-EED405843F8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CD5CD94F-FE46-4238-8AA3-EED405843F8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CD5CD94F-FE46-4238-8AA3-EED405843F8C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3F073D77-AC95-49F3-ADFB-424EBB59544A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F073D77-AC95-49F3-ADFB-424EBB59544A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3F073D77-AC95-49F3-ADFB-424EBB59544A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F073D77-AC95-49F3-ADFB-424EBB59544A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8A88CBF6-3718-4AB8-9C45-65AAB7A6FF48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8A88CBF6-3718-4AB8-9C45-65AAB7A6FF48}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8A88CBF6-3718-4AB8-9C45-65AAB7A6FF48}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8A88CBF6-3718-4AB8-9C45-65AAB7A6FF48}.Release|Any CPU.Build.0 = Release|Any CPU
-		{09F44BE4-BE02-4AFF-8F34-48B5320E138B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{09F44BE4-BE02-4AFF-8F34-48B5320E138B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{09F44BE4-BE02-4AFF-8F34-48B5320E138B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{09F44BE4-BE02-4AFF-8F34-48B5320E138B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F080F10B-1ABB-4EDA-9597-0E3B56BF9931}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F080F10B-1ABB-4EDA-9597-0E3B56BF9931}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F080F10B-1ABB-4EDA-9597-0E3B56BF9931}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F080F10B-1ABB-4EDA-9597-0E3B56BF9931}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DAA1FA1-78B0-4719-9AE9-E94B3FC65068}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DAA1FA1-78B0-4719-9AE9-E94B3FC65068}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DAA1FA1-78B0-4719-9AE9-E94B3FC65068}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DAA1FA1-78B0-4719-9AE9-E94B3FC65068}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF2936F2-8CB8-4782-8A68-014C84A5F473}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF2936F2-8CB8-4782-8A68-014C84A5F473}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF2936F2-8CB8-4782-8A68-014C84A5F473}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF2936F2-8CB8-4782-8A68-014C84A5F473}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3791403-385C-46FB-A241-4E2A45232F23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3791403-385C-46FB-A241-4E2A45232F23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3791403-385C-46FB-A241-4E2A45232F23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3791403-385C-46FB-A241-4E2A45232F23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F080F10B-1ABB-4EDA-9597-0E3B56BF9931} = {CE449EE3-5B14-47D0-A840-0D8738B06E27}
+		{3DAA1FA1-78B0-4719-9AE9-E94B3FC65068} = {CE449EE3-5B14-47D0-A840-0D8738B06E27}
+		{DF2936F2-8CB8-4782-8A68-014C84A5F473} = {CE449EE3-5B14-47D0-A840-0D8738B06E27}
+		{B3791403-385C-46FB-A241-4E2A45232F23} = {467ED1D9-4B7C-4ACE-8426-3393D1F8A039}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A56488D0-705E-48EE-B58E-30F67E8B4E5E}
