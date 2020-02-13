@@ -22,6 +22,7 @@ using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
+using VirtoCommerce.Platform.Data.Extensions;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
 
@@ -46,15 +47,15 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
             serviceCollection.AddTransient<ITaggedEntitiesServiceFactory, TaggedEntitiesServiceFactory>();
             serviceCollection.AddTransient<ITaggedItemOutlinesSynchronizer, TaggedItemOutlinesSynchronizer>();
 
-            serviceCollection.AddTransient<TaggedItemIndexChangesProvider>();
-            serviceCollection.AddTransient<ProductTaggedItemDocumentBuilder>();
-            serviceCollection.AddTransient<CategoryTaggedItemDocumentBuilder>();
+            serviceCollection.AddSingleton<TaggedItemIndexChangesProvider>();
+            serviceCollection.AddSingleton<ProductTaggedItemDocumentBuilder>();
+            serviceCollection.AddSingleton<CategoryTaggedItemDocumentBuilder>();
             
             serviceCollection.AddTransient<ISearchRequestBuilder, ProductSearchUserGroupsRequestBuilder>();
             serviceCollection.AddTransient<ISearchRequestBuilder, CategorySearchUserGroupsRequestBuilder>();
 
-
-
+            serviceCollection.AddSingleton<PersonalizationExportImport>();
+            
             serviceCollection.AddTransient<ITagPropagationPolicy>(provider =>
             {
                 var settingsManager = provider.GetService<ISettingsManager>();
@@ -70,8 +71,6 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
                 {
                     return new UpTreeTagPropagationPolicy(repositoryFactory, listEntrySearchService);
                 }
-
-
             });
         }
 
@@ -137,6 +136,14 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
                 }
             }
             #endregion
+
+            using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
+            {
+                var dbContext = serviceScope.ServiceProvider.GetRequiredService<PersonalizationDbContext>();
+                dbContext.Database.MigrateIfNotApplied(MigrationName.GetUpdateV2MigrationName(ModuleInfo.Id));
+                dbContext.Database.EnsureCreated();
+                dbContext.Database.Migrate();
+            }
         }
        
         public void Uninstall()

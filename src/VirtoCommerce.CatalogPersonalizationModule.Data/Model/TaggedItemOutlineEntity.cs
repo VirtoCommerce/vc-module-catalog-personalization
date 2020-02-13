@@ -1,62 +1,63 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Data.Model
 {
-	public class TaggedItemOutlineEntity : Entity
-	{
-		[Required]
-		[StringLength(2048)]
-		public string Outline { get; set; }
+    public class TaggedItemOutlineEntity : Entity
+    {
+        [Required]
+        [StringLength(2048)]
+        public string Outline { get; set; }
 
-		#region Navigation Properties
+        #region Navigation Properties
+        [Required]
+        [StringLength(128)]
+        public string TaggedItemId { get; set; }
 
-		public string TaggedItemId { get; set; }
+        public virtual TaggedItemEntity TaggedItem { get; set; }
 
-		public TaggedItemEntity TaggedItem { get; set; }
+        #endregion
 
-		#endregion
+        public virtual TaggedItemOutline ToModel(TaggedItemOutline taggedItemOutline)
+        {
+            if (taggedItemOutline == null)
+                throw new ArgumentNullException(nameof(taggedItemOutline));
 
-		public virtual TaggedItemOutline ToModel(TaggedItemOutline taggedItemOutline)
-		{
-			if (taggedItemOutline == null)
-				throw new ArgumentNullException(nameof(taggedItemOutline));
+            taggedItemOutline.Id = Id;
 
-			taggedItemOutline.Id = Id;
+            taggedItemOutline.Outline = Outline;
+            taggedItemOutline.TaggedItemId = TaggedItemId;
 
-			taggedItemOutline.Outline = Outline;
-			taggedItemOutline.TaggedItemId = TaggedItemId;
+            return taggedItemOutline;
+        }
 
-			return taggedItemOutline;
-		}
+        public virtual TaggedItemOutlineEntity FromModel(TaggedItemOutline taggedItemOutline, PrimaryKeyResolvingMap pkMap)
+        {
+            if (taggedItemOutline == null)
+                throw new ArgumentNullException(nameof(taggedItemOutline));
 
-		public virtual TaggedItemOutlineEntity FromModel(TaggedItemOutline taggedItemOutline, PrimaryKeyResolvingMap pkMap)
-		{
-			if (taggedItemOutline == null)
-				throw new ArgumentNullException(nameof(taggedItemOutline));
+            if (pkMap == null)
+                throw new ArgumentNullException(nameof(pkMap));
 
-			if (pkMap == null)
-				throw new ArgumentNullException(nameof(pkMap));
+            pkMap.AddPair(taggedItemOutline, this);
 
-			pkMap.AddPair(taggedItemOutline, this);
+            Id = taggedItemOutline.Id;
 
-			Id = taggedItemOutline.Id;
+            Outline = taggedItemOutline.Outline;
+            TaggedItemId = taggedItemOutline.TaggedItemId;
 
-			Outline = taggedItemOutline.Outline;
-			TaggedItemId = taggedItemOutline.TaggedItemId;
+            return this;
+        }
 
-			return this;
-		}
+        public virtual void Patch(TaggedItemOutlineEntity taggedItemOutlineEntity)
+        {
+            if (taggedItemOutlineEntity == null)
+                throw new ArgumentNullException(nameof(taggedItemOutlineEntity));
 
-		public virtual void Patch(TaggedItemOutlineEntity taggedItemOutlineEntity)
-		{
-			if (taggedItemOutlineEntity == null)
-				throw new ArgumentNullException(nameof(taggedItemOutlineEntity));
-
-			taggedItemOutlineEntity.Outline = Outline;
-			taggedItemOutlineEntity.TaggedItemId = TaggedItemId;
-		}
-	}
+            taggedItemOutlineEntity.Outline = Outline;
+            taggedItemOutlineEntity.TaggedItemId = TaggedItemId;
+        }
+    }
 }

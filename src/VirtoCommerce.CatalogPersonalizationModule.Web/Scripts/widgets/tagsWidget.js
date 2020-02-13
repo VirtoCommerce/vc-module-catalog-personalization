@@ -9,8 +9,8 @@ angular.module('virtoCommerce.catalogPersonalizationModule')
                 personalizationApi.taggedItem({ id: blade.itemData.id },
                     function (result) {
                         $scope.loading = false;
-                        $scope.assignedTagsCount = result.taggedItem.tags ? result.taggedItem.tags.length : 0;
-                        $scope.inheritedTagsCount = result.taggedItem.inheritedTags ? result.taggedItem.inheritedTags.length : 0;
+                        $scope.assignedTagsCount = result.tags ? result.tags.length : 0;
+                        $scope.inheritedTagsCount = result.inheritedTags ? result.inheritedTags.length : 0;
                     });
             }
 

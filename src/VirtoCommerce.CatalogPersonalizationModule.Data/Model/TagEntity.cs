@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Data.Model
@@ -10,10 +10,11 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Model
         public string Tag { get; set; }
 
         #region Navigation Properties
-
+        [Required]
+        [StringLength(128)]
         public string TaggedItemId { get; set; }
 
-        public TaggedItemEntity TaggedItem { get; set; }
+        public virtual TaggedItemEntity TaggedItem { get; set; }
 
         #endregion
     }

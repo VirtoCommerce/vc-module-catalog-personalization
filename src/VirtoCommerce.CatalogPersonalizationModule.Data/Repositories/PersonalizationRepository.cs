@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Model;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.Domain;
 using VirtoCommerce.Platform.Data.Infrastructure;
 
 
@@ -15,7 +14,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
 {
     public class PersonalizationRepository : DbContextRepositoryBase<PersonalizationDbContext>, IPersonalizationRepository
     {
-        public PersonalizationRepository(PersonalizationDbContext dbContext, IUnitOfWork unitOfWork = null): base(dbContext, unitOfWork)
+        public PersonalizationRepository(PersonalizationDbContext dbContext): base(dbContext)
         {
         }
 

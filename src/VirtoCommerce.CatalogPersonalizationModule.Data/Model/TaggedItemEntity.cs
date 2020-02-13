@@ -30,8 +30,10 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Model
         #region Navigation Properties
 
         public virtual ObservableCollection<TagEntity> Tags { get; set; }
+            = new NullCollection<TagEntity>();
 
         public virtual ObservableCollection<TaggedItemOutlineEntity> Outlines { get; set; }
+            = new NullCollection<TaggedItemOutlineEntity>();
 
         #endregion
 

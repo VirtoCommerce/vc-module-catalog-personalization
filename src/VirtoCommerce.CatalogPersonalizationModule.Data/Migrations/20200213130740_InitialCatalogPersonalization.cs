@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
 {
-    public partial class InitialPersonalization : Migration
+    public partial class InitialCatalogPersonalization : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -31,18 +31,11 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
                 {
                     Id = table.Column<string>(maxLength: 128, nullable: false),
                     Tag = table.Column<string>(maxLength: 128, nullable: false),
-                    TaggedItemId = table.Column<string>(nullable: true),
-                    TaggedItemEntityId = table.Column<string>(nullable: true)
+                    TaggedItemId = table.Column<string>(maxLength: 128, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tag", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Tag_TaggedItem_TaggedItemEntityId",
-                        column: x => x.TaggedItemEntityId,
-                        principalTable: "TaggedItem",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Tag_TaggedItem_TaggedItemId",
                         column: x => x.TaggedItemId,
@@ -57,7 +50,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
                 {
                     Id = table.Column<string>(maxLength: 128, nullable: false),
                     Outline = table.Column<string>(maxLength: 2048, nullable: false),
-                    TaggedItemId = table.Column<string>(nullable: true)
+                    TaggedItemId = table.Column<string>(maxLength: 128, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -69,11 +62,6 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Tag_TaggedItemEntityId",
-                table: "Tag",
-                column: "TaggedItemEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tag_TaggedItemId",

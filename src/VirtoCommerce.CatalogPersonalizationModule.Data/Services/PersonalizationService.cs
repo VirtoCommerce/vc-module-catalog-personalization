@@ -30,7 +30,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
 
         public async Task<GenericSearchResult<TaggedItem>> SearchTaggedItemsAsync(TaggedItemSearchCriteria criteria)
         {
-            var retVal = new GenericSearchResult<TaggedItem>();
+            var result = new GenericSearchResult<TaggedItem>();
 
 
             using (var repository = _repositoryFactory())
@@ -67,24 +67,28 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
 
                 query = query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id);
 
-                retVal.TotalCount = query.Count();
+                result.TotalCount = query.Count();
                 query = query.Skip(criteria.Skip).Take(criteria.Take);
 
-                var ids = query.Select(x => x.Id).ToArray();
-                var selectedItems = await GetTaggedItemsByIdsAsync(ids, criteria.ResponseGroup);
-                retVal.Results = selectedItems.OrderBy(x => Array.IndexOf(ids, x.Id)).ToList();
+                if (criteria.Take > 0)
+                {
+                    var ids = query.Select(x => x.Id).ToArray();
+                    var selectedItems = await GetTaggedItemsByIdsAsync(ids, criteria.ResponseGroup);
+                    result.Results = selectedItems.OrderBy(x => Array.IndexOf(ids, x.Id)).ToList();
+
+                }
 
                 var taggedItemResponseGroup = EnumUtility.SafeParseFlags(criteria.ResponseGroup, TaggedItemResponseGroup.Info);
 
                 if (taggedItemResponseGroup.HasFlag(TaggedItemResponseGroup.WithInheritedTags) && !criteria.EntityIds.IsNullOrEmpty())
                 {
-                    var taggedItems = await FillInheritedTags(criteria.EntityIds, retVal.Results);
-                    retVal.TotalCount = taggedItems.Count;
-                    retVal.Results = taggedItems;
+                    var taggedItems = await FillInheritedTags(criteria.EntityIds, result.Results);
+                    result.TotalCount = taggedItems.Count;
+                    result.Results = taggedItems;
                 }
             }
 
-            return retVal;
+            return result;
         }
 
         public async Task<TaggedItem[]> GetTaggedItemsByIdsAsync(string[] ids, string responseGroup = null)

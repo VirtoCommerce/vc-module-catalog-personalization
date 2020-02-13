@@ -1,6 +1,6 @@
 var moduleName = "virtoCommerce.catalogPersonalizationModule";
 
-if (AppDependencies != undefined) {
+if (AppDependencies !== undefined) {
     AppDependencies.push(moduleName);
 }
 
@@ -40,7 +40,7 @@ angular.module(moduleName, [])
         // Register manual outlines synchronization widget in module settings
         widgetService.registerWidget({
             isVisible: function (blade) {
-                return blade.data && _.some(blade.data, function (item) { return item.groupName == "Personalization|General"; });
+                return blade.data && _.some(blade.data, function (item) { return item.groupName === "Personalization|General"; });
             },
             controller: 'virtoCommerce.catalogPersonalizationModule.runOutlinesSynchronizationWidgetController',
             template: 'Modules/$(VirtoCommerce.CatalogPersonalization)/Scripts/widgets/runOutlinesSynchronizationWidget.tpl.html'

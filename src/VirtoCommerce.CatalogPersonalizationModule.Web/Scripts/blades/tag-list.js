@@ -14,7 +14,7 @@ angular.module('virtoCommerce.catalogPersonalizationModule')
 
                 personalizationApi.taggedItem({ id: blade.item.id },
                     function(result) {
-                        blade.currentEntity = result.taggedItem || {};
+                        blade.currentEntity = result || {};
                         blade.currentEntity.tags = blade.currentEntity.tags || [];
                         blade.currentEntity.inheritedTags = blade.currentEntity.inheritedTags || [];
 

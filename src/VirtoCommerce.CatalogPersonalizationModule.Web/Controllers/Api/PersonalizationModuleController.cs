@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Hangfire;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using VirtoCommerce.CatalogPersonalizationModule.Core;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
@@ -18,7 +19,7 @@ using VirtoCommerce.Platform.Core.Settings;
 namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
 {
     [Route("api/personalization")]
-    public class PersonalizationModuleController : Microsoft.AspNetCore.Mvc.Controller
+    public class PersonalizationModuleController : Controller
     {
         private readonly ITaggedItemService _taggedItemService;
         private readonly ITaggedItemSearchService _searchService;
@@ -116,7 +117,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         [ProducesResponseType(typeof(TaggedItemOutlineSyncPushNotification), StatusCodes.Status200OK)]
         public async Task<ActionResult<TaggedItemOutlineSyncPushNotification>> RunOutlinesSynchronization()
         {
-            var tagsInheritancePolicy = _settingsManager.GetValue("VirtoCommerce.Personalization.TagsInheritancePolicy", "DownTree");
+            var tagsInheritancePolicy = _settingsManager.GetValue(ModuleConstants.Settings.General.TagsInheritancePolicy.Name, "DownTree");
             var notification = new TaggedItemOutlineSyncPushNotification(_userNameResolver.GetCurrentUserName())
             {
                 Title = $"Synchronizing tagged items outlines",
