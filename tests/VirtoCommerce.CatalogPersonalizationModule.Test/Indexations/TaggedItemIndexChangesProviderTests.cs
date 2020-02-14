@@ -47,77 +47,79 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Test.Indexations
             }
         };
 
-        //[Fact]
-        //public async Task TestOperationProvider()
-        //{
-        //    var changesProvider = new TaggedItemIndexChangesProvider(GetTaggedItemSearchService(), GetChangeLogService());
+        [Fact]
+        public async Task TestOperationProvider()
+        {
+            var changesProvider = new TaggedItemIndexChangesProvider(GetTaggedItemSearchService(), GetChangeLogSearchService());
 
-        //    var changesCount = await changesProvider.GetTotalChangesCountAsync(_startIndexDateTime, _endIndexDateTime);
-        //    Assert.Equal(4, changesCount);
+            var changesCount = await changesProvider.GetTotalChangesCountAsync(_startIndexDateTime, _endIndexDateTime);
+            Assert.Equal(4, changesCount);
 
-        //    var changes = await changesProvider.GetChangesAsync(_startIndexDateTime, _endIndexDateTime, 0, changesCount);
-        //    Assert.Collection(changes,
-        //        c => Assert.True(c.DocumentId == "First" && c.ChangeDate == DateTime.Parse("5/11/2017 1:00 PM") && c.ChangeType == IndexDocumentChangeType.Modified),
-        //        c => Assert.True(c.DocumentId == "Second" && c.ChangeDate == DateTime.Parse("5/11/2017 2:00 PM") && c.ChangeType == IndexDocumentChangeType.Modified),
-        //        c => Assert.True(c.DocumentId == "Third" && c.ChangeDate == DateTime.Parse("5/11/2017 3:00 PM") && c.ChangeType == IndexDocumentChangeType.Modified));
-        //}
+            var changes = await changesProvider.GetChangesAsync(_startIndexDateTime, _endIndexDateTime, 0, changesCount);
+            Assert.Collection(changes,
+                c => Assert.True(c.DocumentId == "First" && c.ChangeDate == DateTime.Parse("5/11/2017 1:00 PM") && c.ChangeType == IndexDocumentChangeType.Modified),
+                c => Assert.True(c.DocumentId == "Second" && c.ChangeDate == DateTime.Parse("5/11/2017 2:00 PM") && c.ChangeType == IndexDocumentChangeType.Modified),
+                c => Assert.True(c.DocumentId == "Third" && c.ChangeDate == DateTime.Parse("5/11/2017 3:00 PM") && c.ChangeType == IndexDocumentChangeType.Modified));
+        }
 
-        //protected ITaggedItemSearchService GetTaggedItemSearchService()
-        //{
-        //    var service = new Mock<ITaggedItemSearchService>();
-        //    service.Setup(x => x.SearchTaggedItemsAsync(It.IsAny<TaggedItemSearchCriteria>()))
-        //        .ReturnsAsync<TaggedItemSearchCriteria>((criteria) => new GenericSearchResult<TaggedItem> { Results = _allTaggedItems.Where(p => criteria.Ids.Contains(p.Id)).ToArray() });
-        //    return service.Object;
-        //}
+        protected ITaggedItemSearchService GetTaggedItemSearchService()
+        {
+            var service = new Mock<ITaggedItemSearchService>();
+            service.Setup(x => x.SearchTaggedItemsAsync(It.IsAny<TaggedItemSearchCriteria>()))
+                .ReturnsAsync((TaggedItemSearchCriteria criteria) => new GenericSearchResult<TaggedItem> { Results = _allTaggedItems.Where(p => criteria.Ids.Contains(p.Id)).ToArray() });
+            return service.Object;
+        }
 
-        //private IChangeLogService GetChangeLogService()
-        //{
-        //    var service = new Mock<IChangeLogService>();
-        //    service.Setup(x => x.FindChangeHistory(It.Is<string>(t => t == "TaggedItemEntity"),
-        //            It.Is<DateTime>(d => d == _startIndexDateTime),
-        //            It.Is<DateTime>(d => d == _endIndexDateTime)))
-        //        .Returns<string, DateTime, DateTime>((t, sd, ed) => new[]
-        //        {
-        //            new OperationLog
-        //            {
-        //                Id = Guid.NewGuid().ToString(),
-        //                CreatedDate = DateTime.Parse("5/11/2017 1:00 PM"),
-        //                CreatedBy = "Test",
-        //                ObjectType = t,
-        //                ObjectId = _catalogId,
-        //                OperationType = EntryState.Added
-        //            },
-        //            new OperationLog
-        //            {
-        //                Id = Guid.NewGuid().ToString(),
-        //                CreatedDate = DateTime.Parse("5/11/2017 2:00 PM"),
-        //                CreatedBy = "Test",
-        //                ObjectType = t,
-        //                ObjectId = _product1Id,
-        //                OperationType = EntryState.Added
-        //            },
-        //            new OperationLog
-        //            {
-        //                Id = Guid.NewGuid().ToString(),
-        //                CreatedDate = DateTime.Parse("5/11/2017 2:00 PM"),
-        //                CreatedBy = "Test",
-        //                ModifiedDate = DateTime.Parse("5/11/2017 3:00 PM"),
-        //                ModifiedBy = "Test",
-        //                ObjectType = t,
-        //                ObjectId = _product2Id,
-        //                OperationType = EntryState.Modified
-        //            },
-        //            new OperationLog
-        //            {
-        //                Id = Guid.NewGuid().ToString(),
-        //                CreatedDate = DateTime.Parse("5/11/2017 4:00 PM"),
-        //                CreatedBy = "Test",
-        //                ObjectType = t,
-        //                ObjectId = "Fourth",
-        //                OperationType = EntryState.Added
-        //            }
-        //        });
-        //    return service.Object;
-        //}
+        private IChangeLogSearchService GetChangeLogSearchService()
+        {
+            var searchService = new Mock<IChangeLogSearchService>();
+            searchService.Setup(x => x.SearchAsync(It.IsAny<ChangeLogSearchCriteria>()))
+                .ReturnsAsync(() => new ChangeLogSearchResult()
+                {
+                    TotalCount = 4,
+                    Results =
+                    {
+                        new OperationLog
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            CreatedDate = DateTime.Parse("5/11/2017 1:00 PM"),
+                            CreatedBy = "Test",
+                            ObjectType = "TaggedItemEntity",
+                            ObjectId = _catalogId,
+                            OperationType = EntryState.Added
+                        },
+                        new OperationLog
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            CreatedDate = DateTime.Parse("5/11/2017 2:00 PM"),
+                            CreatedBy = "Test",
+                            ObjectType = "TaggedItemEntity",
+                            ObjectId = _product1Id,
+                            OperationType = EntryState.Added
+                        },
+                        new OperationLog
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            CreatedDate = DateTime.Parse("5/11/2017 2:00 PM"),
+                            CreatedBy = "Test",
+                            ModifiedDate = DateTime.Parse("5/11/2017 3:00 PM"),
+                            ModifiedBy = "Test",
+                            ObjectType = "TaggedItemEntity",
+                            ObjectId = _product2Id,
+                            OperationType = EntryState.Modified
+                        },
+                        new OperationLog
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            CreatedDate = DateTime.Parse("5/11/2017 4:00 PM"),
+                            CreatedBy = "Test",
+                            ObjectType = "TaggedItemEntity",
+                            ObjectId = "Fourth",
+                            OperationType = EntryState.Added
+                        }
+                    }
+                });
+            return searchService.Object;
+        }
     }
 }

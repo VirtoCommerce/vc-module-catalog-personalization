@@ -120,7 +120,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
             var tagsInheritancePolicy = _settingsManager.GetValue(ModuleConstants.Settings.General.TagsInheritancePolicy.Name, "DownTree");
             var notification = new TaggedItemOutlineSyncPushNotification(_userNameResolver.GetCurrentUserName())
             {
-                Title = $"Synchronizing tagged items outlines",
+                Title = "Synchronizing tagged items outlines",
                 Description = "Starting…"
             };
 

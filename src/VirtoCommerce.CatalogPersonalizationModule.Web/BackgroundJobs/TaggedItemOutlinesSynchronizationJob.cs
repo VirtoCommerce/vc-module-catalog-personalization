@@ -40,7 +40,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.BackgroundJobs
 
         public async Task Run(TaggedItemOutlineSyncPushNotification notification, IJobCancellationToken cancellationToken, PerformContext context)
         {
-            void progressCallback(TaggedItemOutlineSyncProgressInfo x)
+            async void progressCallback(TaggedItemOutlineSyncProgressInfo x)
             {
                 notification.Description = x.Description;
                 notification.Errors = x.Errors;
@@ -48,7 +48,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.BackgroundJobs
                 notification.TotalCount = x.TotalCount;
                 notification.JobId = context.BackgroundJob.Id;
 
-                _pushNotificationManager.Send(notification);
+                await _pushNotificationManager.SendAsync(notification);
             }
 
             try
