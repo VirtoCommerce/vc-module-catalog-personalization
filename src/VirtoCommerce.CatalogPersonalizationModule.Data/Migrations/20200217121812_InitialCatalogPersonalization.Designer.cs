@@ -10,7 +10,7 @@ using VirtoCommerce.CatalogPersonalizationModule.Data.Repositories;
 namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
 {
     [DbContext(typeof(PersonalizationDbContext))]
-    [Migration("20200213130740_InitialCatalogPersonalization")]
+    [Migration("20200217121812_InitialCatalogPersonalization")]
     partial class InitialCatalogPersonalization
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,12 +100,13 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
 
                     b.Property<string>("TaggedItemId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(2048)")
-                        .HasMaxLength(2048);
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Outline");
+                    b.HasIndex("Outline")
+                        .HasName("IX_Outline");
 
                     b.HasIndex("TaggedItemId");
 

@@ -52,9 +52,6 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
             serviceCollection.AddSingleton<ProductTaggedItemDocumentBuilder>();
             serviceCollection.AddSingleton<CategoryTaggedItemDocumentBuilder>();
             
-            //serviceCollection.AddTransient<ISearchRequestBuilder, ProductSearchUserGroupsRequestBuilder>();
-  //          serviceCollection.AddTransient<ISearchRequestBuilder, CategorySearchUserGroupsRequestBuilder>();
-
             serviceCollection.AddSingleton<PersonalizationExportImport>();
             
             serviceCollection.AddTransient<ITagPropagationPolicy>(provider =>

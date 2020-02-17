@@ -34,7 +34,9 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
                         .HasMaxLength(128);
 
                     b.Property<string>("TaggedItemId")
-                        .HasColumnType("nvarchar(128)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.HasKey("Id");
 
@@ -97,11 +99,14 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
                         .HasMaxLength(2048);
 
                     b.Property<string>("TaggedItemId")
-                        .HasColumnType("nvarchar(128)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Outline");
+                    b.HasIndex("Outline")
+                        .HasName("IX_Outline");
 
                     b.HasIndex("TaggedItemId");
 
@@ -112,14 +117,18 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
                 {
                     b.HasOne("VirtoCommerce.CatalogPersonalizationModule.Data.Model.TaggedItemEntity", "TaggedItem")
                         .WithMany("Tags")
-                        .HasForeignKey("TaggedItemId");
+                        .HasForeignKey("TaggedItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("VirtoCommerce.CatalogPersonalizationModule.Data.Model.TaggedItemOutlineEntity", b =>
                 {
                     b.HasOne("VirtoCommerce.CatalogPersonalizationModule.Data.Model.TaggedItemEntity", "TaggedItem")
                         .WithMany("Outlines")
-                        .HasForeignKey("TaggedItemId");
+                        .HasForeignKey("TaggedItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

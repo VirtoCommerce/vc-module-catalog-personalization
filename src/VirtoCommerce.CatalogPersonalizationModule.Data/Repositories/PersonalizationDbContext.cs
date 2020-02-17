@@ -20,15 +20,18 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
             modelBuilder.Entity<TaggedItemEntity>().ToTable("TaggedItem").HasKey(x => x.Id);
             modelBuilder.Entity<TaggedItemEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
 
-
             modelBuilder.Entity<TagEntity>().ToTable("Tag").HasKey(x => x.Id);
             modelBuilder.Entity<TagEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
+            modelBuilder.Entity<TagEntity>().HasOne(m => m.TaggedItem).WithMany(x=>x.Tags).HasForeignKey(x => x.TaggedItemId)
+                .IsRequired().OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<TaggedItemOutlineEntity>().ToTable("TaggedItemOutline").HasKey(x => x.Id);
             modelBuilder.Entity<TaggedItemOutlineEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
+            modelBuilder.Entity<TaggedItemOutlineEntity>().HasOne(m => m.TaggedItem).WithMany(x => x.Outlines).HasForeignKey(x => x.TaggedItemId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Adding index to Outline column for faster search
-            modelBuilder.Entity<TaggedItemOutlineEntity>().HasIndex(x => x.Outline).IsUnique(false);
+            modelBuilder.Entity<TaggedItemOutlineEntity>().HasIndex(x => x.Outline).IsUnique(false).HasName("IX_Outline");
 
             base.OnModelCreating(modelBuilder);
         }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
@@ -69,7 +69,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
                 column: "TaggedItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TaggedItemOutline_Outline",
+                name: "IX_Outline",
                 table: "TaggedItemOutline",
                 column: "Outline");
 
