@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using VirtoCommerce.CatalogModule.Core.Search;
+using VirtoCommerce.CatalogModule.Core.Services;
 using VirtoCommerce.CatalogPersonalizationModule.Core;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Repositories;
@@ -51,8 +52,8 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
             serviceCollection.AddSingleton<ProductTaggedItemDocumentBuilder>();
             serviceCollection.AddSingleton<CategoryTaggedItemDocumentBuilder>();
             
-            serviceCollection.AddTransient<ISearchRequestBuilder, ProductSearchUserGroupsRequestBuilder>();
-            serviceCollection.AddTransient<ISearchRequestBuilder, CategorySearchUserGroupsRequestBuilder>();
+            //serviceCollection.AddTransient<ISearchRequestBuilder, ProductSearchUserGroupsRequestBuilder>();
+  //          serviceCollection.AddTransient<ISearchRequestBuilder, CategorySearchUserGroupsRequestBuilder>();
 
             serviceCollection.AddSingleton<PersonalizationExportImport>();
             
@@ -144,8 +145,25 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
                 dbContext.Database.EnsureCreated();
                 dbContext.Database.Migrate();
             }
+
+            var searchRequestBuilderRegistrar = appBuilder.ApplicationServices.GetService<ISearchRequestBuilderRegistrar>();
+            searchRequestBuilderRegistrar.Register(KnownDocumentTypes.Product, () =>
+            {
+                var searchPhraseParser = appBuilder.ApplicationServices.GetService<ISearchPhraseParser>();
+                var termFilterBuilder = appBuilder.ApplicationServices.GetService<ITermFilterBuilder>();
+                var aggregationConverter = appBuilder.ApplicationServices.GetService<IAggregationConverter>();
+
+                return new ProductSearchUserGroupsRequestBuilder(searchPhraseParser, termFilterBuilder, aggregationConverter);
+            });
+
+            searchRequestBuilderRegistrar.Register(KnownDocumentTypes.Category, () =>
+            {
+                var searchPhraseParser = appBuilder.ApplicationServices.GetService<ISearchPhraseParser>();
+
+                return new CategorySearchUserGroupsRequestBuilder(searchPhraseParser);
+            });
         }
-       
+
         public void Uninstall()
         {
             throw new NotImplementedException();

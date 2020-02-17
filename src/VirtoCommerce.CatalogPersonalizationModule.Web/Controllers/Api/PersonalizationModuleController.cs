@@ -102,8 +102,8 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         /// </summary>
         [HttpPost]
         [Route("search")]
-        [ProducesResponseType(typeof(GenericSearchResult<TaggedItem>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<GenericSearchResult<TaggedItem>>> Search([FromBody] TaggedItemSearchCriteria criteria)
+        [ProducesResponseType(typeof(TaggedItemSearchResult), StatusCodes.Status200OK)]
+        public async Task<ActionResult<TaggedItemSearchResult>> Search([FromBody] TaggedItemSearchCriteria criteria)
         {
             var searchResult = await _searchService.SearchTaggedItemsAsync(criteria);
             return Ok(searchResult);
