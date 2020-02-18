@@ -1,7 +1,5 @@
 using System.Threading.Tasks;
-using VirtoCommerce.CatalogPersonalizationModule.Core.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model.Search;
-using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Core.Services
 {
@@ -10,6 +8,6 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Core.Services
     /// </summary>
     public interface ITaggedItemSearchService
     {
-        Task<GenericSearchResult<TaggedItem>> SearchTaggedItemsAsync(TaggedItemSearchCriteria criteria);
+        Task<TaggedItemSearchResult> SearchTaggedItemsAsync(TaggedItemSearchCriteria criteria);
     }
 }

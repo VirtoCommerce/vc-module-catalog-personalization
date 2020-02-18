@@ -66,7 +66,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Test.Indexations
         {
             var service = new Mock<ITaggedItemSearchService>();
             service.Setup(x => x.SearchTaggedItemsAsync(It.IsAny<TaggedItemSearchCriteria>()))
-                .ReturnsAsync((TaggedItemSearchCriteria criteria) => new GenericSearchResult<TaggedItem> { Results = _allTaggedItems.Where(p => criteria.Ids.Contains(p.Id)).ToArray() });
+                .ReturnsAsync((TaggedItemSearchCriteria criteria) => new TaggedItemSearchResult { Results = _allTaggedItems.Where(p => criteria.Ids.Contains(p.Id)).ToArray() });
             return service.Object;
         }
 

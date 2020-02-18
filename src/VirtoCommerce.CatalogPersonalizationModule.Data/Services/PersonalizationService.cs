@@ -34,7 +34,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
             _platformMemoryCache = platformMemoryCache;
         }
 
-        public async Task<GenericSearchResult<TaggedItem>> SearchTaggedItemsAsync(TaggedItemSearchCriteria criteria)
+        public async Task<TaggedItemSearchResult> SearchTaggedItemsAsync(TaggedItemSearchCriteria criteria)
         {
 
             var cacheKey = CacheKey.With(GetType(), nameof(SearchTaggedItemsAsync), criteria.GetCacheKey());
@@ -42,7 +42,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                 async (cacheEntry) =>
                 {
                     cacheEntry.AddExpirationToken(PersonalizationCacheRegion.CreateChangeToken());
-                    var result = new GenericSearchResult<TaggedItem>();
+                    var result = new TaggedItemSearchResult();
 
                     using (var repository = _repositoryFactory())
                     {
