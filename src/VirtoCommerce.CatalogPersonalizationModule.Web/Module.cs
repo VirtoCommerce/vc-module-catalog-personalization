@@ -48,6 +48,9 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
             serviceCollection.AddTransient<ITaggedEntitiesServiceFactory, TaggedEntitiesServiceFactory>();
             serviceCollection.AddTransient<ITaggedItemOutlinesSynchronizer, TaggedItemOutlinesSynchronizer>();
 
+            serviceCollection.AddTransient<ProductSearchUserGroupsRequestBuilder>();
+            serviceCollection.AddTransient<CategorySearchUserGroupsRequestBuilder>();
+
             serviceCollection.AddSingleton<TaggedItemIndexChangesProvider>();
             serviceCollection.AddSingleton<ProductTaggedItemDocumentBuilder>();
             serviceCollection.AddSingleton<CategoryTaggedItemDocumentBuilder>();
@@ -143,22 +146,17 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
                 dbContext.Database.Migrate();
             }
 
+            AbstractTypeFactory<ProductSearchUserGroupsRequestBuilder>.RegisterType<ProductSearchUserGroupsRequestBuilder>()
+                .WithFactory(appBuilder.ApplicationServices.GetService<ProductSearchUserGroupsRequestBuilder>);
+
+            AbstractTypeFactory<CategorySearchUserGroupsRequestBuilder>.RegisterType<CategorySearchUserGroupsRequestBuilder>()
+                .WithFactory(appBuilder.ApplicationServices.GetService<CategorySearchUserGroupsRequestBuilder>);
+
             var searchRequestBuilderRegistrar = appBuilder.ApplicationServices.GetService<ISearchRequestBuilderRegistrar>();
-            searchRequestBuilderRegistrar.Register(KnownDocumentTypes.Product, () =>
-            {
-                var searchPhraseParser = appBuilder.ApplicationServices.GetService<ISearchPhraseParser>();
-                var termFilterBuilder = appBuilder.ApplicationServices.GetService<ITermFilterBuilder>();
-                var aggregationConverter = appBuilder.ApplicationServices.GetService<IAggregationConverter>();
 
-                return new ProductSearchUserGroupsRequestBuilder(searchPhraseParser, termFilterBuilder, aggregationConverter);
-            });
+            searchRequestBuilderRegistrar.Override(KnownDocumentTypes.Product, AbstractTypeFactory<ProductSearchUserGroupsRequestBuilder>.TryCreateInstance<ProductSearchUserGroupsRequestBuilder>);
+            searchRequestBuilderRegistrar.Override(KnownDocumentTypes.Category, AbstractTypeFactory<CategorySearchUserGroupsRequestBuilder>.TryCreateInstance<CategorySearchUserGroupsRequestBuilder>);
 
-            searchRequestBuilderRegistrar.Register(KnownDocumentTypes.Category, () =>
-            {
-                var searchPhraseParser = appBuilder.ApplicationServices.GetService<ISearchPhraseParser>();
-
-                return new CategorySearchUserGroupsRequestBuilder(searchPhraseParser);
-            });
         }
 
         public void Uninstall()
