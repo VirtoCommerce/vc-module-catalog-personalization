@@ -8,8 +8,8 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Core.Services
     /// </summary>
     public interface ITaggedItemService
     {
-        Task<TaggedItem[]> GetTaggedItemsByIdsAsync(string[] ids, string responseGroup = null);
-        Task SaveTaggedItemsAsync(TaggedItem[] taggedItems);
-        Task DeleteTaggedItemsAsync(string[] ids);
+        Task<TaggedItem[]> GetByIdsAsync(string[] ids, string responseGroup = null);
+        Task SaveChangesAsync(TaggedItem[] taggedItems);
+        Task DeleteAsync(string[] ids);
     }
 }

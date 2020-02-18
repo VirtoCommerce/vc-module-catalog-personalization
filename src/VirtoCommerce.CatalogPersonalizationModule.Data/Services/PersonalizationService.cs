@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
+using VirtoCommerce.CatalogPersonalizationModule.Data.Caching;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Repositories;
+using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Data.Infrastructure;
 using VirtoCommerce.SearchModule.Core.Model;
@@ -17,99 +20,108 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
     {
         private readonly Func<IPersonalizationRepository> _repositoryFactory;
         private readonly ITaggedEntitiesServiceFactory _taggedEntitiesServiceFactory;
+        private readonly IPlatformMemoryCache _platformMemoryCache;
         private readonly ITagPropagationPolicy _tagPropagationPolicy;
 
         public PersonalizationService(Func<IPersonalizationRepository> repositoryFactory,
             ITagPropagationPolicy tagPropagationPolicy,
-            ITaggedEntitiesServiceFactory taggedEntitiesServiceFactory)
+            ITaggedEntitiesServiceFactory taggedEntitiesServiceFactory,
+            IPlatformMemoryCache platformMemoryCache)
         {
             _repositoryFactory = repositoryFactory;
             _tagPropagationPolicy = tagPropagationPolicy;
             _taggedEntitiesServiceFactory = taggedEntitiesServiceFactory;
+            _platformMemoryCache = platformMemoryCache;
         }
 
         public async Task<GenericSearchResult<TaggedItem>> SearchTaggedItemsAsync(TaggedItemSearchCriteria criteria)
         {
-            var result = new GenericSearchResult<TaggedItem>();
 
-
-            using (var repository = _repositoryFactory())
-            {
-                repository.DisableChangesTracking();
-
-                var query = repository.TaggedItems;
-
-                if (!criteria.EntityIds.IsNullOrEmpty())
+            var cacheKey = CacheKey.With(GetType(), nameof(SearchTaggedItemsAsync), criteria.GetCacheKey());
+            return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey,
+                async (cacheEntry) =>
                 {
-                    query = query.Where(x => criteria.EntityIds.Contains(x.ObjectId));
-                }
+                    cacheEntry.AddExpirationToken(PersonalizationCacheRegion.CreateChangeToken());
+                    var result = new GenericSearchResult<TaggedItem>();
 
-                if (!string.IsNullOrWhiteSpace(criteria.EntityType))
-                {
-                    query = query.Where(x => x.ObjectType == criteria.EntityType);
-                }
+                    using (var repository = _repositoryFactory())
+                    {
+                        repository.DisableChangesTracking();
 
-                if (!criteria.Ids.IsNullOrEmpty())
-                {
-                    query = query.Where(x => criteria.Ids.Contains(x.Id));
-                }
+                        var query = repository.TaggedItems;
 
-                if (criteria.ChangedFrom.HasValue)
-                {
-                    query = query.Where(x => x.ModifiedDate.HasValue && x.ModifiedDate.Value.Date >= criteria.ChangedFrom.Value.Date);
-                }
+                        if (!criteria.EntityIds.IsNullOrEmpty())
+                        {
+                            query = query.Where(x => criteria.EntityIds.Contains(x.ObjectId));
+                        }
 
-                var sortInfos = criteria.SortInfos;
-                if (sortInfos.IsNullOrEmpty())
-                {
-                    sortInfos = new[] {new SortInfo {SortColumn = ReflectionUtility.GetPropertyName<TaggedItem>(x => x.Label)}};
-                }
+                        if (!string.IsNullOrWhiteSpace(criteria.EntityType))
+                        {
+                            query = query.Where(x => x.ObjectType == criteria.EntityType);
+                        }
 
-                query = query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id);
+                        if (!criteria.Ids.IsNullOrEmpty())
+                        {
+                            query = query.Where(x => criteria.Ids.Contains(x.Id));
+                        }
 
-                result.TotalCount = query.Count();
-                query = query.Skip(criteria.Skip).Take(criteria.Take);
+                        if (criteria.ChangedFrom.HasValue)
+                        {
+                            query = query.Where(x => x.ModifiedDate.HasValue && x.ModifiedDate.Value.Date >= criteria.ChangedFrom.Value.Date);
+                        }
 
-                if (criteria.Take > 0)
-                {
-                    var ids = query.Select(x => x.Id).ToArray();
-                    var selectedItems = await GetTaggedItemsByIdsAsync(ids, criteria.ResponseGroup);
-                    result.Results = selectedItems.OrderBy(x => Array.IndexOf(ids, x.Id)).ToList();
+                        var sortInfos = criteria.SortInfos;
+                        if (sortInfos.IsNullOrEmpty())
+                        {
+                            sortInfos = new[] { new SortInfo { SortColumn = ReflectionUtility.GetPropertyName<TaggedItem>(x => x.Label) } };
+                        }
 
-                }
+                        query = query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id);
 
-                var taggedItemResponseGroup = EnumUtility.SafeParseFlags(criteria.ResponseGroup, TaggedItemResponseGroup.Info);
+                        result.TotalCount = query.Count();
+                        query = query.Skip(criteria.Skip).Take(criteria.Take);
 
-                if (taggedItemResponseGroup.HasFlag(TaggedItemResponseGroup.WithInheritedTags) && !criteria.EntityIds.IsNullOrEmpty())
-                {
-                    var taggedItems = await FillInheritedTags(criteria.EntityIds, result.Results);
-                    result.TotalCount = taggedItems.Count;
-                    result.Results = taggedItems;
-                }
-            }
+                        if (criteria.Take > 0)
+                        {
+                            var ids = query.Select(x => x.Id).ToArray();
+                            var selectedItems = await GetByIdsAsync(ids, criteria.ResponseGroup);
+                            result.Results = selectedItems.OrderBy(x => Array.IndexOf(ids, x.Id)).ToList();
 
-            return result;
+                        }
+
+                        var taggedItemResponseGroup = EnumUtility.SafeParseFlags(criteria.ResponseGroup, TaggedItemResponseGroup.Info);
+
+                        if (taggedItemResponseGroup.HasFlag(TaggedItemResponseGroup.WithInheritedTags) && !criteria.EntityIds.IsNullOrEmpty())
+                        {
+                            var taggedItems = await FillInheritedTags(criteria.EntityIds, result.Results);
+                            result.TotalCount = taggedItems.Count;
+                            result.Results = taggedItems;
+                        }
+                    }
+
+                    return result;
+                });
         }
 
-        public async Task<TaggedItem[]> GetTaggedItemsByIdsAsync(string[] ids, string responseGroup = null)
+        public async Task<TaggedItem[]> GetByIdsAsync(string[] ids, string responseGroup = null)
         {
-            var result = new List<TaggedItem>();
-            if (ids != null)
-            {
-                using (var repository = _repositoryFactory())
+            var cacheKey = CacheKey.With(GetType(), "GetByIdsAsync", string.Join("-", ids));
+
+            return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey,
+                async (cacheEntry) =>
                 {
-                    repository.DisableChangesTracking();
+                    cacheEntry.AddExpirationToken(PersonalizationCacheRegion.CreateChangeToken());
+                    using (var repository = _repositoryFactory())
+                    {
+                        repository.DisableChangesTracking();
 
-                    var selectedItems = await repository.GetTaggedItemsByIdsAsync(ids, responseGroup);
-                    result = selectedItems.Select(x => x.ToModel(AbstractTypeFactory<TaggedItem>.TryCreateInstance()))
-                        .ToList();
-                }
-            }
-
-            return result.ToArray();
+                        var selectedItems = await repository.GetTaggedItemsByIdsAsync(ids, responseGroup);
+                        return selectedItems.Select(x => x.ToModel(AbstractTypeFactory<TaggedItem>.TryCreateInstance())).ToArray();
+                    }
+                });
         }
 
-        public async Task SaveTaggedItemsAsync(TaggedItem[] taggedItems)
+        public async Task SaveChangesAsync(TaggedItem[] taggedItems)
         {
             var pkMap = new PrimaryKeyResolvingMap();
             using (var repository = _repositoryFactory())
@@ -133,15 +145,19 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                 await repository.UnitOfWork.CommitAsync();
                 pkMap.ResolvePrimaryKeys();
             }
+
+            PersonalizationCacheRegion.ExpireRegion();
         }
 
-        public async Task DeleteTaggedItemsAsync(string[] ids)
+        public async Task DeleteAsync(string[] ids)
         {
             using (var repository = _repositoryFactory())
             {
                 await repository.DeleteTaggedItemsAsync(ids);
                 await repository.UnitOfWork.CommitAsync();
             }
+
+            PersonalizationCacheRegion.ExpireRegion();
         }
 
 

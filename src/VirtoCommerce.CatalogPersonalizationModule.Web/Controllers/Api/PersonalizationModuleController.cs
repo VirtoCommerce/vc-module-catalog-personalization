@@ -92,7 +92,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> UpdateTaggedItem([FromBody] TaggedItem taggedItem)
         {
-            await _taggedItemService.SaveTaggedItemsAsync(new[] { taggedItem });
+            await _taggedItemService.SaveChangesAsync(new[] { taggedItem });
             await _taggedItemOutlineSync.SynchronizeOutlinesAsync(new[] { taggedItem });
             return Ok();
         }

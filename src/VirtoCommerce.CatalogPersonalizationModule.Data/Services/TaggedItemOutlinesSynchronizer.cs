@@ -47,11 +47,11 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                     }
                 }
 
-                await _taggedItemService.SaveTaggedItemsAsync(@group.ToArray());
+                await _taggedItemService.SaveChangesAsync(@group.ToArray());
 
                 if (toRemoveTaggedItemIds.Any())
                 {
-                    await _taggedItemService.DeleteTaggedItemsAsync(toRemoveTaggedItemIds.ToArray());
+                    await _taggedItemService.DeleteAsync(toRemoveTaggedItemIds.ToArray());
                 }
             }
         }

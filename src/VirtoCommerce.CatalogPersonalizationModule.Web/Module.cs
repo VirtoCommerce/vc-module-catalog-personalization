@@ -154,8 +154,8 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
 
             var searchRequestBuilderRegistrar = appBuilder.ApplicationServices.GetService<ISearchRequestBuilderRegistrar>();
 
-            searchRequestBuilderRegistrar.Override(KnownDocumentTypes.Product, AbstractTypeFactory<ProductSearchUserGroupsRequestBuilder>.TryCreateInstance<ProductSearchUserGroupsRequestBuilder>);
-            searchRequestBuilderRegistrar.Override(KnownDocumentTypes.Category, AbstractTypeFactory<CategorySearchUserGroupsRequestBuilder>.TryCreateInstance<CategorySearchUserGroupsRequestBuilder>);
+            searchRequestBuilderRegistrar.Override(KnownDocumentTypes.Product, AbstractTypeFactory<ProductSearchUserGroupsRequestBuilder>.TryCreateInstance);
+            searchRequestBuilderRegistrar.Override(KnownDocumentTypes.Category, AbstractTypeFactory<CategorySearchUserGroupsRequestBuilder>.TryCreateInstance);
 
         }
 

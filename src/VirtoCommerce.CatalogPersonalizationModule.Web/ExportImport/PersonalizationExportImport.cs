@@ -41,7 +41,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.ExportImport
             progressInfo.Description = String.Format("{0} tagged items importing...", backupObject.TaggedItems.Count);
             progressCallback(progressInfo);
 
-            await _taggedItemService.SaveTaggedItemsAsync(backupObject.TaggedItems.ToArray());
+            await _taggedItemService.SaveChangesAsync(backupObject.TaggedItems.ToArray());
         }
 
         private async Task<BackupObject> GetBackupObjectAsync(Action<ExportImportProgressInfo> progressCallback)
