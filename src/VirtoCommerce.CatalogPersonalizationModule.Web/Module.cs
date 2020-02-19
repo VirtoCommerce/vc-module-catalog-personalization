@@ -146,17 +146,10 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
                 dbContext.Database.Migrate();
             }
 
-            AbstractTypeFactory<ProductSearchUserGroupsRequestBuilder>.RegisterType<ProductSearchUserGroupsRequestBuilder>()
-                .WithFactory(appBuilder.ApplicationServices.GetService<ProductSearchUserGroupsRequestBuilder>);
-
-            AbstractTypeFactory<CategorySearchUserGroupsRequestBuilder>.RegisterType<CategorySearchUserGroupsRequestBuilder>()
-                .WithFactory(appBuilder.ApplicationServices.GetService<CategorySearchUserGroupsRequestBuilder>);
-
             var searchRequestBuilderRegistrar = appBuilder.ApplicationServices.GetService<ISearchRequestBuilderRegistrar>();
 
-            searchRequestBuilderRegistrar.Override(KnownDocumentTypes.Product, AbstractTypeFactory<ProductSearchUserGroupsRequestBuilder>.TryCreateInstance);
-            searchRequestBuilderRegistrar.Override(KnownDocumentTypes.Category, AbstractTypeFactory<CategorySearchUserGroupsRequestBuilder>.TryCreateInstance);
-
+            searchRequestBuilderRegistrar.Override(KnownDocumentTypes.Product, appBuilder.ApplicationServices.GetService<ProductSearchUserGroupsRequestBuilder>);
+            searchRequestBuilderRegistrar.Override(KnownDocumentTypes.Category, appBuilder.ApplicationServices.GetService<CategorySearchUserGroupsRequestBuilder>);
         }
 
         public void Uninstall()
