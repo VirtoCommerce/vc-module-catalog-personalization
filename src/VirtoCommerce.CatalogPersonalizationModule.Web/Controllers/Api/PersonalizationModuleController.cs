@@ -94,7 +94,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         {
             await _taggedItemService.SaveChangesAsync(new[] { taggedItem });
             await _taggedItemOutlineSync.SynchronizeOutlinesAsync(new[] { taggedItem });
-            return Ok();
+            return NoContent();
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         public async Task<ActionResult> CancelSynchronization([FromBody]TaggedItemOutlinesSynchronizationRequest cancellationRequest)
         {
             BackgroundJob.Delete(cancellationRequest.JobId);
-            return Ok();
+            return NoContent();
         }
     }
 }
