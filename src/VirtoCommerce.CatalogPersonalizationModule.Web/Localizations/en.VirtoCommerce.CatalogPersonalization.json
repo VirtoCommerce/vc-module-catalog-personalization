@@ -1,0 +1,63 @@
+{
+    "personalization": {
+        "main-menu-title": "Personalization",
+        "blades": {
+            "tag-list": {
+                "labels": {
+                    "title": "Tags",
+                    "select-tags": "Select tags to assign",
+                    "available-tags": "Available tags",
+                    "assigned-tags": "Assigned tags",
+                    "inherited-tags": "Inherited tags", 
+                    "no-assigned": "No tags assigned",
+                    "no-inherited": "No tags inherited",
+                    "add-btn": "Add"
+                }
+          },
+            "progress": {
+                "labels": {
+                    "total": "Total count",
+                    "processed": "Processed count",
+                    "error-count": "Error count"
+                }
+            }
+        },
+        "widgets": {
+            "tagsWidget": {
+                "title": "Tags",
+                "assigned": "Assigned",
+                "inherited": "Inherited"
+            },
+            "run-sync": {
+                "title": "Synchronize outlines"
+            }
+        },
+        "tags": {
+          "__any": "Everyone" 
+        } 
+    },
+    "settings": {
+      "CatalogPersonalization": {
+        "ExportImport": {
+          "description": "Module description in platform export/import wizard",
+          "title": "Export/Import description"
+        },
+        "TagsInheritancePolicy": {
+          "description": "DownTree - propagates all tags assigned to categories for all their descendants. UpTree - propagates tags up to hierarchy from descendants to parents",
+          "title": "Selected policy for tags propagation (requires restart)"
+        },
+        "CronExpression": {
+          "description": "x minutes use '0/x * * * *', x hourse use '0 */x * * *',  you can set minutes also '15 */x * * *', x days '0 0 */x * *'   ",
+          "title": "Job cron expression for synchronize the outlines of tagged entities. Valid only when the UpTree propagation policy is selected. (requires restart)"
+        }
+      }
+     },
+    "module": {
+      "VirtoCommerce.CatalogPersonalization": {
+        "description": "Personalization feature for the products and categories."
+      }
+    },
+    "permissions": {
+       "personalization:update": "Update tagged item"
+    }
+}
