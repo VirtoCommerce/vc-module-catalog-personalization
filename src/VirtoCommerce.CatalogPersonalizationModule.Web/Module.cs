@@ -100,17 +100,20 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
 
             var documentIndexingConfigurationRegistrar = appBuilder.ApplicationServices.GetRequiredService<IIndexDocumentRegistrar>();
 
-            documentIndexingConfigurationRegistrar.RegisterRelatedSource(KnownDocumentTypes.Category, new IndexDocumentSource
-            {
-                ChangesProvider = appBuilder.ApplicationServices.GetRequiredService<TaggedItemIndexChangesProvider>(),
-                DocumentBuilder = appBuilder.ApplicationServices.GetRequiredService<CategoryTaggedItemDocumentBuilder>()
-            });
+            var categoryIndexingConfig = documentIndexingConfigurationRegistrar.GetIndexDocumentConfiguration(KnownDocumentTypes.Category);
 
-            documentIndexingConfigurationRegistrar.RegisterRelatedSource(KnownDocumentTypes.Product, new IndexDocumentSource
-            {
-                ChangesProvider = appBuilder.ApplicationServices.GetRequiredService<TaggedItemIndexChangesProvider>(),
-                DocumentBuilder = appBuilder.ApplicationServices.GetRequiredService<ProductTaggedItemDocumentBuilder>()
-            });
+            IndexDocumentConfigurationBuilder.Build(categoryIndexingConfig)
+                .AddRelatedSources(IndexDocumentSourceBuilder
+                    .Build(appBuilder.ApplicationServices.GetRequiredService<CategoryTaggedItemDocumentBuilder>())
+                    .WithChangesProvider(appBuilder.ApplicationServices.GetRequiredService<TaggedItemIndexChangesProvider>()));
+
+
+            var productIndexingConfig = documentIndexingConfigurationRegistrar.GetIndexDocumentConfiguration(KnownDocumentTypes.Product);
+
+            IndexDocumentConfigurationBuilder.Build(productIndexingConfig)
+                .AddRelatedSources(IndexDocumentSourceBuilder
+                    .Build(appBuilder.ApplicationServices.GetRequiredService<ProductTaggedItemDocumentBuilder>())
+                    .WithChangesProvider(appBuilder.ApplicationServices.GetRequiredService<TaggedItemIndexChangesProvider>()));
 
             #endregion
 
