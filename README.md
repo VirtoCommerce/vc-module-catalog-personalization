@@ -1,19 +1,37 @@
 # VirtoCommerce.CatalogPersonalization
-VirtoCommerce.CatalogPersonalization module adds personalization feature to the products catalog so that store owner now could define different user experiences for one catalog categories and products.
 
-### Key features:
-* control the visibility of catalog objects such as Product and Categories, through manual tagging of these objects with special property `Tags` which can contain multiple predefined values which also may be defined for customer profile
-* inheritance `Tags` between catalogs objects depend on catalog taxonomy (categories inherit this property from parent catalog or category, products inherit this property from parent category)
-* allow using `User groups` from customer profile to products or categories filtration in the storefront search
-* the two different policies for `Tags` propagation in catalog objects hierarchy 
-    - `UpTree` propagate the tags from descendants to parents up the hierarchy
-    ![image](https://user-images.githubusercontent.com/7566324/62931481-ba630c00-bdbe-11e9-9cdf-6d05e955721b.png)
-    
-    
-    - `DownTree` inherites the tags by descendants from their parrent down the hierarchy
-    ![image](https://user-images.githubusercontent.com/7566324/62931421-a3241e80-bdbe-11e9-8f02-fd22d0fbcc6f.png)
+The main concept of VC Personalization module is to personalize the issuing of catalog, price lists and marketing actions using Tags and User Groups.
 
-### Settings:
+The users should be first included into  specific User Groups and then assign  catalogs, price lists or promotions to this UG.
+
+## Key features
+
+1. Control the visibility of catalog objects such as Product and Categories, through manual tagging of these objects with special property `Tags` which can contain multiple predefined values which also may be defined for customer profile
+1. Inheritance `Tags` between catalogs objects depend on catalog taxonomy (categories inherit this property from parent catalog or category, products inherit this property from parent category)
+1. Allow using `User groups` from customer profile to products or categories filtration in the storefront search
+1. Different policies for `Tags` propagation in catalog objects hierarchy:
+    1. `UpTree` propagate the tags from descendants to parents up the hierarchy
+    ![image](https://user-images.githubusercontent.com/7566324/62931481-ba630c00-bdbe-11e9-9cdf-6d05e955721b.png);
+    1. `DownTree` inherits the tags by descendants from their parent down the hierarchy
+    ![image](https://user-images.githubusercontent.com/7566324/62931421-a3241e80-bdbe-11e9-8f02-fd22d0fbcc6f.png).
+
+## Scenarios
+
+### Create New User Group
+
+1. Go to More->Contacts module-> select a user from the list and open user's details
+1. 
+
+### Assign User Group to Contact
+
+1. Go to More->Contacts module and select a user from the list;
+1. Open user's details;
+1. Select the user group from the drop down;
+1. Save the changes.
+
+
+## Settings
+
 Manage the tags propagation policies:
 ![image](https://user-images.githubusercontent.com/7566324/62931587-eaaaaa80-bdbe-11e9-8693-e1694f104f22.png)
 
