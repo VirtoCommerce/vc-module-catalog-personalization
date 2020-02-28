@@ -55,9 +55,29 @@ The users should be first included into  specific User Groups and then assign  c
 
 ![Assign tag to category](docs/media/screen-assign-tags.png)
 
+![Inherit tags](docs/media/screen-inherited-tags.png)
 
+### Assign a User Group to a Price List Assignment
 
+1. Go to More->Pricing Module->select a Price list Assignment and open the Price list Assignments details;
+1. Under 'Add condition' select 'Shopper profile' and then 'User Group contain';
+1. Enter the User Group name into the correspondent field;
+1. Save the changes.
 
+![Assign user group to pricelist](docs/media/screen-assign-usergroup-to-pricelist.png)
+
+### Assign User Group to Marketing Promotion
+
+1. Go to More-Marketing module->Promotions;
+1. Select a Promotion and open the promotion details blade;
+1. Under 'Add user group' select 'User group contains';
+1. Enter the user group name into the correspondent field;
+1. Save the changes;
+1. The assigned user group will be applied to the selected promotion.
+
+![Assign user group to promotion](docs/media/screen-assign-usergroup-to-promotion.png)
+
+![User group assigned](docs/media/screen-usergroup-assigned-to-promotion.png)
 
 ## Settings
 
