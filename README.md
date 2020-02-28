@@ -19,15 +19,44 @@ The users should be first included into  specific User Groups and then assign  c
 
 ### Create New User Group
 
-1. Go to More->Contacts module-> select a user from the list and open user's details
-1. 
+1. Go to More->Contacts module-> select a user from the list and open user's details;
+1. Click the 'Edit' of the User Grpups;
+1. In the opened 'Member groups dictionary' enter the new User Group name and click the 'Add' button;
+1. Save the new user group;
+1. The new user group is now available for selection.
+
+![Add user group](docs/media/screen-add-usergroup.png
+)
+
+![User group added](docs/media/screen-usergroup-added.png)
+
+![User group available](docs/media/screen-usergroup-available.png)
 
 ### Assign User Group to Contact
 
-1. Go to More->Contacts module and select a user from the list;
-1. Open user's details;
-1. Select the user group from the drop down;
-1. Save the changes.
+1. Go to More->Contacts module and select a Contact from the list;
+1. Open Contact's details;
+1. Select the User Group from the drop down;
+1. Save the changes;
+1. The selected User Group will be assigned to the Contact.
+
+![Assign User Group](docs/media/screen-assign-usergroup.png)
+
+### Assign User Group to Product Category
+
+1. Go to More->Catalog Module->select a Product Category and click 'Manage';
+1. On Category details blade select the 'Tags' widget;
+1. Under 'Available tags' select the tag to assign to the Category;
+1. Click 'Add';
+1. Save the changes;
+1. Open the Category;
+1. Select a product and click the 'Tags' widget;
+1. The tag assigned to the Category will be displayed under the 'Inherited tag'. All Category products will inherit the tag assigned to the Category.
+
+![Assign tag to category](docs/media/screen-assign-tags.png)
+
+
+
 
 
 ## Settings
