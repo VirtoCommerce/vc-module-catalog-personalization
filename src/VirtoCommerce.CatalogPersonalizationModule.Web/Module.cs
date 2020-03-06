@@ -1,15 +1,13 @@
-using Hangfire;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using VirtoCommerce.CatalogModule.Core.Search;
-using VirtoCommerce.CatalogModule.Core.Services;
 using VirtoCommerce.CatalogPersonalizationModule.Core;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Repositories;
@@ -36,7 +34,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
 
         public void Initialize(IServiceCollection serviceCollection)
         {
-            
+
             var configuration = serviceCollection.BuildServiceProvider().GetRequiredService<IConfiguration>();
             serviceCollection.AddTransient<IPersonalizationRepository, PersonalizationRepository>();
             var connectionString = configuration.GetConnectionString("VirtoCommerce");
@@ -54,15 +52,15 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
             serviceCollection.AddSingleton<TaggedItemIndexChangesProvider>();
             serviceCollection.AddSingleton<ProductTaggedItemDocumentBuilder>();
             serviceCollection.AddSingleton<CategoryTaggedItemDocumentBuilder>();
-            
+
             serviceCollection.AddSingleton<PersonalizationExportImport>();
-            
+
             serviceCollection.AddTransient<ITagPropagationPolicy>(provider =>
             {
                 var settingsManager = provider.GetService<ISettingsManager>();
                 var repositoryFactory = provider.GetService<Func<IPersonalizationRepository>>();
                 var listEntrySearchService = provider.GetService<IListEntrySearchService>();
-                
+
                 var tagsInheritancePolicy = settingsManager.GetValue("VirtoCommerce.Personalization.TagsInheritancePolicy", "DownTree");
                 if (tagsInheritancePolicy.EqualsInvariant("DownTree"))
                 {
@@ -100,42 +98,23 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
 
             #region Search
 
-            // Add tagged items document source to the category or product indexing configuration
-            var documentIndexingConfigurations = appBuilder.ApplicationServices.GetRequiredService<IEnumerable<IndexDocumentConfiguration>>();
-            if (documentIndexingConfigurations != null)
-            {
-                //Category indexing
-                var taggedItemCategoryDocumentSource = new IndexDocumentSource
-                {
-                    ChangesProvider = appBuilder.ApplicationServices.GetRequiredService<TaggedItemIndexChangesProvider>(),
-                    DocumentBuilder = appBuilder.ApplicationServices.GetRequiredService<CategoryTaggedItemDocumentBuilder>()
-                };
-                foreach (var configuration in documentIndexingConfigurations.Where(c => c.DocumentType == KnownDocumentTypes.Category))
-                {
-                    if (configuration.RelatedSources == null)
-                    {
-                        configuration.RelatedSources = new List<IndexDocumentSource>();
-                    }
+            var documentIndexingConfigurationRegistrar = appBuilder.ApplicationServices.GetRequiredService<IIndexDocumentRegistrar>();
 
-                    configuration.RelatedSources.Add(taggedItemCategoryDocumentSource);
-                }
+            var categoryIndexingConfig = documentIndexingConfigurationRegistrar.GetIndexDocumentConfiguration(KnownDocumentTypes.Category);
 
-                //Product indexing
-                var taggedItemProductDocumentSource = new IndexDocumentSource
-                {
-                    ChangesProvider = appBuilder.ApplicationServices.GetRequiredService<TaggedItemIndexChangesProvider>(),
-                    DocumentBuilder = appBuilder.ApplicationServices.GetRequiredService<ProductTaggedItemDocumentBuilder>()
-                };
-                foreach (var configuration in documentIndexingConfigurations.Where(c => c.DocumentType == KnownDocumentTypes.Product))
-                {
-                    if (configuration.RelatedSources == null)
-                    {
-                        configuration.RelatedSources = new List<IndexDocumentSource>();
-                    }
+            IndexDocumentConfigurationBuilder.Build(categoryIndexingConfig)
+                .AddRelatedSources(IndexDocumentSourceBuilder
+                    .Build(appBuilder.ApplicationServices.GetRequiredService<CategoryTaggedItemDocumentBuilder>())
+                    .WithChangesProvider(appBuilder.ApplicationServices.GetRequiredService<TaggedItemIndexChangesProvider>()));
 
-                    configuration.RelatedSources.Add(taggedItemProductDocumentSource);
-                }
-            }
+
+            var productIndexingConfig = documentIndexingConfigurationRegistrar.GetIndexDocumentConfiguration(KnownDocumentTypes.Product);
+
+            IndexDocumentConfigurationBuilder.Build(productIndexingConfig)
+                .AddRelatedSources(IndexDocumentSourceBuilder
+                    .Build(appBuilder.ApplicationServices.GetRequiredService<ProductTaggedItemDocumentBuilder>())
+                    .WithChangesProvider(appBuilder.ApplicationServices.GetRequiredService<TaggedItemIndexChangesProvider>()));
+
             #endregion
 
             using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
