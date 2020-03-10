@@ -79,6 +79,33 @@ The Contacts should be first included into  specific User Groups and then assign
 
 ![User group assigned](docs/media/screen-usergroup-assigned-to-promotion.png)
 
+### Tags Propagation Policies
+
+#### Down-tree propagation policy
+
+When down-tree propagation policy is selected, all products inherit the Tag assigned to the Category.
+In order to apply this type of propagation policy to Catalog categories and products, do the following: 
+
+1. Go to Settings->Personalization->General;
+1. Under 'Selected policy for tags propagation' select 'DownTree';
+1. Restart the VC platform.
+
+![Settings](docs/media/screen-settings.png)
+
+#### Up-Tree Policy Propagation
+
+When the up-tree policy propagation is applied, the Product category will inherit the Product tag, i.e. if a tag assigned to a specific product in the Category, it will be automatically assigned to the Product Category as well.
+
+In order to apply this type of propagation policy to Catalog categories and products, do the following:
+
+1. Go to Settings->Personalization->General;
+1. Under 'Selected policy for tags propagation' select 'UpTree';
+1. Restart the VC platform.
+
+![Settings](docs/media/screen-settings1.png)
+
+The synchronize outline function helps 
+
 ## Settings
 
 Manage the tags propagation policies:
