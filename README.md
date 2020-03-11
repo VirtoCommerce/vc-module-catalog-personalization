@@ -79,12 +79,18 @@ The Contacts should be first included into  specific User Groups and then assign
 
 ![User group assigned](docs/media/screen-usergroup-assigned-to-promotion.png)
 
+**Important!** Don't forget to rebuild the search indexes for categories and products after tagging process.
+
+<details><summary>Rebuild indexes</summary><p>
+
+![indexation](https://user-images.githubusercontent.com/7536694/31497248-d12a5efe-af5e-11e7-8938-b39d2b03ad1e.gif) </p></details>
+
 ### Tags Propagation Policies
 
 #### Down-tree propagation policy
 
 When down-tree propagation policy is selected, all products inherit the Tag assigned to the Category.
-In order to apply this type of propagation policy to Catalog categories and products, do the following: 
+In order to apply this type of propagation policy to Catalog categories and products, do the following:
 
 1. Go to Settings->Personalization->General;
 1. Under 'Selected policy for tags propagation' select 'DownTree';
@@ -104,46 +110,20 @@ In order to apply this type of propagation policy to Catalog categories and prod
 
 ![Settings](docs/media/screen-settings1.png)
 
-The synchronize outline function helps 
+#### Synchronize outlines
 
-## Settings
+The 'Synchronize outlines' function works for UpTree policy propagation and helps assign tags automatically from product to all product parents. The synchronization is based on the scheduled job.
 
-Manage the tags propagation policies:
-![image](https://user-images.githubusercontent.com/7566324/62931587-eaaaaa80-bdbe-11e9-8693-e1694f104f22.png)
+![Synchronize outline](docs/media/screen-synchronize-outlines.png)
 
-### Example:
+## Installation
 
-<details><summary>Managing catalog tags</summary><p>
-  
-![catalog-tags](https://user-images.githubusercontent.com/7536694/31497152-6510aac0-af5e-11e7-9e99-8f3f2d45cca3.gif) </p></details>
-
-<details><summary>Managing category and product tags</summary><p>
-
-![category-product-tags](https://user-images.githubusercontent.com/7536694/31497224-b5e4b1a8-af5e-11e7-90a1-918f120efddd.gif) </p></details>
-
-#### Important! Don't forget to rebuild search indexes for categories and products after tagging process.
-
-<details><summary>Rebuild indexes</summary><p>
-
-![indexation](https://user-images.githubusercontent.com/7536694/31497248-d12a5efe-af5e-11e7-8938-b39d2b03ad1e.gif) </p></details>
-
-<details><summary>Managing user groups</summary><p>
-
-![user-groups](https://user-images.githubusercontent.com/7536694/31497349-252148ce-af5f-11e7-9c4b-a2c9545fd853.gif) </p></details>
-
-##### As the result, products are displayed to the user only from the category that belongs to his `User group`.
-
-<details><summary>Result view</summary><p>
-
-![result](https://user-images.githubusercontent.com/7536694/31497775-53d994a4-af60-11e7-8544-90ccdf32f82a.gif) </p></details>
-
-
-# Installation
 Installing the module:
-* Automatically: in VC Manager go to Configuration -> Modules -> Catalog personalization module -> Install
-* Manually: download module zip package from https://github.com/VirtoCommerce/vc-module-catalog-personalization/releases. In VC Manager go to Configuration -> Modules -> Advanced -> upload module package -> Install.
 
-# License
+1. Automatically: in VC Manager go to More -> Modules -> Catalog personalization module -> Install
+1. Manually: download module zip package from https://github.com/VirtoCommerce/vc-module-catalog-personalization/releases. In VC Manager go to More -> Modules -> Advanced -> upload module package -> Install.
+
+## License
 Copyright (c) Virto Solutions LTD.  All rights reserved.
 
 Licensed under the Virto Commerce Open Software License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
