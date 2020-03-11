@@ -57,7 +57,7 @@ The Contacts should be first included into  specific User Groups and then assign
 
 ![Inherit tags](docs/media/screen-inherited-tags.png)
 
-### Assign a User Group to a Price List Assignment
+### Assign User Group to a Price List Assignment
 
 1. Go to More->Pricing Module->select a Price list Assignment and open the Price list Assignments details;
 1. Under 'Add condition' select 'Shopper profile' and then 'User Group contain';
@@ -87,7 +87,7 @@ The Contacts should be first included into  specific User Groups and then assign
 
 ### Tags Propagation Policies
 
-#### Down-tree propagation policy
+#### DownTree propagation policy
 
 When down-tree propagation policy is selected, all products inherit the Tag assigned to the Category.
 In order to apply this type of propagation policy to Catalog categories and products, do the following:
@@ -98,7 +98,7 @@ In order to apply this type of propagation policy to Catalog categories and prod
 
 ![Settings](docs/media/screen-settings.png)
 
-#### Up-Tree Policy Propagation
+#### UpTree Policy Propagation
 
 When the up-tree policy propagation is applied, the Product category will inherit the Product tag, i.e. if a tag assigned to a specific product in the Category, it will be automatically assigned to the Product Category as well.
 
