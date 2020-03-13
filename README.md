@@ -20,16 +20,13 @@ The Contacts should be first included into  specific User Groups and then assign
 ### Create New User Group
 
 1. Go to More->Contacts module-> select a user from the list and open user's details;
-1. Click the 'Edit' of the User Grpups;
-1. In the opened 'Member groups dictionary' enter the new User Group name and click the 'Add' button;
-1. Save the new user group;
-1. The new user group is now available for selection.
-
+1. Click the 'Edit' of the User Groups;
 ![Add user group](docs/media/screen-add-usergroup.png
 )
-
+1. In the opened 'Member groups dictionary' enter the new User Group name and click the 'Add' button;
+1. Save the new user group;
 ![User group added](docs/media/screen-usergroup-added.png)
-
+1. The new user group is now available for selection.
 ![User group available](docs/media/screen-usergroup-available.png)
 
 ### Assign User Group to Contact
@@ -51,7 +48,7 @@ The Contacts should be first included into  specific User Groups and then assign
 1. Save the changes;
 1. Open the Category;
 1. Select a product and click the 'Tags' widget;
-1. The tag assigned to the Category will be displayed under the 'Inherited tag'. All Category products will inherit the tag assigned to the Category.
+1. The tag assigned to the Category will be displayed under the 'Inherited tag'. All Category products will inherit the tag assigned to the Category in case of DownTree propagation.
 
 ![Assign tag to category](docs/media/screen-assign-tags.png)
 
@@ -61,7 +58,7 @@ The Contacts should be first included into  specific User Groups and then assign
 
 1. Go to More->Pricing Module->select a Price list Assignment and open the Price list Assignments details;
 1. Under 'Add condition' select 'Shopper profile' and then 'User Group contain';
-1. Enter the User Group name into the correspondent field;
+1. Enter the User Group name into the corresponding field;
 1. Save the changes.
 
 ![Assign user group to pricelist](docs/media/screen-assign-usergroup-to-pricelist.png)
@@ -71,7 +68,7 @@ The Contacts should be first included into  specific User Groups and then assign
 1. Go to More-Marketing module->Promotions;
 1. Select a Promotion and open the promotion details blade;
 1. Under 'Add user group' select 'User group contains';
-1. Enter the user group name into the correspondent field;
+1. Enter the user group name into the corresponding field;
 1. Save the changes;
 1. The assigned user group will be applied to the selected promotion.
 
@@ -89,7 +86,7 @@ The Contacts should be first included into  specific User Groups and then assign
 
 #### DownTree propagation policy
 
-When down-tree propagation policy is selected, all products inherit the Tag assigned to the Category.
+When down-tree propagation policy is selected, all products inherit the Tag assigned to the parent categories.
 In order to apply this type of propagation policy to Catalog categories and products, do the following:
 
 1. Go to Settings->Personalization->General;
@@ -100,7 +97,7 @@ In order to apply this type of propagation policy to Catalog categories and prod
 
 #### UpTree Policy Propagation
 
-When the up-tree policy propagation is applied, the Product category will inherit the Product tag, i.e. if a tag assigned to a specific product in the Category, it will be automatically assigned to the Product Category as well.
+When the up-tree policy propagation is applied, the Product category will inherit the Product tag, i.e. if a tag assigned to a specific product in the Category, it will be propagated to the Product Category as well.
 
 In order to apply this type of propagation policy to Catalog categories and products, do the following:
 
@@ -112,7 +109,7 @@ In order to apply this type of propagation policy to Catalog categories and prod
 
 #### Synchronize outlines
 
-The 'Synchronize outlines' function works for UpTree policy propagation and helps assign tags automatically from product to all product parents. The synchronization is based on the scheduled job.
+The 'Synchronize outlines' function works for UpTree policy propagation and helps propagate tags automatically from product to all product parents. The synchronization is based on the scheduled job.
 
 ![Synchronize outline](docs/media/screen-synchronize-outlines.png)
 
