@@ -86,7 +86,7 @@ The Contacts should be first included into a specific User Groups and then the c
 
 When down-tree propagation policy is selected, all products inherit the Tag propagated to the parent categories.
 
-When the up-tree policy propagation is applied, the Product category will inherit the Product tag, i.e. if a tag propagated to a specific product in the Category, it will be propagated to the Product Category as well.
+When the up-tree policy propagation is applied, the Product category will inherit the Product tag, i.e. if a tag is assigned to a specific product in the Category, it will be propagated to the Product Category as well.
 
 In order to apply one of the policies you should go through the following steps:
 
