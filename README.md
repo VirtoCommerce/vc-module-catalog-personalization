@@ -2,7 +2,7 @@
 
 The main concept of VC Personalization module is to personalize the issuing of catalog, price lists and marketing actions using Tags and User Groups.
 
-The Contacts should be first included into  specific User Groups and then assign  catalogs, price lists or promotions to this UG.
+The Contacts should be first included into a specific User Groups and then the catalogs, price lists or promotions should be assigned to this UG.
 
 ## Key features
 
