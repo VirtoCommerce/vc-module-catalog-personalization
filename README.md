@@ -7,7 +7,7 @@ The Contacts should be first included into  specific User Groups and then assign
 ## Key features
 
 1. Control the visibility of catalog objects such as Product and Categories, through manual tagging of these objects with special property `Tags` which can contain multiple predefined values which also may be defined for customer profile
-1. Inheritance `Tags` between catalogs objects depend on catalog taxonomy (categories inherit this property from parent catalog or category, products inherit this property from parent category)
+1. Inheritance `Tags` between catalogs objects depend on catalog taxonomy;
 1. Allow using `User groups` from customer profile to products or categories filtration in the storefront search
 1. Different policies for `Tags` propagation in catalog objects hierarchy:
     1. `UpTree` propagate the tags from descendants to parents up the hierarchy
