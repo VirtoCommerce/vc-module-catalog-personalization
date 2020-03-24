@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model.Search;
@@ -48,7 +49,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                     {
                         repository.DisableChangesTracking();
 
-                        var query = repository.TaggedItems;
+                        IQueryable<TaggedItemEntity> query = repository.TaggedItems.Include(x => x.Tags);
 
                         if (!criteria.EntityIds.IsNullOrEmpty())
                         {
@@ -172,7 +173,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
 
                 foreach (var taggedItem in result)
                 {
-                    var entities = await _taggedEntitiesServiceFactory.Create(taggedItem.EntityType).GetEntitiesByIdsAsync(new[] {taggedItem.EntityId});
+                    var entities = await _taggedEntitiesServiceFactory.Create(taggedItem.EntityType).GetEntitiesByIdsAsync(new[] { taggedItem.EntityId });
                     var evaluatedItems = await EvaluateEffectiveTags(entities.ToList());
 
                     taggedItem.InheritedTags = evaluatedItems.FirstOrDefault(x => x.EntityId == taggedItem.EntityId)?.InheritedTags;
@@ -183,7 +184,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
 
             if (!entityIdsWithoutAssignedTags.IsNullOrEmpty())
             {
-                var entityTypesWithInheritance = new[] {KnownDocumentTypes.Product, KnownDocumentTypes.Category};
+                var entityTypesWithInheritance = new[] { KnownDocumentTypes.Product, KnownDocumentTypes.Category };
                 var entitiesWithoutAssignedTags = new List<IEntity>();
 
                 foreach (var entityType in entityTypesWithInheritance)

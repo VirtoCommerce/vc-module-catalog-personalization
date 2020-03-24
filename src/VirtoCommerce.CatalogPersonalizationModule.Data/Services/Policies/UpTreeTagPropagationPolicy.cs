@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using VirtoCommerce.CatalogModule.Core.Model;
 using VirtoCommerce.CatalogModule.Core.Model.Search;
 using VirtoCommerce.CatalogModule.Core.Search;
@@ -19,14 +20,14 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
     {
         private readonly Func<IPersonalizationRepository> _repositoryFactory;
         private readonly IListEntrySearchService _listEntrySearchService;
-        
+
         public UpTreeTagPropagationPolicy(
             Func<IPersonalizationRepository> repositoryFactory,
             IListEntrySearchService listEntrySearchService) : base(repositoryFactory)
         {
             _repositoryFactory = repositoryFactory;
             _listEntrySearchService = listEntrySearchService;
-            
+
         }
 
         public async Task<Dictionary<string, List<EffectiveTag>>> GetResultingTagsAsync(IEntity[] entities)
@@ -46,9 +47,10 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                 repository.DisableChangesTracking();
 
                 //Loading own tags for given entities
-                var taggedItemIds = repository.TaggedItems.Where(x => entitiesIds.Contains(x.ObjectId))
-                                                          .Select(x => x.Id)
-                                                          .ToArray();
+                var taggedItemIds = repository.TaggedItems
+                    .Where(x => entitiesIds.Contains(x.ObjectId))
+                    .Select(x => x.Id)
+                    .ToArray();
 
                 var taggedItems = await GetTaggedItemsByIdsAsync(taggedItemIds);
                 foreach (var taggedItem in taggedItems)
@@ -63,11 +65,18 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                         var outlines = category.Outlines.Select(x => x.ToString())
                                                    .Distinct(StringComparer.OrdinalIgnoreCase)
                                                    .ToArray();
+                        var outlinesString = string.Join(',', outlines);
                         //load all descendants tag items for this category. Use for this the stored outlines
-                        taggedItemIds = repository.TaggedItemOutlines.Where(i => outlines.Any(o => i.Outline.StartsWith(o)))
-                                                                       .Select(i => i.TaggedItem.Id)
-                                                                       .Distinct()
-                                                                       .ToArray();
+                        var taggedItemOutlines = await repository.TaggedItemOutlines
+                            // Line below is ".Where(x => outlines.Any(o => x.Outline.StartsWith(o)))" properly translated into SQL.
+                            // It could not be translated to SQL query by EF Core 3.1 (and before in EF Core 2.2 and in EF6, but was executed in memory without exception).
+                            // Using SQL allows to avoid execution in memory
+                            .FromSqlInterpolated($"SELECT * FROM [dbo].[TaggedItemOutline] t JOIN STRING_SPLIT({outlinesString}, ',') outline ON t.Outline LIKE outline.value + '%'")
+                            .ToArrayAsync();
+
+                        taggedItemIds = taggedItemOutlines.Select(x => x.TaggedItemId)
+                            .Distinct()
+                            .ToArray();
 
                         taggedItems = await GetTaggedItemsByIdsAsync(taggedItemIds);
                         result[category.Id].AddRange(taggedItems.SelectMany(x => x.Tags.Select(y => EffectiveTag.InheritedTag(y))));
@@ -85,7 +94,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                             WithHidden = true,
                             Take = 0,
                         };
-                        var allCategoryProductsCount = (await _listEntrySearchService.SearchAsync(criteria)).ListEntries.Count;
+                        var allCategoryProductsCount = (await _listEntrySearchService.SearchAsync(criteria)).TotalCount;
                         var allCategoryTaggedProductsCount = taggedItems.Count(x => x.EntityType.EqualsInvariant(KnownDocumentTypes.Product) && x.Tags.Any());
                         if (allCategoryProductsCount > allCategoryTaggedProductsCount)
                         {

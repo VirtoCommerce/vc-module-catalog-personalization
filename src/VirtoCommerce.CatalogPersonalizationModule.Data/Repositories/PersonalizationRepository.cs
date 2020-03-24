@@ -14,15 +14,15 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
 {
     public class PersonalizationRepository : DbContextRepositoryBase<PersonalizationDbContext>, IPersonalizationRepository
     {
-        public PersonalizationRepository(PersonalizationDbContext dbContext): base(dbContext)
+        public PersonalizationRepository(PersonalizationDbContext dbContext) : base(dbContext)
         {
         }
 
-        public IQueryable<TaggedItemEntity> TaggedItems => DbContext.Set<TaggedItemEntity>().Include(x => x.Tags);
+        public DbSet<TaggedItemEntity> TaggedItems => DbContext.Set<TaggedItemEntity>();
 
-        public IQueryable<TagEntity> Tags => DbContext.Set<TagEntity>();
+        public DbSet<TagEntity> Tags => DbContext.Set<TagEntity>();
 
-        public IQueryable<TaggedItemOutlineEntity> TaggedItemOutlines => DbContext.Set<TaggedItemOutlineEntity>();
+        public DbSet<TaggedItemOutlineEntity> TaggedItemOutlines => DbContext.Set<TaggedItemOutlineEntity>();
 
         public async Task<TaggedItemEntity[]> GetTaggedItemsByIdsAsync(string[] ids, string responseGroup)
         {
@@ -31,7 +31,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
             {
                 var taggedItemsGroup = EnumUtility.SafeParse(responseGroup, TaggedItemResponseGroup.Full);
 
-                result = await TaggedItems.Where(x => ids.Contains(x.Id)).ToArrayAsync();
+                result = await TaggedItems.Include(x => x.Tags).Where(x => ids.Contains(x.Id)).ToArrayAsync();
 
                 if (taggedItemsGroup.HasFlag(TaggedItemResponseGroup.WithOutlines))
                 {

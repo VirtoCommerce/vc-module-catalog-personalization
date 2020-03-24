@@ -18,13 +18,6 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Core
         {
             public static class General
             {
-                public static SettingDescriptor ExportImport = new SettingDescriptor
-                {
-                    Name = "CatalogPersonalization.ExportImport",
-                    GroupName = "Personalization|General",
-                    ValueType = SettingValueType.ShortText,
-                };                
-
                 public static SettingDescriptor TagsInheritancePolicy = new SettingDescriptor
                 {
                     Name = "CatalogPersonalization.TagsInheritancePolicy",
@@ -50,7 +43,6 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Core
                     {
                         return new List<SettingDescriptor>
                         {
-                            ExportImport,
                             TagsInheritancePolicy,
                             CronExpression
                         };
