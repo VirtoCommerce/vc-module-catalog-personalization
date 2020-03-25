@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model.Search;
@@ -49,7 +48,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                     {
                         repository.DisableChangesTracking();
 
-                        IQueryable<TaggedItemEntity> query = repository.TaggedItems.Include(x => x.Tags);
+                        var query = repository.TaggedItems;
 
                         if (!criteria.EntityIds.IsNullOrEmpty())
                         {

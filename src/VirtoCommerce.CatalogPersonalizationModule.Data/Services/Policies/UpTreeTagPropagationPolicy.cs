@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using VirtoCommerce.CatalogModule.Core.Model;
 using VirtoCommerce.CatalogModule.Core.Model.Search;
 using VirtoCommerce.CatalogModule.Core.Search;
@@ -32,10 +31,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
 
         public async Task<Dictionary<string, List<EffectiveTag>>> GetResultingTagsAsync(IEntity[] entities)
         {
-            if (entities == null)
-            {
-                throw new ArgumentNullException(nameof(entities));
-            }
+            EnsureParamsValid(entities);
 
             var result = entities.ToDictionary(x => x.Id, x => new List<EffectiveTag>());
 
@@ -65,14 +61,8 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                         var outlines = category.Outlines.Select(x => x.ToString())
                                                    .Distinct(StringComparer.OrdinalIgnoreCase)
                                                    .ToArray();
-                        var outlinesString = string.Join(',', outlines);
                         //load all descendants tag items for this category. Use for this the stored outlines
-                        var taggedItemOutlines = await repository.TaggedItemOutlines
-                            // Line below is ".Where(x => outlines.Any(o => x.Outline.StartsWith(o)))" properly translated into SQL.
-                            // It could not be translated to SQL query by EF Core 3.1 (and before in EF Core 2.2 and in EF6, but was executed in memory without exception).
-                            // Using SQL allows to avoid execution in memory
-                            .FromSqlInterpolated($"SELECT * FROM [dbo].[TaggedItemOutline] t JOIN STRING_SPLIT({outlinesString}, ',') outline ON t.Outline LIKE outline.value + '%'")
-                            .ToArrayAsync();
+                        var taggedItemOutlines = await repository.GetTaggedItemOutlinesInsideOutlinesAsync(outlines);
 
                         taggedItemIds = taggedItemOutlines.Select(x => x.TaggedItemId)
                             .Distinct()
@@ -107,6 +97,14 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                 }
             }
             return result;
+        }
+
+        private static void EnsureParamsValid(IEntity[] entities)
+        {
+            if (entities == null)
+            {
+                throw new ArgumentNullException(nameof(entities));
+            }
         }
     }
 }
