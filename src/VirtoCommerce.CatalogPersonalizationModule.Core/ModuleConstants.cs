@@ -3,14 +3,14 @@ using VirtoCommerce.Platform.Core.Settings;
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Core
 {
-    public class ModuleConstants
+    public static class ModuleConstants
     {
         public static class Security
         {
             public static class Permissions
             {
                 public const string Update = "personalization:update";
-                public static string[] AllPermissions = { Update };
+                public static readonly string[] AllPermissions = { Update };
             }
         }
 
@@ -18,14 +18,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Core
         {
             public static class General
             {
-                public static SettingDescriptor ExportImport = new SettingDescriptor
-                {
-                    Name = "CatalogPersonalization.ExportImport",
-                    GroupName = "Personalization|General",
-                    ValueType = SettingValueType.ShortText,
-                };                
-
-                public static SettingDescriptor TagsInheritancePolicy = new SettingDescriptor
+                public readonly static SettingDescriptor TagsInheritancePolicy = new SettingDescriptor
                 {
                     Name = "CatalogPersonalization.TagsInheritancePolicy",
                     GroupName = "Personalization|General",
@@ -35,7 +28,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Core
                     RestartRequired = true
                 };
 
-                public static SettingDescriptor CronExpression = new SettingDescriptor
+                public readonly static SettingDescriptor CronExpression = new SettingDescriptor
                 {
                     Name = "CatalogPersonalization.CronExpression",
                     GroupName = "Personalization|General",
@@ -50,7 +43,6 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Core
                     {
                         return new List<SettingDescriptor>
                         {
-                            ExportImport,
                             TagsInheritancePolicy,
                             CronExpression
                         };

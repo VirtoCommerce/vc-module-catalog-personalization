@@ -13,5 +13,6 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
 
         Task<TaggedItemEntity[]> GetTaggedItemsByIdsAsync(string[] ids, string responseGroup);
         Task DeleteTaggedItemsAsync(string[] ids);
+        Task<TaggedItemOutlineEntity[]> GetTaggedItemOutlinesInsideOutlinesAsync(string[] outlines);
     }
 }

@@ -19,22 +19,19 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
     {
         private readonly Func<IPersonalizationRepository> _repositoryFactory;
         private readonly IListEntrySearchService _listEntrySearchService;
-        
+
         public UpTreeTagPropagationPolicy(
             Func<IPersonalizationRepository> repositoryFactory,
             IListEntrySearchService listEntrySearchService) : base(repositoryFactory)
         {
             _repositoryFactory = repositoryFactory;
             _listEntrySearchService = listEntrySearchService;
-            
+
         }
 
         public async Task<Dictionary<string, List<EffectiveTag>>> GetResultingTagsAsync(IEntity[] entities)
         {
-            if (entities == null)
-            {
-                throw new ArgumentNullException(nameof(entities));
-            }
+            EnsureParamsValid(entities);
 
             var result = entities.ToDictionary(x => x.Id, x => new List<EffectiveTag>());
 
@@ -46,9 +43,10 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                 repository.DisableChangesTracking();
 
                 //Loading own tags for given entities
-                var taggedItemIds = repository.TaggedItems.Where(x => entitiesIds.Contains(x.ObjectId))
-                                                          .Select(x => x.Id)
-                                                          .ToArray();
+                var taggedItemIds = repository.TaggedItems
+                    .Where(x => entitiesIds.Contains(x.ObjectId))
+                    .Select(x => x.Id)
+                    .ToArray();
 
                 var taggedItems = await GetTaggedItemsByIdsAsync(taggedItemIds);
                 foreach (var taggedItem in taggedItems)
@@ -64,10 +62,11 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                                                    .Distinct(StringComparer.OrdinalIgnoreCase)
                                                    .ToArray();
                         //load all descendants tag items for this category. Use for this the stored outlines
-                        taggedItemIds = repository.TaggedItemOutlines.Where(i => outlines.Any(o => i.Outline.StartsWith(o)))
-                                                                       .Select(i => i.TaggedItem.Id)
-                                                                       .Distinct()
-                                                                       .ToArray();
+                        var taggedItemOutlines = await repository.GetTaggedItemOutlinesInsideOutlinesAsync(outlines);
+
+                        taggedItemIds = taggedItemOutlines.Select(x => x.TaggedItemId)
+                            .Distinct()
+                            .ToArray();
 
                         taggedItems = await GetTaggedItemsByIdsAsync(taggedItemIds);
                         result[category.Id].AddRange(taggedItems.SelectMany(x => x.Tags.Select(y => EffectiveTag.InheritedTag(y))));
@@ -85,7 +84,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                             WithHidden = true,
                             Take = 0,
                         };
-                        var allCategoryProductsCount = (await _listEntrySearchService.SearchAsync(criteria)).ListEntries.Count;
+                        var allCategoryProductsCount = (await _listEntrySearchService.SearchAsync(criteria)).TotalCount;
                         var allCategoryTaggedProductsCount = taggedItems.Count(x => x.EntityType.EqualsInvariant(KnownDocumentTypes.Product) && x.Tags.Any());
                         if (allCategoryProductsCount > allCategoryTaggedProductsCount)
                         {
@@ -98,6 +97,14 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                 }
             }
             return result;
+        }
+
+        private static void EnsureParamsValid(IEntity[] entities)
+        {
+            if (entities == null)
+            {
+                throw new ArgumentNullException(nameof(entities));
+            }
         }
     }
 }

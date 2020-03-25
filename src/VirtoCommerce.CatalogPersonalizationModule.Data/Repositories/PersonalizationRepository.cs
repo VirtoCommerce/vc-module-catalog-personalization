@@ -14,7 +14,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
 {
     public class PersonalizationRepository : DbContextRepositoryBase<PersonalizationDbContext>, IPersonalizationRepository
     {
-        public PersonalizationRepository(PersonalizationDbContext dbContext): base(dbContext)
+        public PersonalizationRepository(PersonalizationDbContext dbContext) : base(dbContext)
         {
         }
 
@@ -35,7 +35,10 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
 
                 if (taggedItemsGroup.HasFlag(TaggedItemResponseGroup.WithOutlines))
                 {
+#pragma warning disable S1481 // Unused local variables should be removed
+                    // Variable needed to avoid possible optimization as result is never used
                     var outlines = await TaggedItemOutlines.Where(x => ids.Contains(x.TaggedItemId)).ToArrayAsync();
+#pragma warning restore S1481 // Unused local variables should be removed
                 }
             }
             return result;
@@ -68,6 +71,19 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
         public async Task DeleteTaggedItemOutlines(string[] ids)
         {
             await ExecuteStoreCommand("DELETE FROM [TaggedItemOutline] WHERE Id IN ({0})", ids);
+        }
+
+        public Task<TaggedItemOutlineEntity[]> GetTaggedItemOutlinesInsideOutlinesAsync(string[] outlines)
+        {
+            var outlinesString = string.Join(',', outlines);
+
+            var result = DbContext.Set<TaggedItemOutlineEntity>()
+                // Line below is ".Where(x => outlines.Any(o => x.Outline.StartsWith(o)))" properly translated into SQL.
+                // It could not be translated to SQL query by EF Core 3.1.
+                .FromSqlInterpolated($"SELECT * FROM [dbo].[TaggedItemOutline] t JOIN STRING_SPLIT({outlinesString}, ',') outline ON t.Outline LIKE outline.value + '%'")
+                .ToArrayAsync();
+
+            return result;
         }
 
         protected class Command
