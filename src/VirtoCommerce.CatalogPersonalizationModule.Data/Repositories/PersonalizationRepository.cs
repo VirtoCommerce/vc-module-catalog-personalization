@@ -31,7 +31,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
             {
                 var taggedItemsGroup = EnumUtility.SafeParse(responseGroup, TaggedItemResponseGroup.Full);
 
-                result = await TaggedItems.Include(x => x.Tags).Where(x => ids.Contains(x.Id)).ToArrayAsync();
+                result = await TaggedItems.Where(x => ids.Contains(x.Id)).ToArrayAsync();
 
                 if (taggedItemsGroup.HasFlag(TaggedItemResponseGroup.WithOutlines))
                 {
