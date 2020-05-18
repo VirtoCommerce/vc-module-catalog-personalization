@@ -24,8 +24,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Core
                     GroupName = "Personalization|General",
                     ValueType = SettingValueType.ShortText,
                     DefaultValue = "DownTree",
-                    AllowedValues = new string[] { "DownTree", "UpTree" },
-                    RestartRequired = true
+                    AllowedValues = new string[] { "DownTree", "UpTree" }
                 };
 
                 public readonly static SettingDescriptor CronExpression = new SettingDescriptor
@@ -33,8 +32,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Core
                     Name = "CatalogPersonalization.CronExpression",
                     GroupName = "Personalization|General",
                     ValueType = SettingValueType.ShortText,
-                    DefaultValue = "0/15 * * * *",
-                    RestartRequired = true
+                    DefaultValue = "0/15 * * * *"
                 };
 
                 public static IEnumerable<SettingDescriptor> AllSettings

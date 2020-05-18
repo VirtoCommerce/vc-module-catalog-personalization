@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Hangfire;
 using Microsoft.AspNetCore.Http;
@@ -9,7 +8,7 @@ using VirtoCommerce.CatalogPersonalizationModule.Core;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
-using VirtoCommerce.CatalogPersonalizationModule.Web.BackgroundJobs;
+using VirtoCommerce.CatalogPersonalizationModule.Data.BackgroundJobs;
 using VirtoCommerce.CatalogPersonalizationModule.Web.Model;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.PushNotifications;

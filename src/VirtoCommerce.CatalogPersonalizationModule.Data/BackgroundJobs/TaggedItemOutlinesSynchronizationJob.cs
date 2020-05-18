@@ -9,7 +9,7 @@ using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
 using VirtoCommerce.Platform.Core.Exceptions;
 using VirtoCommerce.Platform.Core.PushNotifications;
 
-namespace VirtoCommerce.CatalogPersonalizationModule.Web.BackgroundJobs
+namespace VirtoCommerce.CatalogPersonalizationModule.Data.BackgroundJobs
 {
     public class TaggedItemOutlinesSynchronizationJob
     {
