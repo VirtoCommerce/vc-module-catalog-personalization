@@ -44,52 +44,59 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Common
 
         public void ConfigureSearch()
         {
-            // Add tagged items document source to the category or product indexing configuration
             if (_documentIndexingConfigurations != null)
             {
-                //Category indexing
-                var taggedItemCategoryDocumentSource = new IndexDocumentSource
-                {
-                    ChangesProvider = _changesProvider,
-                    DocumentBuilder = _categoryDocumentBuilder
-                };
-                foreach (var configuration in _documentIndexingConfigurations.Where(c => c.DocumentType == KnownDocumentTypes.Category))
-                {
-                    if (configuration.RelatedSources == null)
-                    {
-                        configuration.RelatedSources = new List<IndexDocumentSource>();
-                    }
+                // Add tagged items document source to category or product indexing configuration
+                ConfigureCategoryIndexing();
+                ConfigureProductIndexing();
+            }
+        }
 
-                    var oldSource = configuration.RelatedSources.FirstOrDefault(x => x.ChangesProvider.GetType() == _changesProvider.GetType() && x.DocumentBuilder.GetType() == _categoryDocumentBuilder.GetType());
-                    if (oldSource != null)
-                    {
-                        configuration.RelatedSources.Remove(oldSource);
-                    }
-
-                    configuration.RelatedSources.Add(taggedItemCategoryDocumentSource);
+        private void ConfigureCategoryIndexing()
+        {
+            var taggedItemCategoryDocumentSource = new IndexDocumentSource
+            {
+                ChangesProvider = _changesProvider,
+                DocumentBuilder = _categoryDocumentBuilder
+            };
+            foreach (var configuration in _documentIndexingConfigurations.Where(c => c.DocumentType == KnownDocumentTypes.Category))
+            {
+                if (configuration.RelatedSources == null)
+                {
+                    configuration.RelatedSources = new List<IndexDocumentSource>();
                 }
 
-                //Product indexing
-                var taggedItemProductDocumentSource = new IndexDocumentSource
+                var oldSource = configuration.RelatedSources.FirstOrDefault(x => x.ChangesProvider.GetType() == _changesProvider.GetType() && x.DocumentBuilder.GetType() == _categoryDocumentBuilder.GetType());
+                if (oldSource != null)
                 {
-                    ChangesProvider = _changesProvider,
-                    DocumentBuilder = _productDocumentBuilder
-                };
-                foreach (var configuration in _documentIndexingConfigurations.Where(c => c.DocumentType == KnownDocumentTypes.Product))
-                {
-                    if (configuration.RelatedSources == null)
-                    {
-                        configuration.RelatedSources = new List<IndexDocumentSource>();
-                    }
-
-                    var oldSource = configuration.RelatedSources.FirstOrDefault(x => x.ChangesProvider.GetType() == _changesProvider.GetType() && x.DocumentBuilder.GetType() == _productDocumentBuilder.GetType());
-                    if (oldSource != null)
-                    {
-                        configuration.RelatedSources.Remove(oldSource);
-                    }
-
-                    configuration.RelatedSources.Add(taggedItemProductDocumentSource);
+                    configuration.RelatedSources.Remove(oldSource);
                 }
+
+                configuration.RelatedSources.Add(taggedItemCategoryDocumentSource);
+            }
+        }
+
+        private void ConfigureProductIndexing()
+        {
+            var taggedItemProductDocumentSource = new IndexDocumentSource
+            {
+                ChangesProvider = _changesProvider,
+                DocumentBuilder = _productDocumentBuilder
+            };
+            foreach (var configuration in _documentIndexingConfigurations.Where(c => c.DocumentType == KnownDocumentTypes.Product))
+            {
+                if (configuration.RelatedSources == null)
+                {
+                    configuration.RelatedSources = new List<IndexDocumentSource>();
+                }
+
+                var oldSource = configuration.RelatedSources.FirstOrDefault(x => x.ChangesProvider.GetType() == _changesProvider.GetType() && x.DocumentBuilder.GetType() == _productDocumentBuilder.GetType());
+                if (oldSource != null)
+                {
+                    configuration.RelatedSources.Remove(oldSource);
+                }
+
+                configuration.RelatedSources.Add(taggedItemProductDocumentSource);
             }
         }
     }
