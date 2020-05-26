@@ -40,11 +40,11 @@
       "CatalogPersonalization": {
         "TagsInheritancePolicy": {
           "description": "DownTree - propagates all tags assigned to categories for all their descendants. UpTree - propagates tags up to hierarchy from descendants to parents",
-          "title": "Selected policy for tags propagation (requires restart)"
+          "title": "Selected policy for tags propagation"
         },
         "CronExpression": {
-          "description": "x minutes use '0/x * * * *', x hourse use '0 */x * * *',  you can set minutes also '15 */x * * *', x days '0 0 */x * *'   ",
-          "title": "Job cron expression for synchronize the outlines of tagged entities. Valid only when the UpTree propagation policy is selected. (requires restart)"
+          "description": "x minutes use '0/x * * * *', x hours use '0 */x * * *',  you can set minutes also '15 */x * * *', x days '0 0 */x * *'   ",
+          "title": "Job cron expression for synchronize the outlines of tagged entities. Valid only when the UpTree propagation policy is selected."
         }
       }
      },

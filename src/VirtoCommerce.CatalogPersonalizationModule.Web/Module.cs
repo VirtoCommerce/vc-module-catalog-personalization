@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,17 +9,20 @@ using Microsoft.Extensions.DependencyInjection;
 using VirtoCommerce.CatalogModule.Core.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Core;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
+using VirtoCommerce.CatalogPersonalizationModule.Data.Common;
+using VirtoCommerce.CatalogPersonalizationModule.Data.Handlers;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Repositories;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Search.Indexing;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Services;
-using VirtoCommerce.CatalogPersonalizationModule.Web.BackgroundJobs;
 using VirtoCommerce.CatalogPersonalizationModule.Web.ExportImport;
+using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
+using VirtoCommerce.Platform.Core.Settings.Events;
 using VirtoCommerce.Platform.Data.Extensions;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
@@ -35,7 +36,6 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
 
         public void Initialize(IServiceCollection serviceCollection)
         {
-
             var configuration = serviceCollection.BuildServiceProvider().GetRequiredService<IConfiguration>();
             serviceCollection.AddTransient<IPersonalizationRepository, PersonalizationRepository>();
             var connectionString = configuration.GetConnectionString("VirtoCommerce");
@@ -50,17 +50,16 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
             serviceCollection.AddTransient<ProductSearchUserGroupsRequestBuilder>();
             serviceCollection.AddTransient<CategorySearchUserGroupsRequestBuilder>();
 
-            serviceCollection.AddSingleton<TaggedItemIndexChangesProvider>();
-            serviceCollection.AddSingleton<ProductTaggedItemDocumentBuilder>();
-            serviceCollection.AddSingleton<CategoryTaggedItemDocumentBuilder>();
+            serviceCollection.AddTransient<TaggedItemIndexChangesProvider>();
+            serviceCollection.AddTransient<ProductTaggedItemDocumentBuilder>();
+            serviceCollection.AddTransient<CategoryTaggedItemDocumentBuilder>();
 
-            serviceCollection.AddSingleton<PersonalizationExportImport>();
+            serviceCollection.AddTransient<PersonalizationExportImport>();
 
             serviceCollection.AddTransient<ITagPropagationPolicy>(provider =>
             {
                 var settingsManager = provider.GetService<ISettingsManager>();
                 var repositoryFactory = provider.GetService<Func<IPersonalizationRepository>>();
-                var listEntrySearchService = provider.GetService<IListEntrySearchService>();
 
                 var tagsInheritancePolicy = settingsManager.GetValue(ModuleConstants.Settings.General.TagsInheritancePolicy.Name, "DownTree");
                 if (tagsInheritancePolicy.EqualsInvariant("DownTree"))
@@ -69,9 +68,13 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
                 }
                 else
                 {
+                    var listEntrySearchService = provider.GetService<IListEntrySearchService>();
                     return new UpTreeTagPropagationPolicy(repositoryFactory, listEntrySearchService);
                 }
             });
+
+            serviceCollection.AddTransient<ObjectSettingEntryChangedEventHandler>();
+            serviceCollection.AddTransient<ModuleConfigurator>();
         }
 
         public void PostInitialize(IApplicationBuilder appBuilder)
@@ -84,58 +87,15 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
             var permissionsProvider = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
             permissionsProvider.RegisterPermissions(ModuleConstants.Security.Permissions.AllPermissions.Select(x => new Permission { GroupName = "Catalog Personalization", Name = x }).ToArray());
 
-            var settingManager = appBuilder.ApplicationServices.GetRequiredService<ISettingsManager>();
+            //Subscribe for Orders Synchronization job configuration changes
+            var inProcessBus = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
+            inProcessBus.RegisterHandler<ObjectSettingChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<ObjectSettingEntryChangedEventHandler>().Handle(message));
 
-            var tagsInheritancePolicy = settingManager.GetValue(ModuleConstants.Settings.General.TagsInheritancePolicy.Name, "DownTree");
-            if (tagsInheritancePolicy.EqualsInvariant("UpTree"))
-            {
-                var cronExpression = settingManager.GetValue(ModuleConstants.Settings.General.CronExpression.Name, "0/15 * * * *");
-                RecurringJob.AddOrUpdate<TaggedItemOutlinesSynchronizationJob>(TaggedItemOutlinesSynchronizationJob.JobId, x => x.Run(), cronExpression);
-            }
-            else
-            {
-                RecurringJob.RemoveIfExists(TaggedItemOutlinesSynchronizationJob.JobId);
-            }
+            //Schedule periodic OutlinesSynchronizationJob job
+            var moduleConfigurator = appBuilder.ApplicationServices.GetService<ModuleConfigurator>();
+            moduleConfigurator.ConfigureOutlinesSynchronizationJob().GetAwaiter().GetResult();
 
-            #region Search
-
-            // Add tagged items document source to the category or product indexing configuration
-            var documentIndexingConfigurations = appBuilder.ApplicationServices.GetRequiredService<IEnumerable<IndexDocumentConfiguration>>();
-            if (documentIndexingConfigurations != null)
-            {
-                //Category indexing
-                var taggedItemCategoryDocumentSource = new IndexDocumentSource
-                {
-                    ChangesProvider = appBuilder.ApplicationServices.GetRequiredService<TaggedItemIndexChangesProvider>(),
-                    DocumentBuilder = appBuilder.ApplicationServices.GetRequiredService<CategoryTaggedItemDocumentBuilder>()
-                };
-                foreach (var configuration in documentIndexingConfigurations.Where(c => c.DocumentType == KnownDocumentTypes.Category))
-                {
-                    if (configuration.RelatedSources == null)
-                    {
-                        configuration.RelatedSources = new List<IndexDocumentSource>();
-                    }
-
-                    configuration.RelatedSources.Add(taggedItemCategoryDocumentSource);
-                }
-
-                //Product indexing
-                var taggedItemProductDocumentSource = new IndexDocumentSource
-                {
-                    ChangesProvider = appBuilder.ApplicationServices.GetRequiredService<TaggedItemIndexChangesProvider>(),
-                    DocumentBuilder = appBuilder.ApplicationServices.GetRequiredService<ProductTaggedItemDocumentBuilder>()
-                };
-                foreach (var configuration in documentIndexingConfigurations.Where(c => c.DocumentType == KnownDocumentTypes.Product))
-                {
-                    if (configuration.RelatedSources == null)
-                    {
-                        configuration.RelatedSources = new List<IndexDocumentSource>();
-                    }
-
-                    configuration.RelatedSources.Add(taggedItemProductDocumentSource);
-                }
-            }
-            #endregion
+            moduleConfigurator.ConfigureSearch();
 
             using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
             {
@@ -153,7 +113,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
 
         public void Uninstall()
         {
-            throw new NotImplementedException();
+            // Method intentionally left empty.
         }
 
         public async Task ExportAsync(Stream outStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)
