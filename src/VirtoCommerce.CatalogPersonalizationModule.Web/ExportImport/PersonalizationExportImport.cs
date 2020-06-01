@@ -75,17 +75,14 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.ExportImport
             {
                 while (reader.Read())
                 {
-                    if (reader.TokenType == JsonToken.PropertyName)
+                    if (reader.TokenType == JsonToken.PropertyName && reader.Value.ToString() == "TaggedItems")
                     {
-                        if (reader.Value.ToString() == "TaggedItems")
-                        {
-                            await reader.DeserializeJsonArrayWithPagingAsync<TaggedItem>(_serializer, _batchSize,
-                                async items => { await _taggedItemService.SaveChangesAsync(items.ToArray()); }, processedCount =>
-                                {
-                                    progressInfo.Description = $"{processedCount} Tagged items have been imported";
-                                    progressCallback(progressInfo);
-                                }, cancellationToken);
-                        }
+                        await reader.DeserializeJsonArrayWithPagingAsync<TaggedItem>(_serializer, _batchSize,
+                            async items => { await _taggedItemService.SaveChangesAsync(items.ToArray()); }, processedCount =>
+                            {
+                                progressInfo.Description = $"{processedCount} Tagged items have been imported";
+                                progressCallback(progressInfo);
+                            }, cancellationToken);
                     }
                 }
             }
