@@ -3,6 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using VirtoCommerce.CatalogModule.Core.Model;
+using VirtoCommerce.CatalogModule.Core.Model.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
@@ -36,27 +38,16 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.ExportImport
             using (var writer = new JsonTextWriter(sw))
             {
                 await writer.WriteStartObjectAsync();
-
-                var taggedItems = await _taggedItemSearchService.SearchTaggedItemsAsync(new TaggedItemSearchCriteria {Take = int.MaxValue});
-                progressInfo.Description = $"{taggedItems.TotalCount} tagged items loading...";
-                progressCallback(progressInfo);
-
-                await writer.WritePropertyNameAsync("TaggedItemsTotalCount");
-                await writer.WriteValueAsync(taggedItems.TotalCount);
-
                 await writer.WritePropertyNameAsync("TaggedItems");
-                await writer.WriteStartArrayAsync();
 
-                foreach (var taggedItem in taggedItems.Results)
-                {
-                    _serializer.Serialize(writer, taggedItem);
-                }
+                await writer.SerializeJsonArrayWithPagingAsync(_serializer, _batchSize, async (skip, take) =>
+                        (GenericSearchResult<TaggedItem>)await _taggedItemSearchService.SearchTaggedItemsAsync(new TaggedItemSearchCriteria { Skip = skip, Take = take })
+                    , (processedCount, totalCount) =>
+                    {
+                        progressInfo.Description = $"{ processedCount } of { totalCount } tagged items have been exported";
+                        progressCallback(progressInfo);
+                    }, cancellationToken);
 
-                await writer.FlushAsync();
-                progressInfo.Description = $"{taggedItems.TotalCount} tagged items exported";
-                progressCallback(progressInfo);
-
-                await writer.WriteEndArrayAsync();
                 await writer.WriteEndObjectAsync();
                 await writer.FlushAsync();
             }
@@ -75,14 +66,19 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.ExportImport
             {
                 while (reader.Read())
                 {
-                    if (reader.TokenType == JsonToken.PropertyName && reader.Value.ToString() == "TaggedItems")
+                    if (reader.TokenType == JsonToken.PropertyName )
                     {
-                        await reader.DeserializeJsonArrayWithPagingAsync<TaggedItem>(_serializer, _batchSize,
-                            async items => { await _taggedItemService.SaveChangesAsync(items.ToArray()); }, processedCount =>
+                        if (reader.Value.ToString() == "TaggedItems")
+                        {
+                            await reader.DeserializeJsonArrayWithPagingAsync<TaggedItem>(_serializer, _batchSize, async items =>
+                            {
+                                await _taggedItemService.SaveChangesAsync(items.ToArray());
+                            }, processedCount =>
                             {
                                 progressInfo.Description = $"{processedCount} Tagged items have been imported";
                                 progressCallback(progressInfo);
                             }, cancellationToken);
+                        }
                     }
                 }
             }
