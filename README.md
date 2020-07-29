@@ -17,7 +17,7 @@ The Contacts should be first included into a specific User Groups and then the c
 
 ## Documentation
 
-1. [Catalog Personilization Document](/docs/index.md)
+1. [Catalog Personalization Document](/docs/index.md)
 1. [View on Github](https://github.com/VirtoCommerce/vc-module-catalog-personalization/tree/dev)
 
 ## Installation
