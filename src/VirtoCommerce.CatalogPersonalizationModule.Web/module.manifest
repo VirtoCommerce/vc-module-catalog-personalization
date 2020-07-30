@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module>
+  <id>VirtoCommerce.CatalogPersonalization</id>
+  <version>3.3.0</version>
+  <version-tag>
+  </version-tag>
+  <platformVersion>3.0.0</platformVersion>
+  <dependencies>
+    <dependency id="VirtoCommerce.Core" version="3.0.0" />
+    <dependency id="VirtoCommerce.Search" version="3.0.0" />
+    <dependency id="VirtoCommerce.Catalog" version="3.0.0" />
+  </dependencies>
+  <title>Catalog personalization module</title>
+  <description>Personalization feature for the products and categories.</description>
+  <authors>
+    <author>Eugeney Tarincev</author>
+    <author>Artyom Androsov</author>
+    <author>Artem Dudarev</author>
+  </authors>
+  <owners>
+    <owner>Virto Commerce</owner>
+  </owners>
+  <projectUrl>https://github.com/VirtoCommerce/vc-module-catalog-personalization</projectUrl>
+  <iconUrl>Modules/$(VirtoCommerce.CatalogPersonalization)/Content/logo.png</iconUrl>
+  <releaseNotes>First version.</releaseNotes>
+  <copyright>Copyright В© 2011-2012 Virto Commerce. All rights reserved</copyright>
+  <tags>catalog personalization products categories</tags>
+  <assemblyFile>VirtoCommerce.CatalogPersonalizationModule.Web.dll</assemblyFile>
+  <moduleType>VirtoCommerce.CatalogPersonalizationModule.Web.Module, VirtoCommerce.CatalogPersonalizationModule.Web</moduleType>
+</module>
