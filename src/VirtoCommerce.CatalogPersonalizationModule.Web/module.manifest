@@ -23,7 +23,7 @@
   <projectUrl>https://github.com/VirtoCommerce/vc-module-catalog-personalization</projectUrl>
   <iconUrl>Modules/$(VirtoCommerce.CatalogPersonalization)/Content/logo.png</iconUrl>
   <releaseNotes>First version.</releaseNotes>
-  <copyright>Copyright В© 2011-2012 Virto Commerce. All rights reserved</copyright>
+  <copyright>Copyright © 2011-2012 Virto Commerce. All rights reserved</copyright>
   <tags>catalog personalization products categories</tags>
   <assemblyFile>VirtoCommerce.CatalogPersonalizationModule.Web.dll</assemblyFile>
   <moduleType>VirtoCommerce.CatalogPersonalizationModule.Web.Module, VirtoCommerce.CatalogPersonalizationModule.Web</moduleType>
