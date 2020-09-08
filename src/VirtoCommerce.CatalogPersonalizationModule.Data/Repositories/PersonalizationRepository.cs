@@ -80,7 +80,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
             var result = DbContext.Set<TaggedItemOutlineEntity>()
                 // Line below is ".Where(x => outlines.Any(o => x.Outline.StartsWith(o)))" properly translated into SQL.
                 // It could not be translated to SQL query by EF Core 3.1.
-                .FromSqlInterpolated($"SELECT * FROM [dbo].[TaggedItemOutline] t JOIN STRING_SPLIT({outlinesString}, ',') outline ON t.Outline LIKE outline.value + '%'")
+                .FromSqlInterpolated($"SELECT * FROM [TaggedItemOutline] t JOIN STRING_SPLIT({outlinesString}, ',') outline ON t.Outline LIKE outline.value + '%'")
                 .ToArrayAsync();
 
             return result;
