@@ -28,9 +28,6 @@ angular.module(moduleName, [])
             isVisible: function (blade) { return !blade.isNew; }
         };
 
-        //Catalog properties blade
-        widgetService.registerWidget(tagsWidget, 'catalogDetail');
-
         //Category properties blade
         widgetService.registerWidget(tagsWidget, 'categoryDetail');
         
