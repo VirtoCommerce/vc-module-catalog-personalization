@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Hangfire;
 using Microsoft.AspNetCore.Http;
@@ -92,6 +91,26 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> UpdateTaggedItem([FromBody] TaggedItem taggedItem)
         {
+            // VP-4690: Prevent creation of 2 taggedItem for one entity in case of parallel creation by double checking for tagged item existence before the save
+            if (taggedItem.IsTransient())
+            {
+                var criteria = new TaggedItemSearchCriteria
+                {
+                    EntityId = taggedItem.EntityId,
+                    EntityType = taggedItem.EntityType,
+                    Take = 1,
+                    ResponseGroup = TaggedItemResponseGroup.Info.ToString()
+                };
+
+                var taggedItemAlreadyExists = (await _searchService.SearchTaggedItemsAsync(criteria)).TotalCount > 0;
+
+                if (taggedItemAlreadyExists)
+                {
+                    throw new InvalidOperationException($"Tagged item for the entity (id:\"{taggedItem.EntityId}\") already exsits." +
+                        $" Operation aborted due to possible changes loss by concurrent updates. Please refresh the entity and try again.");
+                }
+            }
+
             await _taggedItemService.SaveChangesAsync(new[] { taggedItem });
             await _taggedItemOutlineSync.SynchronizeOutlinesAsync(new[] { taggedItem });
             return NoContent();
@@ -147,7 +166,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         [HttpPost]
         [Route("outlines/synchronization/cancel")]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> CancelSynchronization([FromBody]TaggedItemOutlinesSynchronizationRequest cancellationRequest)
+        public async Task<ActionResult> CancelSynchronization([FromBody] TaggedItemOutlinesSynchronizationRequest cancellationRequest)
         {
             BackgroundJob.Delete(cancellationRequest.JobId);
             return NoContent();
