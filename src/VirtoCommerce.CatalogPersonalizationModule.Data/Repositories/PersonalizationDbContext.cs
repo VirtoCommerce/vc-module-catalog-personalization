@@ -19,10 +19,13 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
 
             modelBuilder.Entity<TaggedItemEntity>().ToTable("TaggedItem").HasKey(x => x.Id);
             modelBuilder.Entity<TaggedItemEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
+            modelBuilder.Entity<TaggedItemEntity>().HasIndex(x => new { x.ObjectId, x.ObjectType })
+                .IsUnique(true)
+                .HasName("IX_ObjectId_ObjectType");
 
             modelBuilder.Entity<TagEntity>().ToTable("Tag").HasKey(x => x.Id);
             modelBuilder.Entity<TagEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
-            modelBuilder.Entity<TagEntity>().HasOne(m => m.TaggedItem).WithMany(x=>x.Tags).HasForeignKey(x => x.TaggedItemId)
+            modelBuilder.Entity<TagEntity>().HasOne(m => m.TaggedItem).WithMany(x => x.Tags).HasForeignKey(x => x.TaggedItemId)
                 .IsRequired().OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<TaggedItemOutlineEntity>().ToTable("TaggedItemOutline").HasKey(x => x.Id);

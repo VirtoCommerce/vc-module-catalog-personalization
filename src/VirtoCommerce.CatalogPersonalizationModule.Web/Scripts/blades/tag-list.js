@@ -82,9 +82,6 @@ angular.module('virtoCommerce.catalogPersonalizationModule')
                         blade.currentEntity = result;
                         blade.origEntity = angular.copy(blade.currentEntity);
                         blade.isLoading = false;
-                    },
-                    function (error) {
-                        bladeNavigationService.setError('Error ' + error.status, $scope.blade);
                     }
                 );
             }
