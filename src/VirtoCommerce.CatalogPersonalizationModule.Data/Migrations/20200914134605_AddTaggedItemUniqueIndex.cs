@@ -8,7 +8,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
         {
             migrationBuilder.Sql(@"
 	            -- 1. Set Tag.TaggedItemId to one element in all tags belonging to one ObjectId using different tag items
-	            ;WITH TagDuplicates (Id, TaggedItemId, first_tagged_item_id, tagged_item_row_num) AS (
+	            ;WITH TagDuplicates (Id, TaggedItemId, first_tagged_item_id) AS (
 		            SELECT 
 			            t.Id,
 			            t.TaggedItemId,
@@ -17,18 +17,8 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
 					            [ObjectId], 
 					            [ObjectType]
 				            ORDER BY 
-					            [ObjectId], 
-					            [ObjectType],
 					            t.TaggedItemId
-			            ) as first_tagged_item_id,
-			            ROW_NUMBER() OVER (
-				            PARTITION BY 
-					            [ObjectId], 
-					            [ObjectType]
-				            ORDER BY 
-					            [ObjectId], 
-					            [ObjectType]
-			            ) tagged_item_row_num
+			            ) as first_tagged_item_id
 			            FROM [TaggedItem] ti 
 			            INNER JOIN [Tag] t ON ti.Id = t.TaggedItemId
 	            )
@@ -36,7 +26,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
 	            SET 
 		            t.TaggedItemId = TagDuplicates.first_tagged_item_id
 	            FROM Tag t INNER JOIN TagDuplicates ON t.Id = TagDuplicates.Id		
-	            WHERE tagged_item_row_num > 1;
+	            WHERE t.TaggedItemId <> first_tagged_item_id;
 
 	            -- 2. Delete Tag duplicates
 	            ;WITH cte AS (
@@ -48,8 +38,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
 					            Tag, 
 					            TaggedItemId
 				            ORDER BY 
-					            Tag, 
-					            TaggedItemId
+					            [Id]
 			            ) row_num
 			            FROM 
 			            [Tag]
