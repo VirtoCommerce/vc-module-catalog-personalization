@@ -97,7 +97,7 @@ angular.module('virtoCommerce.catalogPersonalizationModule')
             blade.toolbarCommands = [
                 {
                     name: "platform.commands.save",
-                    icon: 'fa fa-save',
+                    icon: 'fas fa-save',
                     executeMethod: $scope.saveChanges,
                     canExecuteMethod: canSave,
                     permission: blade.updatePermission
@@ -120,7 +120,7 @@ angular.module('virtoCommerce.catalogPersonalizationModule')
                 },
                 {
                     name: "platform.commands.delete",
-                    icon: 'fa fa-trash-o',
+                    icon: 'fas fa-trash-alt',
                     executeMethod: deleteChecked,
                     canExecuteMethod: isItemsChecked
                 }
