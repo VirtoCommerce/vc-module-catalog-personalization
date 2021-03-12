@@ -4,7 +4,7 @@
             <fieldset style="margin-top: 12px;">
                 <legend>{{ 'personalization.blades.tag-list.labels.select-tags' | translate }}</legend>
                 <div class="form-group">
-                    <label class="form-label">{{ 'personalization.blades.tag-list.labels.available-tags' | translate }} <a href="" ng-click="editTagsDictionary()" class="form-edit" va-permission="pricing:read"><em class="form-ico fa fa-pencil"></em></a></label>
+                    <label class="form-label">{{ 'personalization.blades.tag-list.labels.available-tags' | translate }} <a href="" ng-click="editTagsDictionary()" class="form-edit" va-permission="pricing:read"><i class="form-ico fa fa-pencil"></i></a></label>
                     <div class="form-input">
                         <ui-select ng-model="blade.selectedTag" class="head-select">
                             <ui-select-match placeholder="{{ 'personalization.blades.tag-list.labels.select-tags' | translate }}">{{$select.selected}}</ui-select-match>
