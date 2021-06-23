@@ -23,6 +23,8 @@ using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.Extensions;
+using VirtoCommerce.Platform.Hangfire;
+using VirtoCommerce.Platform.Hangfire.Extensions;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
 
@@ -84,18 +86,18 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
             var permissionsProvider = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
             permissionsProvider.RegisterPermissions(ModuleConstants.Security.Permissions.AllPermissions.Select(x => new Permission { GroupName = "Catalog Personalization", Name = x }).ToArray());
 
-            var settingManager = appBuilder.ApplicationServices.GetRequiredService<ISettingsManager>();
+            var recurringJobManager = appBuilder.ApplicationServices.GetService<IRecurringJobManager>();
+            var settingsManager = appBuilder.ApplicationServices.GetService<ISettingsManager>();
 
-            var tagsInheritancePolicy = settingManager.GetValue(ModuleConstants.Settings.General.TagsInheritancePolicy.Name, "DownTree");
-            if (tagsInheritancePolicy.EqualsInvariant("UpTree"))
-            {
-                var cronExpression = settingManager.GetValue(ModuleConstants.Settings.General.CronExpression.Name, "0/15 * * * *");
-                RecurringJob.AddOrUpdate<TaggedItemOutlinesSynchronizationJob>(TaggedItemOutlinesSynchronizationJob.JobId, x => x.Run(), cronExpression);
-            }
-            else
-            {
-                RecurringJob.RemoveIfExists(TaggedItemOutlinesSynchronizationJob.JobId);
-            }
+            recurringJobManager.WatchJobSetting(
+                settingsManager,
+                new SettingCronJobBuilder()
+                    .SetEnabledEvaluator(x => "UpTree".EqualsInvariant((string)x))
+                    .SetEnablerSetting(ModuleConstants.Settings.General.TagsInheritancePolicy)
+                    .SetCronSetting(ModuleConstants.Settings.General.CronExpression)
+                    .ToJob<TaggedItemOutlinesSynchronizationJob>(x => x.Run())
+                    .Build());
+
 
             #region Search
 

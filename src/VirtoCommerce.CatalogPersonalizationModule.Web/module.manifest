@@ -3,7 +3,7 @@
   <id>VirtoCommerce.CatalogPersonalization</id>
   <version>3.10.0</version>
   <version-tag />
-  <platformVersion>3.0.0</platformVersion>
+  <platformVersion>3.66.0-alpha.11988</platformVersion>
   <title>Catalog personalization module</title>
   <description>Personalization feature for the products and categories.</description>
   <authors>
