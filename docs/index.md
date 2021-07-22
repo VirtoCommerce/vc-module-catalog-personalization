@@ -21,13 +21,12 @@ The Contacts should be first included into a specific User Groups and then the c
 
 1. Go to More->Contacts module-> select a user from the list and open user's details;
 1. Click the 'Edit' of the User Groups;
-![Add user group](docs/media/screen-add-usergroup.png
-)
+![Add user group](media/screen-add-usergroup.png)
 1. In the opened 'Member groups dictionary' enter the new User Group name and click the 'Add' button;
 1. Save the new user group;
 ![User group added](media/screen-usergroup-added.png)
 1. The new user group is now available for selection.
-![User group available](docs/media/screen-usergroup-available.png)
+![User group available](media/screen-usergroup-available.png)
 
 ### Assign User Group to Contact
 
