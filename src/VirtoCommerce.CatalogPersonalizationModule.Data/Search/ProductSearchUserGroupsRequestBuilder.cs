@@ -24,9 +24,13 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Search
             if (criteria.UserGroups != null)
             {
                 var userGroups = criteria.UserGroups.ToList();
-                userGroups.Add(Constants.UserGroupsAnyValue);
 
-                result.Add(new TermFilter {FieldName = Constants.UserGroupsFieldName, Values = userGroups});
+                if (!userGroups.Any())
+                {
+                    userGroups.Add(Constants.UserGroupsAnyValue);
+                }
+
+                result.Add(new TermFilter { FieldName = Constants.UserGroupsFieldName, Values = userGroups });
             }
 
             return result;
