@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <id>VirtoCommerce.CatalogPersonalization</id>
-  <version>3.12.0</version>
+  <version>3.200.0</version>
   <version-tag />
-  <platformVersion>3.66.0</platformVersion>
+  <platformVersion>3.200.0</platformVersion>
   <title>Catalog personalization module</title>
   <description>Personalization feature for the products and categories.</description>
   <authors>
@@ -23,9 +23,9 @@
   <assemblyFile>VirtoCommerce.CatalogPersonalizationModule.Web.dll</assemblyFile>
   <moduleType>VirtoCommerce.CatalogPersonalizationModule.Web.Module, VirtoCommerce.CatalogPersonalizationModule.Web</moduleType>
   <dependencies>
-    <dependency id="VirtoCommerce.Core" version="3.0.0" />
-    <dependency id="VirtoCommerce.Search" version="3.0.0" />
-    <dependency id="VirtoCommerce.Catalog" version="3.0.0" />
+    <dependency id="VirtoCommerce.Core" version="3.200.0" />
+    <dependency id="VirtoCommerce.Search" version="3.200.0" />
+    <dependency id="VirtoCommerce.Catalog" version="3.200.0" />
   </dependencies>
   <useFullTypeNameInSwagger>false</useFullTypeNameInSwagger>
 </module>
