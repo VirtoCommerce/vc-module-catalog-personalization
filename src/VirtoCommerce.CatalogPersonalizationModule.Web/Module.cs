@@ -45,7 +45,8 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
             });
 
             serviceCollection.AddTransient<Func<IPersonalizationRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<IPersonalizationRepository>());
-
+            
+            serviceCollection.AddTransient<IPersonalizationRepository, PersonalizationRepository>();
             serviceCollection.AddTransient<ITaggedItemService, PersonalizationService>();
             serviceCollection.AddTransient<ITaggedItemSearchService, PersonalizationService>();
             serviceCollection.AddTransient<ITaggedEntitiesServiceFactory, TaggedEntitiesServiceFactory>();
