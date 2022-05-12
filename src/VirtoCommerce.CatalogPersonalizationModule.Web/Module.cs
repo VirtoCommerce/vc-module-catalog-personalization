@@ -38,12 +38,15 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
         public void Initialize(IServiceCollection serviceCollection)
         {
 
-            var configuration = serviceCollection.BuildServiceProvider().GetRequiredService<IConfiguration>();
-            serviceCollection.AddTransient<IPersonalizationRepository, PersonalizationRepository>();
-            var connectionString = configuration.GetConnectionString("VirtoCommerce");
-            serviceCollection.AddDbContext<PersonalizationDbContext>(options => options.UseSqlServer(connectionString));
-            serviceCollection.AddTransient<Func<IPersonalizationRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<IPersonalizationRepository>());
+            serviceCollection.AddDbContext<PersonalizationDbContext>((provider, options) =>
+            {
+                var configuration = provider.GetRequiredService<IConfiguration>();
+                options.UseSqlServer(configuration.GetConnectionString(ModuleInfo.Id) ?? configuration.GetConnectionString("VirtoCommerce"));
+            });
 
+            serviceCollection.AddTransient<Func<IPersonalizationRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<IPersonalizationRepository>());
+            
+            serviceCollection.AddTransient<IPersonalizationRepository, PersonalizationRepository>();
             serviceCollection.AddTransient<ITaggedItemService, PersonalizationService>();
             serviceCollection.AddTransient<ITaggedItemSearchService, PersonalizationService>();
             serviceCollection.AddTransient<ITaggedEntitiesServiceFactory, TaggedEntitiesServiceFactory>();
