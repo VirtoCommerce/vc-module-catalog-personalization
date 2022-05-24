@@ -26,6 +26,6 @@ angular.module('virtoCommerce.catalogPersonalizationModule')
         }];
 
         blade.title = blade.notification.title;
-        blade.headIcon = 'fa-file-text';
+        blade.headIcon = 'fa fa-file-text';
         blade.isLoading = false;
     }]);
