@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Model;
@@ -46,50 +44,17 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
 
         public async Task DeleteTaggedItemsAsync(string[] ids)
         {
-            await ExecuteStoreCommand("DELETE FROM TaggedItem WHERE Id IN ({0})", ids);
-        }
+            var items = await GetTaggedItemsByIdsAsync(ids, "None");
 
-        protected virtual async Task ExecuteStoreCommand(string commandTemplate, IEnumerable<string> parameterValues)
-        {
-            var command = CreateCommand(commandTemplate, parameterValues);
-            await DbContext.Database.ExecuteSqlRawAsync(command.Text, command.Parameters);
-        }
-
-        protected virtual Command CreateCommand(string commandTemplate, IEnumerable<string> parameterValues)
-        {
-            var parameters = parameterValues.Select((v, i) => new SqlParameter($"@p{i}", v)).ToArray();
-            var parameterNames = string.Join(",", parameters.Select(p => p.ParameterName));
-
-            return new Command
+            foreach (var item in items)
             {
-                Text = string.Format(commandTemplate, parameterNames),
-                Parameters = parameters.OfType<object>().ToArray(),
-            };
-        }
-
-
-        public async Task DeleteTaggedItemOutlines(string[] ids)
-        {
-            await ExecuteStoreCommand("DELETE FROM [TaggedItemOutline] WHERE Id IN ({0})", ids);
+                Remove(item);
+            }
         }
 
         public Task<TaggedItemOutlineEntity[]> GetTaggedItemOutlinesInsideOutlinesAsync(string[] outlines)
         {
-            var outlinesString = string.Join(',', outlines);
-
-            var result = DbContext.Set<TaggedItemOutlineEntity>()
-                // Line below is ".Where(x => outlines.Any(o => x.Outline.StartsWith(o)))" properly translated into SQL.
-                // It could not be translated to SQL query by EF Core 3.1.
-                .FromSqlInterpolated($"SELECT * FROM [TaggedItemOutline] t JOIN STRING_SPLIT({outlinesString}, ',') outline ON t.Outline LIKE outline.value + '%'")
-                .ToArrayAsync();
-
-            return result;
-        }
-
-        protected class Command
-        {
-            public string Text { get; set; }
-            public object[] Parameters { get; set; }
+            return TaggedItemOutlines.Where(x => outlines.Any(o => x.Outline.StartsWith(o))).ToArrayAsync();
         }
     }
 }
