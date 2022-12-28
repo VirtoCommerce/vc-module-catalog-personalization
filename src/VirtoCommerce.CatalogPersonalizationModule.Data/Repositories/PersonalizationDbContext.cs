@@ -22,7 +22,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
             modelBuilder.Entity<TaggedItemEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
             modelBuilder.Entity<TaggedItemEntity>().HasIndex(x => new { x.ObjectId, x.ObjectType })
                 .IsUnique(true)
-                .HasDatabaseName("IX_ObjectId_ObjectType");
+                .HasDatabaseName("IX_TaggedItem_ObjectId_ObjectType");
 
             modelBuilder.Entity<TagEntity>().ToTable("Tag").HasKey(x => x.Id);
             modelBuilder.Entity<TagEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
@@ -35,7 +35,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Adding index to Outline column for faster search
-            modelBuilder.Entity<TaggedItemOutlineEntity>().HasIndex(x => x.Outline).IsUnique(false).HasDatabaseName("IX_Outline");
+            modelBuilder.Entity<TaggedItemOutlineEntity>().HasIndex(x => x.Outline).IsUnique(false).HasDatabaseName("IX_TaggedItemOutlineEntity_Outline");
 
             base.OnModelCreating(modelBuilder);
 
