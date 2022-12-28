@@ -54,7 +54,16 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
 
         public Task<TaggedItemOutlineEntity[]> GetTaggedItemOutlinesInsideOutlinesAsync(string[] outlines)
         {
-            return TaggedItemOutlines.Where(x => outlines.Any(o => x.Outline.StartsWith(o))).ToArrayAsync();
+            var predicate = PredicateBuilder.False<TaggedItemOutlineEntity>();
+
+            foreach (var outline in outlines)
+            {
+                predicate = predicate.Or(x => x.Outline.StartsWith(outline));
+            }
+
+            var query = TaggedItemOutlines.Where(predicate);
+
+            return query.ToArrayAsync();
         }
     }
 }
