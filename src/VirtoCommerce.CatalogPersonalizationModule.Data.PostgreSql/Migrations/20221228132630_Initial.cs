@@ -1,9 +1,11 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
+#nullable disable
+
+namespace VirtoCommerce.CatalogPersonalizationModule.Data.PostgreSql.Migrations
 {
-    public partial class InitialCatalogPersonalization : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,14 +13,14 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
                 name: "TaggedItem",
                 columns: table => new
                 {
-                    Id = table.Column<string>(maxLength: 128, nullable: false),
-                    CreatedDate = table.Column<DateTime>(nullable: false),
-                    ModifiedDate = table.Column<DateTime>(nullable: true),
-                    CreatedBy = table.Column<string>(maxLength: 64, nullable: true),
-                    ModifiedBy = table.Column<string>(maxLength: 64, nullable: true),
-                    Label = table.Column<string>(maxLength: 128, nullable: false),
-                    ObjectType = table.Column<string>(maxLength: 128, nullable: false),
-                    ObjectId = table.Column<string>(maxLength: 128, nullable: false)
+                    Id = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    Label = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    ObjectType = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    ObjectId = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ModifiedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -29,9 +31,9 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
                 name: "Tag",
                 columns: table => new
                 {
-                    Id = table.Column<string>(maxLength: 128, nullable: false),
-                    Tag = table.Column<string>(maxLength: 128, nullable: false),
-                    TaggedItemId = table.Column<string>(maxLength: 128, nullable: false)
+                    Id = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    Tag = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    TaggedItemId = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -48,9 +50,9 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
                 name: "TaggedItemOutline",
                 columns: table => new
                 {
-                    Id = table.Column<string>(maxLength: 128, nullable: false),
-                    Outline = table.Column<string>(maxLength: 2048, nullable: false),
-                    TaggedItemId = table.Column<string>(maxLength: 128, nullable: false)
+                    Id = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    Outline = table.Column<string>(type: "character varying(2048)", maxLength: 2048, nullable: false),
+                    TaggedItemId = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -69,14 +71,20 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
                 column: "TaggedItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Outline",
-                table: "TaggedItemOutline",
-                column: "Outline");
+                name: "IX_TaggedItem_ObjectId_ObjectType",
+                table: "TaggedItem",
+                columns: new[] { "ObjectId", "ObjectType" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_TaggedItemOutline_TaggedItemId",
                 table: "TaggedItemOutline",
                 column: "TaggedItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TaggedItemOutlineEntity_Outline",
+                table: "TaggedItemOutline",
+                column: "Outline");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -3,116 +3,121 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Repositories;
 
-namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
+#nullable disable
+
+namespace VirtoCommerce.CatalogPersonalizationModule.Data.SqlServer.Migrations
 {
     [DbContext(typeof(PersonalizationDbContext))]
-    partial class PersonalizationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221228132621_RenameIndex")]
+    partial class RenameIndex
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.2")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("VirtoCommerce.CatalogPersonalizationModule.Data.Model.TagEntity", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Tag")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("TaggedItemId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TaggedItemId");
 
-                    b.ToTable("Tag");
+                    b.ToTable("Tag", (string)null);
                 });
 
             modelBuilder.Entity("VirtoCommerce.CatalogPersonalizationModule.Data.Model.TaggedItemEntity", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(64)")
-                        .HasMaxLength(64);
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Label")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(64)")
-                        .HasMaxLength(64);
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ObjectId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ObjectType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ObjectId", "ObjectType")
                         .IsUnique()
-                        .HasName("IX_ObjectId_ObjectType");
+                        .HasDatabaseName("IX_TaggedItem_ObjectId_ObjectType");
 
-                    b.ToTable("TaggedItem");
+                    b.ToTable("TaggedItem", (string)null);
                 });
 
             modelBuilder.Entity("VirtoCommerce.CatalogPersonalizationModule.Data.Model.TaggedItemOutlineEntity", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Outline")
                         .IsRequired()
-                        .HasColumnType("nvarchar(2048)")
-                        .HasMaxLength(2048);
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
 
                     b.Property<string>("TaggedItemId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Outline")
-                        .HasName("IX_Outline");
+                        .HasDatabaseName("IX_TaggedItemOutlineEntity_Outline");
 
                     b.HasIndex("TaggedItemId");
 
-                    b.ToTable("TaggedItemOutline");
+                    b.ToTable("TaggedItemOutline", (string)null);
                 });
 
             modelBuilder.Entity("VirtoCommerce.CatalogPersonalizationModule.Data.Model.TagEntity", b =>
@@ -122,6 +127,8 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
                         .HasForeignKey("TaggedItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("TaggedItem");
                 });
 
             modelBuilder.Entity("VirtoCommerce.CatalogPersonalizationModule.Data.Model.TaggedItemOutlineEntity", b =>
@@ -131,6 +138,15 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
                         .HasForeignKey("TaggedItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("TaggedItem");
+                });
+
+            modelBuilder.Entity("VirtoCommerce.CatalogPersonalizationModule.Data.Model.TaggedItemEntity", b =>
+                {
+                    b.Navigation("Outlines");
+
+                    b.Navigation("Tags");
                 });
 #pragma warning restore 612, 618
         }

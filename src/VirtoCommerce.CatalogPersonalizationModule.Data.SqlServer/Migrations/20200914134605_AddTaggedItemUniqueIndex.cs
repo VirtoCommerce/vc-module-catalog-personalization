@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
+namespace VirtoCommerce.CatalogPersonalizationModule.Data.SqlServer.Migrations
 {
     public partial class AddTaggedItemUniqueIndex : Migration
     {
