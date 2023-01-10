@@ -11,6 +11,9 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\VirtoCommerce.CatalogPersonalizationModule.Core\VirtoCommerce.CatalogPersonalizationModule.Core.csproj" />
+        <ProjectReference Include="..\VirtoCommerce.CatalogPersonalizationModule.Data.MySql\VirtoCommerce.CatalogPersonalizationModule.Data.MySql.csproj" />
+        <ProjectReference Include="..\VirtoCommerce.CatalogPersonalizationModule.Data.PostgreSql\VirtoCommerce.CatalogPersonalizationModule.Data.PostgreSql.csproj" />
+        <ProjectReference Include="..\VirtoCommerce.CatalogPersonalizationModule.Data.SqlServer\VirtoCommerce.CatalogPersonalizationModule.Data.SqlServer.csproj" />
         <ProjectReference Include="..\VirtoCommerce.CatalogPersonalizationModule.Data\VirtoCommerce.CatalogPersonalizationModule.Data.csproj" />
     </ItemGroup>
 </Project>

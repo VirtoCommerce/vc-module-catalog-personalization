@@ -11,10 +11,13 @@ using Microsoft.Extensions.DependencyInjection;
 using VirtoCommerce.CatalogModule.Core.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Core;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
+using VirtoCommerce.CatalogPersonalizationModule.Data.MySql;
+using VirtoCommerce.CatalogPersonalizationModule.Data.PostgreSql;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Repositories;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Search.Indexing;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Services;
+using VirtoCommerce.CatalogPersonalizationModule.Data.SqlServer;
 using VirtoCommerce.CatalogPersonalizationModule.Web.BackgroundJobs;
 using VirtoCommerce.CatalogPersonalizationModule.Web.ExportImport;
 using VirtoCommerce.Platform.Core.Common;
@@ -30,20 +33,36 @@ using VirtoCommerce.SearchModule.Core.Services;
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Web
 {
-    public class Module : IModule, IExportSupport, IImportSupport
+    public class Module : IModule, IExportSupport, IImportSupport, IHasConfiguration
     {
         private IApplicationBuilder _appBuilder;
         public ManifestModuleInfo ModuleInfo { get; set; }
+        public IConfiguration Configuration { get; set; }
 
         public void Initialize(IServiceCollection serviceCollection)
         {
+            serviceCollection.AddDbContext<PersonalizationDbContext>((provider, options) =>
+            {
+                var databaseProvider = Configuration.GetValue("DatabaseProvider", "SqlServer");
+                var connectionString = Configuration.GetConnectionString(ModuleInfo.Id) ?? Configuration.GetConnectionString("VirtoCommerce");
 
-            var configuration = serviceCollection.BuildServiceProvider().GetRequiredService<IConfiguration>();
-            serviceCollection.AddTransient<IPersonalizationRepository, PersonalizationRepository>();
-            var connectionString = configuration.GetConnectionString("VirtoCommerce");
-            serviceCollection.AddDbContext<PersonalizationDbContext>(options => options.UseSqlServer(connectionString));
+                switch (databaseProvider)
+                {
+                    case "MySql":
+                        options.UseMySqlDatabase(connectionString);
+                        break;
+                    case "PostgreSql":
+                        options.UsePostgreSqlDatabase(connectionString);
+                        break;
+                    default:
+                        options.UseSqlServerDatabase(connectionString);
+                        break;
+                }
+            });
+
             serviceCollection.AddTransient<Func<IPersonalizationRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<IPersonalizationRepository>());
 
+            serviceCollection.AddTransient<IPersonalizationRepository, PersonalizationRepository>();
             serviceCollection.AddTransient<ITaggedItemService, PersonalizationService>();
             serviceCollection.AddTransient<ITaggedItemSearchService, PersonalizationService>();
             serviceCollection.AddTransient<ITaggedEntitiesServiceFactory, TaggedEntitiesServiceFactory>();
@@ -141,9 +160,12 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
 
             using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
             {
+                var databaseProvider = Configuration.GetValue("DatabaseProvider", "SqlServer");
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<PersonalizationDbContext>();
-                dbContext.Database.MigrateIfNotApplied(MigrationName.GetUpdateV2MigrationName(ModuleInfo.Id));
-                dbContext.Database.EnsureCreated();
+                if (databaseProvider == "SqlServer")
+                {
+                    dbContext.Database.MigrateIfNotApplied(MigrationName.GetUpdateV2MigrationName(ModuleInfo.Id));
+                }
                 dbContext.Database.Migrate();
             }
 

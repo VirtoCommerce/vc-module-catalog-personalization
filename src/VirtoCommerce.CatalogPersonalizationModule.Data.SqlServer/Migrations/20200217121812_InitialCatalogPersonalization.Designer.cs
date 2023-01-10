@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Repositories;
 
-namespace VirtoCommerce.CatalogPersonalizationModule.Data.Migrations
+namespace VirtoCommerce.CatalogPersonalizationModule.Data.SqlServer.Migrations
 {
     [DbContext(typeof(PersonalizationDbContext))]
-    [Migration("20000000000000_UpdateCatalogPersonalizationV2")]
-    partial class UpdateCatalogPersonalizationV2
+    [Migration("20200217121812_InitialCatalogPersonalization")]
+    partial class InitialCatalogPersonalization
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
