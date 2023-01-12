@@ -66,7 +66,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.MySql.Migrations
                 {
                     Id = table.Column<string>(type: "varchar(128)", maxLength: 128, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Outline = table.Column<string>(type: "varchar(2048)", maxLength: 2048, nullable: false)
+                    Outline = table.Column<string>(type: "varchar(700)", maxLength: 700, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     TaggedItemId = table.Column<string>(type: "varchar(128)", maxLength: 128, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")

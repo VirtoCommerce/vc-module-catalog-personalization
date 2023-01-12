@@ -11,7 +11,7 @@ using VirtoCommerce.CatalogPersonalizationModule.Data.Repositories;
 namespace VirtoCommerce.CatalogPersonalizationModule.Data.MySql.Migrations
 {
     [DbContext(typeof(PersonalizationDbContext))]
-    [Migration("20221228132638_Initial")]
+    [Migration("20230111170149_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,8 +99,8 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.MySql.Migrations
 
                     b.Property<string>("Outline")
                         .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("varchar(2048)");
+                        .HasMaxLength(700)
+                        .HasColumnType("varchar(700)");
 
                     b.Property<string>("TaggedItemId")
                         .IsRequired()
