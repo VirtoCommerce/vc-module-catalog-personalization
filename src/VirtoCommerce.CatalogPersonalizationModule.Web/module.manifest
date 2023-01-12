@@ -1,31 +1,34 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <id>VirtoCommerce.CatalogPersonalization</id>
-  <version>3.202.0</version>
-  <version-tag />
-  <platformVersion>3.200.0</platformVersion>
-  <title>Catalog personalization module</title>
-  <description>Personalization feature for the products and categories.</description>
-  <authors>
-    <author>Eugeney Tarincev</author>
-    <author>Artyom Androsov</author>
-    <author>Artem Dudarev</author>
-  </authors>
-  <owners>
-    <owner>Virto Commerce</owner>
-  </owners>
-  <projectUrl>https://github.com/VirtoCommerce/vc-module-catalog-personalization</projectUrl>
-  <iconUrl>Modules/$(VirtoCommerce.CatalogPersonalization)/Content/logo.png</iconUrl>
-  <requireLicenseAcceptance>false</requireLicenseAcceptance>
-  <releaseNotes>First version.</releaseNotes>
-  <copyright>Copyright © 2011-2023 Virto Commerce. All rights reserved</copyright>
-  <tags>catalog personalization products categories</tags>
-  <assemblyFile>VirtoCommerce.CatalogPersonalizationModule.Web.dll</assemblyFile>
-  <moduleType>VirtoCommerce.CatalogPersonalizationModule.Web.Module, VirtoCommerce.CatalogPersonalizationModule.Web</moduleType>
-  <dependencies>
-    <dependency id="VirtoCommerce.Core" version="3.200.0" />
-    <dependency id="VirtoCommerce.Search" version="3.200.0" />
-    <dependency id="VirtoCommerce.Catalog" version="3.200.0" />
-  </dependencies>
-  <useFullTypeNameInSwagger>false</useFullTypeNameInSwagger>
+    <id>VirtoCommerce.CatalogPersonalization</id>
+    <version>3.203.0</version>
+    <version-tag />
+    <platformVersion>3.200.0</platformVersion>
+    <title>Catalog personalization module</title>
+    <description>Personalization feature for the products and categories.</description>
+    <authors>
+        <author>Eugeney Tarincev</author>
+        <author>Artyom Androsov</author>
+        <author>Artem Dudarev</author>
+    </authors>
+    <owners>
+        <owner>Virto Commerce</owner>
+    </owners>
+    <projectUrl>https://github.com/VirtoCommerce/vc-module-catalog-personalization</projectUrl>
+    <iconUrl>Modules/$(VirtoCommerce.CatalogPersonalization)/Content/logo.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <releaseNotes>First version.</releaseNotes>
+    <copyright>Copyright © 2011-2023 Virto Commerce. All rights reserved</copyright>
+    <tags>catalog personalization products categories</tags>
+    <assemblyFile>VirtoCommerce.CatalogPersonalizationModule.Web.dll</assemblyFile>
+    <moduleType>VirtoCommerce.CatalogPersonalizationModule.Web.Module, VirtoCommerce.CatalogPersonalizationModule.Web</moduleType>
+    <dependencies>
+        <dependency id="VirtoCommerce.Core" version="3.200.0" />
+        <dependency id="VirtoCommerce.Search" version="3.200.0" />
+        <dependency id="VirtoCommerce.Catalog" version="3.200.0" />
+    </dependencies>
+    <groups>
+        <group>commerce</group>
+    </groups>
+    <useFullTypeNameInSwagger>false</useFullTypeNameInSwagger>
 </module>
