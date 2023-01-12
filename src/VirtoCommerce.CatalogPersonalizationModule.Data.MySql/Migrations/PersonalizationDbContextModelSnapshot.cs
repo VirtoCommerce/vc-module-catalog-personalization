@@ -97,8 +97,8 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.MySql.Migrations
 
                     b.Property<string>("Outline")
                         .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("varchar(2048)");
+                        .HasMaxLength(700)
+                        .HasColumnType("varchar(700)");
 
                     b.Property<string>("TaggedItemId")
                         .IsRequired()
