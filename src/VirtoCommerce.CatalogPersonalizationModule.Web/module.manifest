@@ -4,7 +4,7 @@
   <version>3.205.0</version>
   <version-tag />
   <platformVersion>3.200.0</platformVersion>
-  <title>Catalog personalization module</title>
+  <title>Catalog Personalization</title>
   <description>Personalization feature for the products and categories.</description>
   <authors>
     <author>Eugeney Tarincev</author>
