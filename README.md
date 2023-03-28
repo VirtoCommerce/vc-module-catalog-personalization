@@ -1,46 +1,67 @@
-# Overview
+# Catalog Personalization Module
+The Catalog Personalization Module enables the personalization of catalogs through the use of User Groups.
+This module allows catalog objects such as products and categories to be assigned to User Groups,
+and different policies for User Group propagation in the catalog objects hierarchy can be defined.
 
-[![CI status](https://github.com/VirtoCommerce/vc-module-catalog/workflows/Module%20CI/badge.svg?branch=dev)](https://github.com/VirtoCommerce/vc-module-catalog/actions?query=workflow%3A"Module+CI") [![Quality gate](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-catalog&metric=alert_status&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-catalog) [![Reliability rating](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-catalog&metric=reliability_rating&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-catalog) [![Security rating](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-catalog&metric=security_rating&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-catalog) [![Sqale rating](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-catalog&metric=sqale_rating&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-catalog)
+The Catalog Personalization Module is designed to help businesses personalize their catalogs to specific User Groups.
+This module enables catalog objects such as products and categories to be assigned to User Groups to control
+their visibility. The module also offers different policies for User Group propagation in the catalog objects hierarchy,
+such as UpTree and DownTree.
 
-The main concept of VC Personalization module is to personalize the issuing of catalog, price lists and marketing actions using Tags and User Groups.
+The Catalog Personalization Module provides a way to manage and assign User Groups to Catalog Objects.
+User Groups can be created and assigned to Product Categories for filtration in the storefront search.
 
-The Contacts should be first included into a specific User Groups and then the catalogs, price lists or promotions should be assigned to this UG.
+## Key Features
+1. Personalize Catalog Visibility
+1. Flexible User Group Propagation
+1. Filter with User Groups
+1. Efficient User Group Assignment
 
-## Key features
 
-1. Control the visibility of catalog objects such as Product and Categories, through manual tagging of these objects with special property `Tags` which can contain multiple predefined values which also may be defined for customer profile
-1. Inheritance `Tags` between catalogs objects depend on catalog taxonomy;
-1. Allow using `User groups` from customer profile to products or categories filtration in the storefront search
-1. Different policies for `Tags` propagation in catalog objects hierarchy:
-    1. `UpTree` propagate the tags from descendants to parents up the hierarchy
-    ![image](https://user-images.githubusercontent.com/7566324/62931481-ba630c00-bdbe-11e9-9cdf-6d05e955721b.png);
-    1. `DownTree` inherits the tags by descendants from their parent down the hierarchy
-    ![image](https://user-images.githubusercontent.com/7566324/62931421-a3241e80-bdbe-11e9-8f02-fd22d0fbcc6f.png).
+### Personalize Catalog Visibility
+Control who sees what in your storefront with the Catalog Personalization Module.
+
+### Flexible User Group Propagation
+Choose the propagation policy that works best for your catalog hierarchy with the User Group Propagation Policies feature.
+
+### Filter with User Groups
+Improve storefront search results by assigning User Groups to Product Categories with the User Groups for Products or Categories Filtration feature.
+
+### Efficient User Group Assignment
+Save time and effort with the Assign User Groups feature, allowing you to easily create and assign User Groups to Catalog Objects.
+
+## User Group Propagation
+The module supports two policies for User Group propagation in the catalog objects hierarchy: UpTree and DownTree.
+
+1. `UpTree` propagate the tags from descendants to parents up the hierarchy
+![image](https://user-images.githubusercontent.com/7566324/62931481-ba630c00-bdbe-11e9-9cdf-6d05e955721b.png);
+1. `DownTree` inherits the tags by descendants from their parent down the hierarchy
+![image](https://user-images.githubusercontent.com/7566324/62931421-a3241e80-bdbe-11e9-8f02-fd22d0fbcc6f.png).
 
 ## Documentation
+* [Module Documentation](https://docs.virtocommerce.org/modules/catalog-personalization/)
+* [View on GitHub](docs/index.md)
 
-1. [Catalog Personalization Document](/docs/index.md)
-1. [View on Github](https://github.com/VirtoCommerce/vc-module-catalog-personalization/tree/dev)
 
-## Installation
+## References
 
-Installing the module:
+* Deploy: https://docs.virtocommerce.org/developer-guide/deploy-module-from-source-code/
+* Installation: https://docs.virtocommerce.org/user-guide/modules/
+* Home: https://virtocommerce.com
+* Community: https://www.virtocommerce.org
+* [Download Latest Release](https://github.com/VirtoCommerce/vc-module-catalog-personalization/releases/latest)
 
-1. Automatically: in VC Manager go to More -> Modules -> Catalog personalization module -> Install
-1. Manually: download module zip package from https://github.com/VirtoCommerce/vc-module-catalog-personalization/releases. In VC Manager go to More -> Modules -> Advanced -> upload module package -> Install.
-
-## References 
-
-1. Deploy: https://virtocommerce.com/docs/latest/developer-guide/deploy-module-from-source-code/
-1. Installation: https://www.virtocommerce.com/docs/latest/user-guide/modules/
-1. Home: https://virtocommerce.com
-1. Community: https://www.virtocommerce.org
-1. [Download Latest Release](https://github.com/VirtoCommerce/vc-module-catalog-personalization/releases/)
 ## License
+
 Copyright (c) Virto Solutions LTD.  All rights reserved.
 
-Licensed under the Virto Commerce Open Software License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+Licensed under the Virto Commerce Open Software License (the "License"); you
+may not use this file except in compliance with the License. You may
+obtain a copy of the License at
 
 http://virtocommerce.com/opensourcelicense
 
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+implied.

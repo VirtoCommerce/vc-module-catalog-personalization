@@ -1,19 +1,43 @@
 # Overview
+The Catalog Personalization Module enables the personalization of catalogs through the use of User Groups.
+This module allows catalog objects such as products and categories to be assigned to User Groups,
+and different policies for User Group propagation in the catalog objects hierarchy can be defined.
 
-The main concept of VC Personalization module is to personalize the issuing of catalog, price lists and marketing actions using Tags and User Groups.
+The Catalog Personalization Module is designed to help businesses personalize their catalogs to specific User Groups.
 
-The Contacts should be first included into a specific User Groups and then the catalogs, price lists or promotions should be assigned to this UG.
+This module enables catalog objects such as products and categories to be assigned to User Groups to control
+their visibility. The module also offers different policies for User Group propagation in the catalog objects hierarchy,
+such as UpTree and DownTree.
 
-## Key features
+The Catalog Personalization Module provides a way to manage and assign User Groups to Catalog Objects.
+User Groups can be created and assigned to Product Categories for filtration in the storefront search.
 
-1. Control the visibility of catalog objects such as Product and Categories, through manual tagging of these objects with special property `Tags` which can contain multiple predefined values which also may be defined for customer profile
-1. Inheritance `Tags` between catalogs objects depend on catalog taxonomy;
-1. Allow using `User groups` from customer profile to products or categories filtration in the storefront search
-1. Different policies for `Tags` propagation in catalog objects hierarchy:
-    1. `UpTree` propagate the tags from descendants to parents up the hierarchy
-    ![image](https://user-images.githubusercontent.com/7566324/62931481-ba630c00-bdbe-11e9-9cdf-6d05e955721b.png);
-    1. `DownTree` inherits the tags by descendants from their parent down the hierarchy
-    ![image](https://user-images.githubusercontent.com/7566324/62931421-a3241e80-bdbe-11e9-8f02-fd22d0fbcc6f.png).
+## Key Features
+1. Personalize Catalog Visibility
+1. Flexible User Group Propagation
+1. Filter with User Groups
+1. Efficient User Group Assignment
+
+
+### Personalize Catalog Visibility
+Control who sees what in your storefront with the Catalog Personalization Module.
+
+### Flexible User Group Propagation
+Choose the propagation policy that works best for your catalog hierarchy with the User Group Propagation Policies feature.
+
+### Filter with User Groups
+Improve storefront search results by assigning User Groups to Product Categories with the User Groups for Products or Categories Filtration feature.
+
+### Efficient User Group Assignment
+Save time and effort with the Assign User Groups feature, allowing you to easily create and assign User Groups to Catalog Objects.
+
+## User Group Propagation
+The module supports two policies for User Group propagation in the catalog objects hierarchy: UpTree and DownTree.
+
+1. `UpTree` propagate the tags from descendants to parents up the hierarchy
+![image](https://user-images.githubusercontent.com/7566324/62931481-ba630c00-bdbe-11e9-9cdf-6d05e955721b.png);
+1. `DownTree` inherits the tags by descendants from their parent down the hierarchy
+![image](https://user-images.githubusercontent.com/7566324/62931421-a3241e80-bdbe-11e9-8f02-fd22d0fbcc6f.png).
 
 ## Scenarios
 
@@ -41,17 +65,17 @@ The Contacts should be first included into a specific User Groups and then the c
 ### Assign User Group to Product Category
 
 1. Go to More->Catalog Module->select a Product Category and click 'Manage';
-1. On Category details blade select the 'Tags' widget;
-1. Under 'Available tags' select the tag to assign to the Category;
+1. On Category details blade select the 'User Groups' widget;
+1. Under 'Available User Groups' select the tag to assign to the Category;
 1. Click 'Add';
 1. Save the changes;
 1. Open the Category;
-1. Select a product and click the 'Tags' widget;
+1. Select a product and click the 'User Groups' widget;
 1. The tag assigned to the Category will be displayed under the 'Inherited tag'. All Category products will inherit the tag assigned to the Category in case of DownTree propagation.
 
 ![Assign tag to category](media/screen-assign-tags.png)
 
-![Inherit tags](media/screen-inherited-tags.png)
+![Inherit User Groups](media/screen-inherited-tags.png)
 
 ### Assign User Group to a Price List Assignment
 
@@ -75,13 +99,7 @@ The Contacts should be first included into a specific User Groups and then the c
 
 ![User group assigned](media/screen-usergroup-assigned-to-promotion.png)
 
-**Important!** Don't forget to rebuild the search indexes for categories and products after tagging process.
-
-<details><summary>Rebuild indexes</summary><p>
-
-![indexation](https://user-images.githubusercontent.com/7536694/31497248-d12a5efe-af5e-11e7-8938-b39d2b03ad1e.gif) </p></details>
-
-### Tags Propagation Policies
+### User Groups Propagation Policies
 
 When down-tree propagation policy is selected, all products inherit the Tag propagated to the parent categories.
 
@@ -90,7 +108,7 @@ When the up-tree policy propagation is applied, the Product category will inheri
 In order to apply one of the policies you should go through the following steps:
 
 1. Go to Settings->Personalization->General;
-1. Under 'Selected policy for tags propagation' select either 'DownTree' or 'UpTree';
+1. Under 'Selected policy for User Groups propagation' select either 'DownTree' or 'UpTree';
 1. Restart the VC platform;
 1. The selected policy will be applied.
 
@@ -98,8 +116,8 @@ In order to apply one of the policies you should go through the following steps:
 
 ![Settings](media/screen-settings1.png)
 
-#### Synchronize outlines
+#### Synchronize Outlines
 
-The 'Synchronize outlines' function works for UpTree policy propagation and helps propagate tags automatically from product to all product parents. The synchronization is based on the scheduled job.
+The 'Synchronize outlines' function works for UpTree policy propagation and helps propagate user groups automatically from product to all product parents. The synchronization is based on the scheduled job.
 
 ![Synchronize outline](media/screen-synchronize-outlines.png)

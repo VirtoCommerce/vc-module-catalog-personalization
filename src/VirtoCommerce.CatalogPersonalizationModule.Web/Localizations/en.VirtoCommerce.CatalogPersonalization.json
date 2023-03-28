@@ -3,16 +3,16 @@
         "main-menu-title": "Personalization",
         "blades": {
             "tag-list": {
-                "labels": {
-                    "title": "Tags",
-                    "select-tags": "Select tags to assign",
-                    "available-tags": "Available tags",
-                    "assigned-tags": "Assigned tags",
-                    "inherited-tags": "Inherited tags", 
-                    "no-assigned": "No tags assigned",
-                    "no-inherited": "No tags inherited",
-                    "add-btn": "Add"
-                }
+              "labels": {
+                "title": "User Groups",
+                "select-tags": "Select User Groups to Assign",
+                "available-tags": "Available User Groups",
+                "assigned-tags": "Assigned User Groups",
+                "inherited-tags": "Inherited User Groups",
+                "no-assigned": "No User Groups Assigned",
+                "no-inherited": "No User Groups Inherited",
+                "add-btn": "Add"
+              }
           },
             "progress": {
                 "labels": {
@@ -23,11 +23,11 @@
             }
         },
         "widgets": {
-            "tagsWidget": {
-                "title": "Tags",
-                "assigned": "Assigned",
-                "inherited": "Inherited"
-            },
+          "tagsWidget": {
+            "title": "User Groups",
+            "assigned": "Assigned",
+            "inherited": "Inherited"
+          },
             "run-sync": {
                 "title": "Synchronize outlines"
             }
@@ -39,8 +39,8 @@
     "settings": {
       "CatalogPersonalization": {
         "TagsInheritancePolicy": {
-          "description": "DownTree - propagates all tags assigned to categories for all their descendants. UpTree - propagates tags up to hierarchy from descendants to parents",
-          "title": "Selected policy for tags propagation"
+          "description": "DownTree - propagates all user groups assigned to categories for all their descendants. UpTree - propagates user groups up to hierarchy from descendants to parents",
+          "title": "Selected policy for user groups propagation"
         },
         "CronExpression": {
           "description": "x minutes use '0/x * * * *', x hours use '0 */x * * *',  you can set minutes also '15 */x * * *', x days '0 0 */x * *'   ",
@@ -50,10 +50,10 @@
      },
     "module": {
       "VirtoCommerce.CatalogPersonalization": {
-        "description": "Export/Import tagged items"
+        "description": "Export/Import User Groups"
       }
     },
-    "permissions": {
-       "personalization:update": "Update tagged item"
-    }
+  "permissions": {
+    "personalization:update": "Update User Groups"
+  }
 }
