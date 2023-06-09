@@ -1,19 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <IsPackable>False</IsPackable>
-        <noWarn>1591</noWarn>
-        <OutputType>Library</OutputType>
-    </PropertyGroup>
-    <ItemGroup>
-        <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.200.0" />
-    </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\VirtoCommerce.CatalogPersonalizationModule.Core\VirtoCommerce.CatalogPersonalizationModule.Core.csproj" />
-        <ProjectReference Include="..\VirtoCommerce.CatalogPersonalizationModule.Data.MySql\VirtoCommerce.CatalogPersonalizationModule.Data.MySql.csproj" />
-        <ProjectReference Include="..\VirtoCommerce.CatalogPersonalizationModule.Data.PostgreSql\VirtoCommerce.CatalogPersonalizationModule.Data.PostgreSql.csproj" />
-        <ProjectReference Include="..\VirtoCommerce.CatalogPersonalizationModule.Data.SqlServer\VirtoCommerce.CatalogPersonalizationModule.Data.SqlServer.csproj" />
-        <ProjectReference Include="..\VirtoCommerce.CatalogPersonalizationModule.Data\VirtoCommerce.CatalogPersonalizationModule.Data.csproj" />
-    </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsPackable>False</IsPackable>
+    <noWarn>1591</noWarn>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.400.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VirtoCommerce.CatalogPersonalizationModule.Core\VirtoCommerce.CatalogPersonalizationModule.Core.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.CatalogPersonalizationModule.Data.MySql\VirtoCommerce.CatalogPersonalizationModule.Data.MySql.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.CatalogPersonalizationModule.Data.PostgreSql\VirtoCommerce.CatalogPersonalizationModule.Data.PostgreSql.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.CatalogPersonalizationModule.Data.SqlServer\VirtoCommerce.CatalogPersonalizationModule.Data.SqlServer.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.CatalogPersonalizationModule.Data\VirtoCommerce.CatalogPersonalizationModule.Data.csproj" />
+  </ItemGroup>
 </Project>

@@ -36,12 +36,13 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
     public class Module : IModule, IExportSupport, IImportSupport, IHasConfiguration
     {
         private IApplicationBuilder _appBuilder;
+
         public ManifestModuleInfo ModuleInfo { get; set; }
         public IConfiguration Configuration { get; set; }
 
         public void Initialize(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddDbContext<PersonalizationDbContext>((provider, options) =>
+            serviceCollection.AddDbContext<PersonalizationDbContext>(options =>
             {
                 var databaseProvider = Configuration.GetValue("DatabaseProvider", "SqlServer");
                 var connectionString = Configuration.GetConnectionString(ModuleInfo.Id) ?? Configuration.GetConnectionString("VirtoCommerce");
@@ -83,7 +84,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
                 var repositoryFactory = provider.GetService<Func<IPersonalizationRepository>>();
                 var listEntrySearchService = provider.GetService<IListEntrySearchService>();
 
-                var tagsInheritancePolicy = settingsManager.GetValue(ModuleConstants.Settings.General.TagsInheritancePolicy.Name, "DownTree");
+                var tagsInheritancePolicy = settingsManager.GetValue<string>(ModuleConstants.Settings.General.TagsInheritancePolicy);
                 if (tagsInheritancePolicy.EqualsInvariant("DownTree"))
                 {
                     return new DownTreeTagPropagationPolicy(repositoryFactory);
@@ -97,13 +98,13 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
 
         public void PostInitialize(IApplicationBuilder appBuilder)
         {
-
             _appBuilder = appBuilder;
+
             var settingsRegistrar = appBuilder.ApplicationServices.GetRequiredService<ISettingsRegistrar>();
             settingsRegistrar.RegisterSettings(ModuleConstants.Settings.General.AllSettings, ModuleInfo.Id);
 
-            var permissionsProvider = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
-            permissionsProvider.RegisterPermissions(ModuleConstants.Security.Permissions.AllPermissions.Select(x => new Permission { GroupName = "Catalog Personalization", Name = x }).ToArray());
+            var permissionsRegistrar = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
+            permissionsRegistrar.RegisterPermissions(ModuleInfo.Id, "Catalog Personalization", ModuleConstants.Security.Permissions.AllPermissions);
 
             var recurringJobManager = appBuilder.ApplicationServices.GetService<IRecurringJobManager>();
             var settingsManager = appBuilder.ApplicationServices.GetService<ISettingsManager>();
@@ -117,11 +118,8 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
                     .ToJob<TaggedItemOutlinesSynchronizationJob>(x => x.Run())
                     .Build());
 
-
-            #region Search
-
             // Add tagged items document source to the category or product indexing configuration
-            var documentIndexingConfigurations = appBuilder.ApplicationServices.GetRequiredService<IEnumerable<IndexDocumentConfiguration>>();
+            var documentIndexingConfigurations = appBuilder.ApplicationServices.GetRequiredService<IEnumerable<IndexDocumentConfiguration>>()?.ToList();
             if (documentIndexingConfigurations != null)
             {
                 //Category indexing
@@ -132,11 +130,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
                 };
                 foreach (var configuration in documentIndexingConfigurations.Where(c => c.DocumentType == KnownDocumentTypes.Category))
                 {
-                    if (configuration.RelatedSources == null)
-                    {
-                        configuration.RelatedSources = new List<IndexDocumentSource>();
-                    }
-
+                    configuration.RelatedSources ??= new List<IndexDocumentSource>();
                     configuration.RelatedSources.Add(taggedItemCategoryDocumentSource);
                 }
 
@@ -148,15 +142,10 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
                 };
                 foreach (var configuration in documentIndexingConfigurations.Where(c => c.DocumentType == KnownDocumentTypes.Product))
                 {
-                    if (configuration.RelatedSources == null)
-                    {
-                        configuration.RelatedSources = new List<IndexDocumentSource>();
-                    }
-
+                    configuration.RelatedSources ??= new List<IndexDocumentSource>();
                     configuration.RelatedSources.Add(taggedItemProductDocumentSource);
                 }
             }
-            #endregion
 
             using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
             {
