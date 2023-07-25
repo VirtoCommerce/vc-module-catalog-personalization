@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <id>VirtoCommerce.CatalogPersonalization</id>
-  <version>3.205.0</version>
+  <version>3.400.0</version>
   <version-tag />
-  <platformVersion>3.200.0</platformVersion>
+
+  <platformVersion>3.400.0</platformVersion>
+  <dependencies>
+    <dependency id="VirtoCommerce.Catalog" version="3.401.0" />
+    <dependency id="VirtoCommerce.Core" version="3.400.0" />
+    <dependency id="VirtoCommerce.Search" version="3.401.0" />
+  </dependencies>
+
   <title>Catalog Personalization</title>
   <description>Help businesses personalize their categories and products to specific User Groups</description>
   <authors>
@@ -22,11 +29,6 @@
   <tags>catalog personalization products categories</tags>
   <assemblyFile>VirtoCommerce.CatalogPersonalizationModule.Web.dll</assemblyFile>
   <moduleType>VirtoCommerce.CatalogPersonalizationModule.Web.Module, VirtoCommerce.CatalogPersonalizationModule.Web</moduleType>
-  <dependencies>
-    <dependency id="VirtoCommerce.Core" version="3.200.0" />
-    <dependency id="VirtoCommerce.Search" version="3.200.0" />
-    <dependency id="VirtoCommerce.Catalog" version="3.200.0" />
-  </dependencies>
   <groups>
     <group>commerce</group>
   </groups>

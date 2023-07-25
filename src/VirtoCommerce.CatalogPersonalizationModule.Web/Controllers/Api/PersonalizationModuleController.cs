@@ -28,6 +28,8 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         private readonly IPushNotificationManager _pushNotificationManager;
         private readonly ISettingsManager _settingsManager;
 
+        private const int _duplicateKey = 2601;
+        private const int _duplicatePrimaryKey = 2627;
 
         public PersonalizationModuleController(ITaggedItemService taggedItemService,
             ITaggedItemSearchService searchService,
@@ -98,7 +100,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
                 await _taggedItemService.SaveChangesAsync(new[] { taggedItem });
             }
             // VP-4690: Handling concurrent update exception - e.g. adding 2 tagged for 1 entity
-            catch (DbUpdateException e) when (e.InnerException is Microsoft.Data.SqlClient.SqlException sqlException && (sqlException.Number == 2601 || sqlException.Number == 2627))
+            catch (DbUpdateException e) when (e.InnerException is Microsoft.Data.SqlClient.SqlException sqlException && (sqlException.Number == _duplicateKey || sqlException.Number == _duplicatePrimaryKey))
             {
                 throw new InvalidOperationException($"Tagged item for the entity (id:\"{taggedItem.EntityId}\" type:\"{taggedItem.EntityType}\") already exists." +
                     $" Please refresh the entity and execute the operation again.");
@@ -128,7 +130,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         [ProducesResponseType(typeof(TaggedItemOutlineSyncPushNotification), StatusCodes.Status200OK)]
         public async Task<ActionResult<TaggedItemOutlineSyncPushNotification>> RunOutlinesSynchronization()
         {
-            var tagsInheritancePolicy = _settingsManager.GetValue(ModuleConstants.Settings.General.TagsInheritancePolicy.Name, "DownTree");
+            var tagsInheritancePolicy = await _settingsManager.GetValueAsync<string>(ModuleConstants.Settings.General.TagsInheritancePolicy);
             var notification = new TaggedItemOutlineSyncPushNotification(_userNameResolver.GetCurrentUserName())
             {
                 Title = "Synchronizing tagged items outlines",
@@ -158,7 +160,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         [HttpPost]
         [Route("outlines/synchronization/cancel")]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> CancelSynchronization([FromBody] TaggedItemOutlinesSynchronizationRequest cancellationRequest)
+        public ActionResult CancelSynchronization([FromBody] TaggedItemOutlinesSynchronizationRequest cancellationRequest)
         {
             BackgroundJob.Delete(cancellationRequest.JobId);
             return NoContent();

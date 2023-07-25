@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Common;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.SearchModule.Core.Extensions;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
 
@@ -49,7 +50,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Search.Indexing
             }
             foreach (var tag in tags)
             {
-                document.Add(new IndexDocumentField(Constants.UserGroupsFieldName, tag) { IsRetrievable = true, IsFilterable = true, IsCollection = true });
+                document.AddFilterableCollection(Constants.UserGroupsFieldName, tag);
             }
 
             return document;
