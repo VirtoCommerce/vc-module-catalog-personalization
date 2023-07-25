@@ -33,10 +33,8 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
 
                 if (taggedItemsGroup.HasFlag(TaggedItemResponseGroup.WithOutlines))
                 {
-#pragma warning disable S1481 // Unused local variables should be removed
                     // Variable needed to avoid possible optimization as result is never used
-                    var outlines = await TaggedItemOutlines.Where(x => ids.Contains(x.TaggedItemId)).ToArrayAsync();
-#pragma warning restore S1481 // Unused local variables should be removed
+                    await TaggedItemOutlines.Where(x => ids.Contains(x.TaggedItemId)).LoadAsync();
                 }
             }
             return result;

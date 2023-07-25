@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.CatalogModule.Core.Model;
 using VirtoCommerce.CatalogModule.Core.Services;
@@ -17,7 +18,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
 
         public async Task<IEntity[]> GetEntitiesByIdsAsync(string[] ids)
         {
-            return await _categoryService.GetByIdsAsync(ids, CategoryResponseGroup.WithOutlines.ToString());
+            return (await _categoryService.GetAsync(ids, CategoryResponseGroup.WithOutlines.ToString())).ToArray<IEntity>();
         }
     }
 }

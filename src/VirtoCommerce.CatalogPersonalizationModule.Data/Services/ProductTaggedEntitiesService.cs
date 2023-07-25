@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.CatalogModule.Core.Model;
 using VirtoCommerce.CatalogModule.Core.Services;
@@ -9,13 +10,15 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
     public class ProductTaggedEntitiesService : ITaggedEntitiesService
     {
         private readonly IItemService _itemService;
+
         public ProductTaggedEntitiesService(IItemService itemService)
         {
             _itemService = itemService;
         }
+
         public async Task<IEntity[]> GetEntitiesByIdsAsync(string[] ids)
         {
-            return await _itemService.GetByIdsAsync(ids, ItemResponseGroup.Outlines.ToString());
+            return (await _itemService.GetAsync(ids, ItemResponseGroup.Outlines.ToString())).ToArray<IEntity>();
         }
     }
 }
