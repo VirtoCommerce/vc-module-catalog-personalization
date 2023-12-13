@@ -2,10 +2,11 @@ using System.Reflection;
 using EntityFrameworkCore.Triggers;
 using Microsoft.EntityFrameworkCore;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Model;
+using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Data.Repositories
 {
-    public class PersonalizationDbContext : DbContextWithTriggers
+    public class PersonalizationDbContext : DbContextBase
     {
         public PersonalizationDbContext(DbContextOptions<PersonalizationDbContext> options) : base(options)
         {
