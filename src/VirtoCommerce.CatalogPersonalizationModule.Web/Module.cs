@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,7 +26,6 @@ using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.Extensions;
 using VirtoCommerce.Platform.Hangfire;
-using VirtoCommerce.Platform.Hangfire.Extensions;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
 
@@ -106,11 +104,9 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
             var permissionsRegistrar = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
             permissionsRegistrar.RegisterPermissions(ModuleInfo.Id, "Catalog Personalization", ModuleConstants.Security.Permissions.AllPermissions);
 
-            var recurringJobManager = appBuilder.ApplicationServices.GetService<IRecurringJobManager>();
-            var settingsManager = appBuilder.ApplicationServices.GetService<ISettingsManager>();
+            var recurringJobService = appBuilder.ApplicationServices.GetService<IRecurringJobService>();
 
-            recurringJobManager.WatchJobSetting(
-                settingsManager,
+            recurringJobService.WatchJobSetting(
                 new SettingCronJobBuilder()
                     .SetEnabledEvaluator(x => "UpTree".EqualsInvariant((string)x))
                     .SetEnablerSetting(ModuleConstants.Settings.General.TagsInheritancePolicy)
