@@ -1,0 +1,59 @@
+{
+    "personalization": {
+        "main-menu-title": "Personalizacja",
+        "blades": {
+            "tag-list": {
+              "labels": {
+                "title": "Grupy użytkowników",
+                "select-tags": "Wybierz grupy użytkowników do przypisania",
+                "available-tags": "Dostępne grupy użytkowników",
+                "assigned-tags": "Przypisane grupy użytkowników",
+                "inherited-tags": "Odziedziczone grupy użytkowników",
+                "no-assigned": "Brak przypisanych grup użytkowników",
+                "no-inherited": "Brak odziedziczonych grup użytkowników",
+                "add-btn": "Dodaj"
+              }
+          },
+            "progress": {
+                "labels": {
+                    "total": "Całkowita liczba",
+                    "processed": "Przetworzona liczba",
+                    "error-count": "Liczba błędów"
+                }
+            }
+        },
+        "widgets": {
+          "tagsWidget": {
+            "title": "Grupy użytkowników",
+            "assigned": "Przypisane",
+            "inherited": "Odziedziczone"
+          },
+            "run-sync": {
+                "title": "Synchronizuj zarysy"
+            }
+        },
+        "tags": {
+          "__any": "Wszyscy" 
+        } 
+    },
+    "settings": {
+      "CatalogPersonalization": {
+        "TagsInheritancePolicy": {
+          "description": "DownTree - propaguje wszystkie grupy użytkowników przypisane do kategorii dla wszystkich ich potomków. UpTree - propaguje grupy użytkowników w górę hierarchii od potomków do rodziców",
+          "title": "Wybrana polityka propagacji grup użytkowników"
+        },
+        "CronExpression": {
+          "description": "Określ wyrażenie cron do planowania zadań synchronizacji. Na przykład: '0/x * * * *' dla co x minut, '0 */x * * *' dla co x godzin, '15 */x * * *' dla określonych minut co x godzin, lub '0 0 */x * *' dla co x dni.",
+          "title": "Wyrażenie cron dla zadań synchronizacji zarysów (ważne tylko z polityką propagacji UpTree)."
+        }
+      }
+     },
+    "module": {
+      "VirtoCommerce.CatalogPersonalization": {
+        "description": "Eksport/import grup użytkowników"
+      }
+    },
+  "permissions": {
+    "personalization:update": "Aktualizuj grupy użytkowników"
+  }
+}
