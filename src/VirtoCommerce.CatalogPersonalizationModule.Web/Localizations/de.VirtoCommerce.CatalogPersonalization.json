@@ -1,0 +1,59 @@
+{
+    "personalization": {
+        "main-menu-title": "Personalisierung",
+        "blades": {
+            "tag-list": {
+              "labels": {
+                "title": "Benutzergruppen",
+                "select-tags": "Benutzergruppen zur Zuweisung auswählen",
+                "available-tags": "Verfügbare Benutzergruppen",
+                "assigned-tags": "Zugewiesene Benutzergruppen",
+                "inherited-tags": "Geerbte Benutzergruppen",
+                "no-assigned": "Keine Benutzergruppen zugewiesen",
+                "no-inherited": "Keine Benutzergruppen geerbt",
+                "add-btn": "Hinzufügen"
+              }
+          },
+            "progress": {
+                "labels": {
+                    "total": "Gesamtanzahl",
+                    "processed": "Verarbeitete Anzahl",
+                    "error-count": "Fehleranzahl"
+                }
+            }
+        },
+        "widgets": {
+          "tagsWidget": {
+            "title": "Benutzergruppen",
+            "assigned": "Zugewiesen",
+            "inherited": "Geerbt"
+          },
+            "run-sync": {
+                "title": "Umrisse synchronisieren"
+            }
+        },
+        "tags": {
+          "__any": "Jeder" 
+        } 
+    },
+    "settings": {
+      "CatalogPersonalization": {
+        "TagsInheritancePolicy": {
+          "description": "DownTree - propagiert alle Benutzergruppen, die Kategorien zugewiesen sind, an alle ihre Nachkommen. UpTree - propagiert Benutzergruppen in der Hierarchie von Nachkommen zu Eltern",
+          "title": "Ausgewählte Richtlinie für die Verbreitung von Benutzergruppen"
+        },
+        "CronExpression": {
+          "description": "Geben Sie den Cron-Ausdruck an, um Synchronisierungsaufgaben zu planen. Zum Beispiel: '0/x * * * *' für alle x Minuten, '0 */x * * *' für alle x Stunden, '15 */x * * *' für bestimmte Minuten alle x Stunden oder '0 0 */x * *' für alle x Tage.",
+          "title": "Cron-Ausdruck für Umriss-Synchronisierungsjobs (nur gültig mit UpTree-Verbreitungsrichtlinie)."
+        }
+      }
+     },
+    "module": {
+      "VirtoCommerce.CatalogPersonalization": {
+        "description": "Benutzergruppen exportieren/importieren"
+      }
+    },
+  "permissions": {
+    "personalization:update": "Benutzergruppen aktualisieren"
+  }
+}

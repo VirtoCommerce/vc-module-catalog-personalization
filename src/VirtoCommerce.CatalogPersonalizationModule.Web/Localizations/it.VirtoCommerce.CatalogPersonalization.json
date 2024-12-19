@@ -1,0 +1,59 @@
+{
+    "personalization": {
+        "main-menu-title": "Personalizzazione",
+        "blades": {
+            "tag-list": {
+              "labels": {
+                "title": "Gruppi di utenti",
+                "select-tags": "Seleziona i gruppi di utenti da assegnare",
+                "available-tags": "Gruppi di utenti disponibili",
+                "assigned-tags": "Gruppi di utenti assegnati",
+                "inherited-tags": "Gruppi di utenti ereditati",
+                "no-assigned": "Nessun gruppo di utenti assegnato",
+                "no-inherited": "Nessun gruppo di utenti ereditato",
+                "add-btn": "Aggiungi"
+              }
+          },
+            "progress": {
+                "labels": {
+                    "total": "Conteggio totale",
+                    "processed": "Conteggio elaborato",
+                    "error-count": "Conteggio errori"
+                }
+            }
+        },
+        "widgets": {
+          "tagsWidget": {
+            "title": "Gruppi di utenti",
+            "assigned": "Assegnato",
+            "inherited": "Ereditato"
+          },
+            "run-sync": {
+                "title": "Sincronizza contorni"
+            }
+        },
+        "tags": {
+          "__any": "Tutti" 
+        } 
+    },
+    "settings": {
+      "CatalogPersonalization": {
+        "TagsInheritancePolicy": {
+          "description": "DownTree - propaga tutti i gruppi di utenti assegnati alle categorie per tutti i loro discendenti. UpTree - propaga i gruppi di utenti verso l'alto nella gerarchia dai discendenti ai genitori",
+          "title": "Politica selezionata per la propagazione dei gruppi di utenti"
+        },
+        "CronExpression": {
+          "description": "Specifica l'espressione cron per pianificare le attività di sincronizzazione. Ad esempio: '0/x * * * *' per ogni x minuti, '0 */x * * *' per ogni x ore, '15 */x * * *' per minuti specifici ogni x ore, o '0 0 */x * *' per ogni x giorni.",
+          "title": "Espressione cron per i lavori di sincronizzazione dei contorni (valido solo con la politica di propagazione UpTree)."
+        }
+      }
+     },
+    "module": {
+      "VirtoCommerce.CatalogPersonalization": {
+        "description": "Esporta/importa gruppi di utenti"
+      }
+    },
+  "permissions": {
+    "personalization:update": "Aggiorna gruppi di utenti"
+  }
+}
