@@ -1,0 +1,59 @@
+{
+    "personalization": {
+        "main-menu-title": "パーソナライゼーション",
+        "blades": {
+            "tag-list": {
+              "labels": {
+                "title": "ユーザーグループ",
+                "select-tags": "割り当てるユーザーグループを選択",
+                "available-tags": "利用可能なユーザーグループ",
+                "assigned-tags": "割り当てられたユーザーグループ",
+                "inherited-tags": "継承されたユーザーグループ",
+                "no-assigned": "割り当てられたユーザーグループはありません",
+                "no-inherited": "継承されたユーザーグループはありません",
+                "add-btn": "追加"
+              }
+          },
+            "progress": {
+                "labels": {
+                    "total": "合計数",
+                    "processed": "処理済み数",
+                    "error-count": "エラー数"
+                }
+            }
+        },
+        "widgets": {
+          "tagsWidget": {
+            "title": "ユーザーグループ",
+            "assigned": "割り当て済み",
+            "inherited": "継承済み"
+          },
+            "run-sync": {
+                "title": "アウトラインを同期"
+            }
+        },
+        "tags": {
+          "__any": "全員" 
+        } 
+    },
+    "settings": {
+      "CatalogPersonalization": {
+        "TagsInheritancePolicy": {
+          "description": "DownTree - カテゴリに割り当てられたすべてのユーザーグループをそのすべての子孫に伝播します。UpTree - ユーザーグループを子孫から親に向かって階層的に伝播します",
+          "title": "ユーザーグループ伝播の選択されたポリシー"
+        },
+        "CronExpression": {
+          "description": "同期タスクをスケジュールするためのcron式を指定します。例：'0/x * * * *'はx分ごと、'0 */x * * *'はx時間ごと、'15 */x * * *'はx時間ごとの特定の分、または'0 0 */x * *'はx日ごと。",
+          "title": "アウトライン同期ジョブのcron式（UpTree伝播ポリシーでのみ有効）。"
+        }
+      }
+     },
+    "module": {
+      "VirtoCommerce.CatalogPersonalization": {
+        "description": "ユーザーグループのエクスポート/インポート"
+      }
+    },
+  "permissions": {
+    "personalization:update": "ユーザーグループを更新"
+  }
+}

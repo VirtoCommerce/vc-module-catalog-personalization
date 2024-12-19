@@ -4,13 +4,13 @@
         "blades": {
             "tag-list": {
               "labels": {
-                "title": "User Groups",
-                "select-tags": "Select User Groups to Assign",
-                "available-tags": "Available User Groups",
-                "assigned-tags": "Assigned User Groups",
-                "inherited-tags": "Inherited User Groups",
-                "no-assigned": "No User Groups Assigned",
-                "no-inherited": "No User Groups Inherited",
+                "title": "User groups",
+                "select-tags": "Select user groups to assign",
+                "available-tags": "Available user groups",
+                "assigned-tags": "Assigned user groups",
+                "inherited-tags": "Inherited user groups",
+                "no-assigned": "No user groups assigned",
+                "no-inherited": "No user groups inherited",
                 "add-btn": "Add"
               }
           },
@@ -24,7 +24,7 @@
         },
         "widgets": {
           "tagsWidget": {
-            "title": "User Groups",
+            "title": "User groups",
             "assigned": "Assigned",
             "inherited": "Inherited"
           },
@@ -43,17 +43,17 @@
           "title": "Selected policy for user groups propagation"
         },
         "CronExpression": {
-          "description": "x minutes use '0/x * * * *', x hours use '0 */x * * *',  you can set minutes also '15 */x * * *', x days '0 0 */x * *'   ",
-          "title": "Job cron expression for synchronize the outlines of tagged entities. Valid only when the UpTree propagation policy is selected."
+          "description": "Specify the cron expression to schedule synchronization tasks. For example: '0/x * * * *' for every x minutes, '0 */x * * *' for every x hours, '15 */x * * *' for specific minutes every x hours, or '0 0 */x * *' for every x days.",
+          "title": "Cron expression for outline synchronization jobs (valid only with UpTree propagation policy)."
         }
       }
      },
     "module": {
       "VirtoCommerce.CatalogPersonalization": {
-        "description": "Export/Import User Groups"
+        "description": "Export/ import User Groups"
       }
     },
   "permissions": {
-    "personalization:update": "Update User Groups"
+    "personalization:update": "Update user groups"
   }
 }

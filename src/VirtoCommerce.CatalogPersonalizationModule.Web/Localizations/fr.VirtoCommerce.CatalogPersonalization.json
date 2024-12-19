@@ -1,0 +1,59 @@
+{
+    "personalization": {
+        "main-menu-title": "Personnalisation",
+        "blades": {
+            "tag-list": {
+              "labels": {
+                "title": "Groupes d'utilisateurs",
+                "select-tags": "Sélectionner les groupes d'utilisateurs à attribuer",
+                "available-tags": "Groupes d'utilisateurs disponibles",
+                "assigned-tags": "Groupes d'utilisateurs attribués",
+                "inherited-tags": "Groupes d'utilisateurs hérités",
+                "no-assigned": "Aucun groupe d'utilisateurs attribué",
+                "no-inherited": "Aucun groupe d'utilisateurs hérité",
+                "add-btn": "Ajouter"
+              }
+          },
+            "progress": {
+                "labels": {
+                    "total": "Nombre total",
+                    "processed": "Nombre traité",
+                    "error-count": "Nombre d'erreurs"
+                }
+            }
+        },
+        "widgets": {
+          "tagsWidget": {
+            "title": "Groupes d'utilisateurs",
+            "assigned": "Attribué",
+            "inherited": "Hérité"
+          },
+            "run-sync": {
+                "title": "Synchroniser les contours"
+            }
+        },
+        "tags": {
+          "__any": "Tout le monde" 
+        } 
+    },
+    "settings": {
+      "CatalogPersonalization": {
+        "TagsInheritancePolicy": {
+          "description": "DownTree - propage tous les groupes d'utilisateurs attribués aux catégories pour tous leurs descendants. UpTree - propage les groupes d'utilisateurs vers le haut dans la hiérarchie des descendants aux parents",
+          "title": "Politique sélectionnée pour la propagation des groupes d'utilisateurs"
+        },
+        "CronExpression": {
+          "description": "Spécifiez l'expression cron pour planifier les tâches de synchronisation. Par exemple : '0/x * * * *' pour toutes les x minutes, '0 */x * * *' pour toutes les x heures, '15 */x * * *' pour des minutes spécifiques toutes les x heures, ou '0 0 */x * *' pour tous les x jours.",
+          "title": "Expression cron pour les travaux de synchronisation des contours (valide uniquement avec la politique de propagation UpTree)."
+        }
+      }
+     },
+    "module": {
+      "VirtoCommerce.CatalogPersonalization": {
+        "description": "Exporter/importer des groupes d'utilisateurs"
+      }
+    },
+  "permissions": {
+    "personalization:update": "Mettre à jour les groupes d'utilisateurs"
+  }
+}

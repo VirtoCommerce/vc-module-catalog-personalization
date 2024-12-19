@@ -1,0 +1,59 @@
+{
+    "personalization": {
+        "main-menu-title": "个性化",
+        "blades": {
+            "tag-list": {
+              "labels": {
+                "title": "用户组",
+                "select-tags": "选择要分配的用户组",
+                "available-tags": "可用的用户组",
+                "assigned-tags": "已分配的用户组",
+                "inherited-tags": "继承的用户组",
+                "no-assigned": "没有分配的用户组",
+                "no-inherited": "没有继承的用户组",
+                "add-btn": "添加"
+              }
+          },
+            "progress": {
+                "labels": {
+                    "total": "总计",
+                    "processed": "已处理计数",
+                    "error-count": "错误计数"
+                }
+            }
+        },
+        "widgets": {
+          "tagsWidget": {
+            "title": "用户组",
+            "assigned": "已分配",
+            "inherited": "继承"
+          },
+            "run-sync": {
+                "title": "同步轮廓"
+            }
+        },
+        "tags": {
+          "__any": "所有人" 
+        } 
+    },
+    "settings": {
+      "CatalogPersonalization": {
+        "TagsInheritancePolicy": {
+          "description": "DownTree - 将分配给类别的所有用户组传播给其所有后代。UpTree - 将用户组从后代向上传播到父级",
+          "title": "用户组传播的选定策略"
+        },
+        "CronExpression": {
+          "description": "指定cron表达式以安排同步任务。例如：'0/x * * * *'表示每x分钟，'0 */x * * *'表示每x小时，'15 */x * * *'表示每x小时的特定分钟，或'0 0 */x * *'表示每x天。",
+          "title": "轮廓同步作业的cron表达式（仅在UpTree传播策略下有效）。"
+        }
+      }
+     },
+    "module": {
+      "VirtoCommerce.CatalogPersonalization": {
+        "description": "导出/导入用户组"
+      }
+    },
+  "permissions": {
+    "personalization:update": "更新用户组"
+  }
+}
