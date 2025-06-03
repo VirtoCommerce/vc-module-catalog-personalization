@@ -18,17 +18,17 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
 
         public ITaggedEntitiesService Create(string entityType)
         {
-            if(entityType == null)
+            if (entityType == null)
             {
                 throw new ArgumentNullException(nameof(entityType));
             }
 
             ITaggedEntitiesService result;
-            if (entityType.EqualsInvariant(KnownDocumentTypes.Category))
+            if (entityType.EqualsIgnoreCase(KnownDocumentTypes.Category))
             {
                 result = new CategoryTaggedEntitiesService(_categoryService);
             }
-            else if (entityType.EqualsInvariant(KnownDocumentTypes.Product))
+            else if (entityType.EqualsIgnoreCase(KnownDocumentTypes.Product))
             {
                 result = new ProductTaggedEntitiesService(_itemService);
             }

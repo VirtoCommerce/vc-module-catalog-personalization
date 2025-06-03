@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VirtoCommerce.CatalogModule.Core.Outlines;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
-using VirtoCommerce.CoreModule.Core.Outlines;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
@@ -36,7 +36,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                 var taggedEntities = (await entitiesService.GetEntitiesByIdsAsync(group.Select(x => x.EntityId).ToArray())).Distinct().ToArray();
                 foreach (var taggedItem in group)
                 {
-                    var referencedEntity = taggedEntities.FirstOrDefault(x => x.Id.EqualsInvariant(taggedItem.EntityId));
+                    var referencedEntity = taggedEntities.FirstOrDefault(x => x.Id.EqualsIgnoreCase(taggedItem.EntityId));
                     if (referencedEntity == null)
                     {
                         toRemoveTaggedItemIds.Add(taggedItem.Id);

@@ -137,7 +137,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
                 Description = "Starting…"
             };
 
-            if (tagsInheritancePolicy.EqualsInvariant("UpTree"))
+            if (tagsInheritancePolicy.EqualsIgnoreCase("UpTree"))
             {
                 var jobId = BackgroundJob.Enqueue<TaggedItemOutlinesSynchronizationJob>(x => x.Run(notification, JobCancellationToken.Null, null));
                 notification.JobId = jobId;
