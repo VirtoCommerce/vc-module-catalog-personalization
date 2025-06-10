@@ -83,7 +83,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
                 var listEntrySearchService = provider.GetService<IListEntrySearchService>();
 
                 var tagsInheritancePolicy = settingsManager.GetValue<string>(ModuleConstants.Settings.General.TagsInheritancePolicy);
-                if (tagsInheritancePolicy.EqualsInvariant("DownTree"))
+                if (tagsInheritancePolicy.EqualsIgnoreCase("DownTree"))
                 {
                     return new DownTreeTagPropagationPolicy(repositoryFactory);
                 }
@@ -108,7 +108,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
 
             recurringJobService.WatchJobSetting(
                 new SettingCronJobBuilder()
-                    .SetEnabledEvaluator(x => "UpTree".EqualsInvariant((string)x))
+                    .SetEnabledEvaluator(x => "UpTree".EqualsIgnoreCase((string)x))
                     .SetEnablerSetting(ModuleConstants.Settings.General.TagsInheritancePolicy)
                     .SetCronSetting(ModuleConstants.Settings.General.CronExpression)
                     .ToJob<TaggedItemOutlinesSynchronizationJob>(x => x.Run())

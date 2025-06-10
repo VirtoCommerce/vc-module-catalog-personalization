@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using VirtoCommerce.CatalogModule.Core.Model;
+using VirtoCommerce.CatalogModule.Core.Outlines;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model;
-using VirtoCommerce.CoreModule.Core.Outlines;
 using Xunit;
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Test.Indexations

@@ -85,7 +85,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                             Take = 0,
                         };
                         var allCategoryProductsCount = (await _listEntrySearchService.SearchAsync(criteria)).TotalCount;
-                        var allCategoryTaggedProductsCount = taggedItems.Count(x => x.EntityType.EqualsInvariant(KnownDocumentTypes.Product) && x.Tags.Any());
+                        var allCategoryTaggedProductsCount = taggedItems.Count(x => x.EntityType.EqualsIgnoreCase(KnownDocumentTypes.Product) && x.Tags.Any());
                         if (allCategoryProductsCount > allCategoryTaggedProductsCount)
                         {
                             result[category.Id].Add(EffectiveTag.InheritedTag(Constants.UserGroupsAnyValue));
