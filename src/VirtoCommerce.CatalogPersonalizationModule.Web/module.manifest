@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <id>VirtoCommerce.CatalogPersonalization</id>
-  <version>3.803.0</version>
+  <version>3.804.0</version>
   <version-tag />
 
-  <platformVersion>3.853.0</platformVersion>
+  <platformVersion>3.889.0</platformVersion>
   <dependencies>
-    <dependency id="VirtoCommerce.Catalog" version="3.822.0" />
-    <dependency id="VirtoCommerce.Core" version="3.808.0" />
-    <dependency id="VirtoCommerce.Search" version="3.804.0" />
+    <dependency id="VirtoCommerce.Catalog" version="3.868.0" />
+    <dependency id="VirtoCommerce.Core" version="3.821.0" />
+    <dependency id="VirtoCommerce.Search" version="3.808.0" />
   </dependencies>
 
   <title>Catalog Personalization</title>
