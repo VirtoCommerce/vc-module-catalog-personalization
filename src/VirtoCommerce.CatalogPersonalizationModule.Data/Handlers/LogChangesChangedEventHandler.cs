@@ -35,7 +35,7 @@ public class LogChangesChangedEventHandler : IEventHandler<TaggedItemChangedEven
         if (changesEnabled)
         {
             var logOperations = @event.ChangedEntries.Select(x => AbstractTypeFactory<OperationLog>.TryCreateInstance().FromChangedEntry(x)).ToArray();
-            BackgroundJob.Enqueue(() => LogEntityChangesInBackground(logOperations));
+            BackgroundJob.Enqueue(() => LogEntityChangesInBackgroundAsync(logOperations));
         }
         else
         {
@@ -43,8 +43,8 @@ public class LogChangesChangedEventHandler : IEventHandler<TaggedItemChangedEven
         }
     }
 
-    public void LogEntityChangesInBackground(OperationLog[] operationLogs)
+    public async Task LogEntityChangesInBackgroundAsync(OperationLog[] operationLogs)
     {
-        _changeLogService.SaveChangesAsync(operationLogs).GetAwaiter().GetResult();
+        await _changeLogService.SaveChangesAsync(operationLogs);
     }
 }
