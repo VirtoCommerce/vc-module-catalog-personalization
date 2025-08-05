@@ -35,6 +35,22 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Core
                     DefaultValue = "0/15 * * * *"
                 };
 
+                public static SettingDescriptor LogTaggedItemsChanges { get; } = new SettingDescriptor
+                {
+                    Name = "CatalogPersonalization.LogTaggedItemsChanges",
+                    GroupName = "Personalization|General",
+                    ValueType = SettingValueType.Boolean,
+                    DefaultValue = false,
+                };
+
+                public static SettingDescriptor EventBasedIndexation { get; } = new SettingDescriptor
+                {
+                    Name = "CatalogPersonalization.EventBasedIndexation.Enable",
+                    GroupName = "Personalization|General",
+                    ValueType = SettingValueType.Boolean,
+                    DefaultValue = false,
+                };
+
                 public static IEnumerable<SettingDescriptor> AllSettings
                 {
                     get
@@ -42,7 +58,9 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Core
                         return new List<SettingDescriptor>
                         {
                             TagsInheritancePolicy,
-                            CronExpression
+                            CronExpression,
+                            EventBasedIndexation,
+                            LogTaggedItemsChanges
                         };
                     }
                 }
