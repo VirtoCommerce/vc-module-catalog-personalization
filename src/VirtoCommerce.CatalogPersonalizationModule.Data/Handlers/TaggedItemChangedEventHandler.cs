@@ -35,36 +35,29 @@ public class TaggedItemChangedEventHandler : IEventHandler<TaggedItemChangedEven
     {
         if (await _settingsManager.GetValueAsync<bool>(ModuleConstants.Settings.General.EventBasedIndexation))
         {
-            if (message == null)
+            ArgumentNullException.ThrowIfNull(message);
+
+            EnqueueIndexDocuments(message, KnownDocumentTypes.Product, typeof(ProductTaggedItemDocumentBuilder));
+            EnqueueIndexDocuments(message, KnownDocumentTypes.Category, typeof(CategoryTaggedItemDocumentBuilder));
+        }
+    }
+
+    private void EnqueueIndexDocuments(TaggedItemChangedEvent message, string documentType, Type documentBuilder)
+    {
+        var indexChanges = message.ChangedEntries
+            .Where(x => x.OldEntry.EntityType.EqualsIgnoreCase(documentType))
+            .Select(x => new IndexEntry
             {
-                throw new ArgumentNullException(nameof(message));
-            }
+                Id = x.OldEntry.EntityId,
+                Type = x.OldEntry.EntityType,
+                EntryState = EntryState.Modified,
+            })
+            .ToArray();
 
-            var productIndexChanges = message.ChangedEntries
-                .Where(x => x.OldEntry.EntityType.EqualsIgnoreCase(KnownDocumentTypes.Product))
-                .Select(x => new IndexEntry
-                {
-                    Id = x.OldEntry.EntityId,
-                    Type = x.OldEntry.EntityType,
-                    EntryState = EntryState.Modified,
-                })
-                .ToArray();
-
-            _indexingJobService.EnqueueIndexAndDeleteDocuments(productIndexChanges, JobPriority.Normal,
-                _configurations.GetDocumentBuilders(KnownDocumentTypes.Product, typeof(ProductTaggedItemDocumentBuilder)).ToList());
-
-            var categoryIndexChanges = message.ChangedEntries
-                .Where(x => x.OldEntry.EntityType.EqualsIgnoreCase(KnownDocumentTypes.Category))
-                .Select(x => new IndexEntry
-                {
-                    Id = x.OldEntry.EntityId,
-                    Type = x.OldEntry.EntityType,
-                    EntryState = EntryState.Modified,
-                })
-                .ToArray();
-
-            _indexingJobService.EnqueueIndexAndDeleteDocuments(categoryIndexChanges, JobPriority.Normal,
-                _configurations.GetDocumentBuilders(KnownDocumentTypes.Category, typeof(CategoryTaggedItemDocumentBuilder)).ToList());
+        if (indexChanges.Length > 0)
+        {
+            _indexingJobService.EnqueueIndexAndDeleteDocuments(indexChanges, JobPriority.Normal,
+                _configurations.GetDocumentBuilders(documentType, documentBuilder).ToList());
         }
     }
 }
