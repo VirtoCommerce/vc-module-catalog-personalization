@@ -45,7 +45,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Core
 
                 public static SettingDescriptor EventBasedIndexation { get; } = new SettingDescriptor
                 {
-                    Name = "CatalogPersonalization.EventBasedIndexation.Enable",
+                    Name = "CatalogPersonalization.EventBasedIndexation",
                     GroupName = "Personalization|General",
                     ValueType = SettingValueType.Boolean,
                     DefaultValue = false,
