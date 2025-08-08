@@ -45,6 +45,14 @@
         "CronExpression": {
           "description": "Especifique a expressão cron para agendar tarefas de sincronização. Por exemplo: '0/x * * * *' para cada x minutos, '0 */x * * *' para cada x horas, '15 */x * * *' para minutos específicos a cada x horas, ou '0 0 */x * *' para cada x dias.",
           "title": "Expressão cron para trabalhos de sincronização de contornos (válido apenas com a política de propagação UpTree)."
+        },
+        "LogTaggedItemsChanges": {
+          "description": "Ativar o registro de alterações nos grupos de usuários atribuídos a produtos e categorias.",
+          "title": "Registrar alterações nos grupos de usuários"
+        },
+        "EventBasedIndexation": {
+          "description": "Ativar indexação baseada em eventos para grupos de usuários. Quando ativada, os grupos de usuários serão indexados automaticamente quando ocorrerem alterações.",
+          "title": "Ativar indexação baseada em eventos para grupos de usuários"
         }
       }
      },
