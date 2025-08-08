@@ -48,7 +48,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Core
                     Name = "CatalogPersonalization.EventBasedIndexation",
                     GroupName = "Personalization|General",
                     ValueType = SettingValueType.Boolean,
-                    DefaultValue = false,
+                    DefaultValue = true,
                 };
 
                 public static IEnumerable<SettingDescriptor> AllSettings
