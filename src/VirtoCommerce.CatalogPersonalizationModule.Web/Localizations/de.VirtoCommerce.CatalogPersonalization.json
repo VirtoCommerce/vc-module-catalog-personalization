@@ -45,6 +45,14 @@
         "CronExpression": {
           "description": "Geben Sie den Cron-Ausdruck an, um Synchronisierungsaufgaben zu planen. Zum Beispiel: '0/x * * * *' für alle x Minuten, '0 */x * * *' für alle x Stunden, '15 */x * * *' für bestimmte Minuten alle x Stunden oder '0 0 */x * *' für alle x Tage.",
           "title": "Cron-Ausdruck für Umriss-Synchronisierungsjobs (nur gültig mit UpTree-Verbreitungsrichtlinie)."
+        },
+        "LogTaggedItemsChanges": {
+          "description": "Protokollierung von Änderungen an Benutzergruppen, die Produkten und Kategorien zugeordnet sind, aktivieren.",
+          "title": "Benutzergruppenänderungen protokollieren"
+        },
+        "EventBasedIndexation": {
+          "description": "Ereignisbasierte Indexierung für Benutzergruppen aktivieren. Wenn aktiviert, werden Benutzergruppen automatisch indexiert, sobald Änderungen auftreten.",
+          "title": "Ereignisbasierte Indexierung für Benutzergruppen aktivieren"
         }
       }
      },
