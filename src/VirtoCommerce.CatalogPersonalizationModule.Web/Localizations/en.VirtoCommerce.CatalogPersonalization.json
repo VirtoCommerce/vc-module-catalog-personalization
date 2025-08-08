@@ -45,6 +45,14 @@
         "CronExpression": {
           "description": "Specify the cron expression to schedule synchronization tasks. For example: '0/x * * * *' for every x minutes, '0 */x * * *' for every x hours, '15 */x * * *' for specific minutes every x hours, or '0 0 */x * *' for every x days.",
           "title": "Cron expression for outline synchronization jobs (valid only with UpTree propagation policy)."
+        },
+        "LogTaggedItemsChanges": {
+          "description": "Enable logging of changes to user groups assigned to products and categories.",
+          "title": "Log user group changes"
+        },
+        "EventBasedIndexation": {
+          "description": "Enable event-based indexation for user groups. When enabled, user groups will be indexed automatically when changes occur.",
+          "title": "Enable event-based indexation for user groups"
         }
       }
      },

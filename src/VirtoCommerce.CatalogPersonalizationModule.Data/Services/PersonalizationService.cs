@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
+using VirtoCommerce.CatalogPersonalizationModule.Core.Events;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
@@ -11,6 +12,7 @@ using VirtoCommerce.CatalogPersonalizationModule.Data.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Data.Infrastructure;
 using VirtoCommerce.SearchModule.Core.Model;
 
@@ -22,16 +24,19 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
         private readonly ITaggedEntitiesServiceFactory _taggedEntitiesServiceFactory;
         private readonly IPlatformMemoryCache _platformMemoryCache;
         private readonly ITagPropagationPolicy _tagPropagationPolicy;
+        private readonly IEventPublisher _eventPublisher;
 
         public PersonalizationService(Func<IPersonalizationRepository> repositoryFactory,
             ITagPropagationPolicy tagPropagationPolicy,
             ITaggedEntitiesServiceFactory taggedEntitiesServiceFactory,
-            IPlatformMemoryCache platformMemoryCache)
+            IPlatformMemoryCache platformMemoryCache,
+            IEventPublisher eventPublisher)
         {
             _repositoryFactory = repositoryFactory;
             _tagPropagationPolicy = tagPropagationPolicy;
             _taggedEntitiesServiceFactory = taggedEntitiesServiceFactory;
             _platformMemoryCache = platformMemoryCache;
+            _eventPublisher = eventPublisher;
         }
 
         public async Task<TaggedItemSearchResult> SearchTaggedItemsAsync(TaggedItemSearchCriteria criteria)
@@ -124,6 +129,8 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
         public async Task SaveChangesAsync(TaggedItem[] taggedItems)
         {
             var pkMap = new PrimaryKeyResolvingMap();
+            var changedEntries = new List<GenericChangedEntry<TaggedItem>>();
+
             using (var repository = _repositoryFactory())
             {
                 var ids = taggedItems.Select(x => x.Id).Where(x => x != null).Distinct().ToArray();
@@ -134,16 +141,22 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                     var targetEntity = alreadyExistEntities.FirstOrDefault(x => x.Id == taggedItem.Id);
                     if (targetEntity != null)
                     {
+                        changedEntries.Add(new GenericChangedEntry<TaggedItem>(taggedItem, targetEntity.ToModel(AbstractTypeFactory<TaggedItem>.TryCreateInstance()), EntryState.Modified));
                         sourceEntity.Patch(targetEntity);
                     }
                     else
                     {
+                        changedEntries.Add(new GenericChangedEntry<TaggedItem>(taggedItem, EntryState.Added));
                         repository.Add(sourceEntity);
                     }
                 }
 
+                await _eventPublisher.Publish(new TaggedItemChangingEvent(changedEntries));
+
                 await repository.UnitOfWork.CommitAsync();
                 pkMap.ResolvePrimaryKeys();
+
+                await _eventPublisher.Publish(new TaggedItemChangedEvent(changedEntries));
             }
 
             PersonalizationCacheRegion.ExpireRegion();
@@ -172,7 +185,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
 
                 foreach (var taggedItem in result)
                 {
-                    var entities = await _taggedEntitiesServiceFactory.Create(taggedItem.EntityType).GetEntitiesByIdsAsync(new[] {taggedItem.EntityId});
+                    var entities = await _taggedEntitiesServiceFactory.Create(taggedItem.EntityType).GetEntitiesByIdsAsync(new[] { taggedItem.EntityId });
                     var evaluatedItems = await EvaluateEffectiveTags(entities.ToList());
 
                     taggedItem.InheritedTags = evaluatedItems.FirstOrDefault(x => x.EntityId == taggedItem.EntityId)?.InheritedTags;
@@ -183,7 +196,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
 
             if (!entityIdsWithoutAssignedTags.IsNullOrEmpty())
             {
-                var entityTypesWithInheritance = new[] {KnownDocumentTypes.Product, KnownDocumentTypes.Category};
+                var entityTypesWithInheritance = new[] { KnownDocumentTypes.Product, KnownDocumentTypes.Category };
                 var entitiesWithoutAssignedTags = new List<IEntity>();
 
                 foreach (var entityType in entityTypesWithInheritance)
