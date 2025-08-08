@@ -9,7 +9,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using VirtoCommerce.CatalogModule.Core.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Core;
+using VirtoCommerce.CatalogPersonalizationModule.Core.Events;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
+using VirtoCommerce.CatalogPersonalizationModule.Data.Handlers;
 using VirtoCommerce.CatalogPersonalizationModule.Data.MySql;
 using VirtoCommerce.CatalogPersonalizationModule.Data.PostgreSql;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Repositories;
@@ -20,6 +22,7 @@ using VirtoCommerce.CatalogPersonalizationModule.Data.SqlServer;
 using VirtoCommerce.CatalogPersonalizationModule.Web.BackgroundJobs;
 using VirtoCommerce.CatalogPersonalizationModule.Web.ExportImport;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
@@ -75,6 +78,9 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
             serviceCollection.AddSingleton<CategoryTaggedItemDocumentBuilder>();
 
             serviceCollection.AddSingleton<PersonalizationExportImport>();
+
+            serviceCollection.AddTransient<LogChangesChangedEventHandler>();
+            serviceCollection.AddTransient<TaggedItemChangedEventHandler>();
 
             serviceCollection.AddTransient<ITagPropagationPolicy>(provider =>
             {
@@ -158,6 +164,9 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
 
             searchRequestBuilderRegistrar.Override(KnownDocumentTypes.Product, appBuilder.ApplicationServices.GetService<ProductSearchUserGroupsRequestBuilder>);
             searchRequestBuilderRegistrar.Override(KnownDocumentTypes.Category, appBuilder.ApplicationServices.GetService<CategorySearchUserGroupsRequestBuilder>);
+
+            appBuilder.RegisterEventHandler<TaggedItemChangedEvent, LogChangesChangedEventHandler>();
+            appBuilder.RegisterEventHandler<TaggedItemChangedEvent, TaggedItemChangedEventHandler>();
         }
 
         public void Uninstall()
