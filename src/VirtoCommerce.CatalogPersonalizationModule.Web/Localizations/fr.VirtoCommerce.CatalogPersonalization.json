@@ -45,6 +45,14 @@
         "CronExpression": {
           "description": "Spécifiez l'expression cron pour planifier les tâches de synchronisation. Par exemple : '0/x * * * *' pour toutes les x minutes, '0 */x * * *' pour toutes les x heures, '15 */x * * *' pour des minutes spécifiques toutes les x heures, ou '0 0 */x * *' pour tous les x jours.",
           "title": "Expression cron pour les travaux de synchronisation des contours (valide uniquement avec la politique de propagation UpTree)."
+        },
+        "LogTaggedItemsChanges": {
+          "description": "Activer la journalisation des modifications apportées aux groupes d’utilisateurs attribués aux produits et aux catégories.",
+          "title": "Journaliser les modifications des groupes d’utilisateurs"
+        },
+        "EventBasedIndexation": {
+          "description": "Activer l’indexation basée sur les événements pour les groupes d’utilisateurs. Lorsqu’elle est activée, les groupes d’utilisateurs seront automatiquement indexés lorsqu’un changement se produit.",
+          "title": "Activer l’indexation basée sur les événements pour les groupes d’utilisateurs"
         }
       }
      },

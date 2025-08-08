@@ -45,6 +45,14 @@
         "CronExpression": {
           "description": "Określ wyrażenie cron do planowania zadań synchronizacji. Na przykład: '0/x * * * *' dla co x minut, '0 */x * * *' dla co x godzin, '15 */x * * *' dla określonych minut co x godzin, lub '0 0 */x * *' dla co x dni.",
           "title": "Wyrażenie cron dla zadań synchronizacji zarysów (ważne tylko z polityką propagacji UpTree)."
+        },
+        "LogTaggedItemsChanges": {
+          "description": "Włącz logowanie zmian w grupach użytkowników przypisanych do produktów i kategorii.",
+          "title": "Rejestrowanie zmian w grupach użytkowników"
+        },
+        "EventBasedIndexation": {
+          "description": "Włącz indeksowanie oparte na zdarzeniach dla grup użytkowników. Po włączeniu grupy użytkowników będą automatycznie indeksowane po wprowadzeniu zmian.",
+          "title": "Włącz indeksowanie oparte na zdarzeniach dla grup użytkowników"
         }
       }
      },

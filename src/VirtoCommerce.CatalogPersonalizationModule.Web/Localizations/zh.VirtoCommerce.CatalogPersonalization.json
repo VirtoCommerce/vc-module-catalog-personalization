@@ -45,6 +45,14 @@
         "CronExpression": {
           "description": "指定cron表达式以安排同步任务。例如：'0/x * * * *'表示每x分钟，'0 */x * * *'表示每x小时，'15 */x * * *'表示每x小时的特定分钟，或'0 0 */x * *'表示每x天。",
           "title": "轮廓同步作业的cron表达式（仅在UpTree传播策略下有效）。"
+        },
+        "LogTaggedItemsChanges": {
+          "description": "启用对分配给产品和类别的用户组更改的日志记录。",
+          "title": "记录用户组更改"
+        },
+        "EventBasedIndexation": {
+          "description": "启用基于事件的用户组索引。当启用时，用户组在发生更改时会自动建立索引。",
+          "title": "启用基于事件的用户组索引"
         }
       }
      },
