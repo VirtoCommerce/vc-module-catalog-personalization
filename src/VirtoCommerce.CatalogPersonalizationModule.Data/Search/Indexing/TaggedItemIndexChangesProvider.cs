@@ -66,7 +66,6 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Search.Indexing
                     EndDate = endDate,
                     Skip = (int)skip,
                     Take = (int)take
-
                 });
 
                 var taggedItemIds = searchResult.Results.Select(o => o.ObjectId).ToArray();
