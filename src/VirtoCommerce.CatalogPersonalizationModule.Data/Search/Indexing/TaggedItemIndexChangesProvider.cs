@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VirtoCommerce.CatalogPersonalizationModule.Core.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
-using VirtoCommerce.CatalogPersonalizationModule.Data.Model;
 using VirtoCommerce.Platform.Core.ChangeLog;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
@@ -13,7 +13,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Search.Indexing
 {
     public class TaggedItemIndexChangesProvider : IIndexDocumentChangesProvider
     {
-        public const string ChangeLogObjectType = nameof(TaggedItemEntity);
+        public const string ChangeLogObjectType = nameof(TaggedItem);
 
         private readonly ITaggedItemSearchService _taggedItemSearchService;
         private readonly IChangeLogSearchService _changeLogSearchService;
@@ -66,7 +66,6 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Search.Indexing
                     EndDate = endDate,
                     Skip = (int)skip,
                     Take = (int)take
-                    
                 });
 
                 var taggedItemIds = searchResult.Results.Select(o => o.ObjectId).ToArray();
