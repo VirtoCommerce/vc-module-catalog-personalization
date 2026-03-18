@@ -1,0 +1,3 @@
+namespace VirtoCommerce.CatalogPersonalizationModule.Data.SqlServer;
+
+public class SqlServerDataAssemblyMarker;
