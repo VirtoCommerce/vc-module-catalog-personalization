@@ -22,7 +22,7 @@
     <owner>Virto Commerce</owner>
   </owners>
   <projectUrl>https://github.com/VirtoCommerce/vc-module-catalog-personalization</projectUrl>
-  <iconUrl>Modules/$(VirtoCommerce.CatalogPersonalization)/Content/logo.png</iconUrl>
+  <iconUrl>Modules/$(VirtoCommerce.CatalogPersonalization)/Content/logo.svg</iconUrl>
   <requireLicenseAcceptance>false</requireLicenseAcceptance>
   <releaseNotes>First version.</releaseNotes>
   <copyright>Copyright © 2011-2026 Virto Commerce. All rights reserved</copyright>
