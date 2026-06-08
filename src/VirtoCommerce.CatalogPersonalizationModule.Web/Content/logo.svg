@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Catalog Personalization">
+  <title>Catalog Personalization</title>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="92%" y2="100%">
+      <stop offset="0%" stop-color="#3FD8B4"/>
+      <stop offset="100%" stop-color="#0E9E80"/>
+    </linearGradient>
+    <filter id="lift" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3.5" flood-color="#064F40" flood-opacity="0.30"/>
+    </filter>
+    <clipPath id="disc"><circle cx="-2" cy="-2" r="34"/></clipPath>
+  </defs>
+
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+
+  <g transform="translate(63,66)" filter="url(#lift)">
+    <!-- Avatar disc -->
+    <circle cx="-2" cy="-2" r="34" fill="#5FC8F5"/>
+    <g clip-path="url(#disc)">
+      <circle cx="-2" cy="-9" r="12" fill="#ffffff"/>
+      <path d="M-22,34 a20,18 0 0 1 40,0 Z" fill="#ffffff"/>
+    </g>
+
+    <!-- Personalization sparkles -->
+    <path d="M0,-14 Q2,-2 14,0 Q2,2 0,14 Q-2,2 -14,0 Q-2,-2 0,-14 Z" transform="translate(28,-26) scale(1)" fill="#FFC24D" stroke="#ffffff" stroke-width="2"/>
+    <path d="M0,-14 Q2,-2 14,0 Q2,2 0,14 Q-2,2 -14,0 Q-2,-2 0,-14 Z" transform="translate(31,8) scale(0.42)" fill="#FFD98A"/>
+    <path d="M0,-14 Q2,-2 14,0 Q2,2 0,14 Q-2,2 -14,0 Q-2,-2 0,-14 Z" transform="translate(-30,-24) scale(0.38)" fill="#ffffff"/>
+  </g>
+</svg>
