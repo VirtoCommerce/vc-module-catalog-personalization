@@ -1,4 +1,5 @@
-using System;
+using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -177,12 +178,12 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
             throw new NotImplementedException();
         }
 
-        public async Task ExportAsync(Stream outStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)
+        public async Task ExportAsync(Stream outStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback, CancellationToken cancellationToken)
         {
             await _appBuilder.ApplicationServices.GetRequiredService<PersonalizationExportImport>().DoExportAsync(outStream, progressCallback, cancellationToken);
         }
 
-        public async Task ImportAsync(Stream inputStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)
+        public async Task ImportAsync(Stream inputStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback, CancellationToken cancellationToken)
         {
             await _appBuilder.ApplicationServices.GetRequiredService<PersonalizationExportImport>().DoImportAsync(inputStream, progressCallback, cancellationToken);
         }

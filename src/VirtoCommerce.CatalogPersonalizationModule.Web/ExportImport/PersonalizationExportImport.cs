@@ -1,4 +1,6 @@
 using System;
+
+using System.Threading;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +27,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.ExportImport
             _serializer = jsonSerializer;
         }
 
-        public async Task DoExportAsync(Stream outStream, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)
+        public async Task DoExportAsync(Stream outStream, Action<ExportImportProgressInfo> progressCallback, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var progressInfo = new ExportImportProgressInfo { Description = "loading data..." };
@@ -34,8 +36,8 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.ExportImport
             using (var sw = new StreamWriter(outStream, System.Text.Encoding.UTF8))
             using (var writer = new JsonTextWriter(sw))
             {
-                await writer.WriteStartObjectAsync();
-                await writer.WritePropertyNameAsync("TaggedItems");
+                await writer.WriteStartObjectAsync(cancellationToken);
+                await writer.WritePropertyNameAsync("TaggedItems", cancellationToken);
 
                 await writer.SerializeArrayWithPagingAsync(_serializer, _batchSize, async (skip, take) =>
                         (GenericSearchResult<TaggedItem>)await _taggedItemSearchService.SearchTaggedItemsAsync(new TaggedItemSearchCriteria { Skip = skip, Take = take })
@@ -45,12 +47,12 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.ExportImport
                         progressCallback(progressInfo);
                     }, cancellationToken);
 
-                await writer.WriteEndObjectAsync();
-                await writer.FlushAsync();
+                await writer.WriteEndObjectAsync(cancellationToken);
+                await writer.FlushAsync(cancellationToken);
             }
         }
 
-        public async Task DoImportAsync(Stream inputStream, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)
+        public async Task DoImportAsync(Stream inputStream, Action<ExportImportProgressInfo> progressCallback, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -60,7 +62,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.ExportImport
             using (var streamReader = new StreamReader(inputStream))
             using (var reader = new JsonTextReader(streamReader))
             {
-                while (await reader.ReadAsync())
+                while (await reader.ReadAsync(cancellationToken))
                 {
                     if (reader.TokenType != JsonToken.PropertyName)
                     {
