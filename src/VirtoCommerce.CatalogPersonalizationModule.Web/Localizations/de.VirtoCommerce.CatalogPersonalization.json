@@ -11,7 +11,18 @@
                 "inherited-tags": "Geerbte Benutzergruppen",
                 "no-assigned": "Keine Benutzergruppen zugewiesen",
                 "no-inherited": "Keine Benutzergruppen geerbt",
-                "add-btn": "Hinzufügen"
+                "add-btn": "Hinzufügen",
+                "edit-dictionary": "Benutzergruppenliste bearbeiten",
+                "summary": "Sichtbar für {{total}} Gruppen · {{direct}} direkt, {{inherited}} geerbt",
+                "summary-none": "Keiner Benutzergruppe zugewiesen",
+                "filter-placeholder": "Benutzergruppen filtern",
+                "badge-inherited": "geerbt",
+                "badge-also-inherited": "+ geerbt",
+                "badge-orphan": "nicht in der Liste",
+                "locked-hint": "Von einer übergeordneten Kategorie gewährt. Dort ändern.",
+                "no-groups": "Noch keine Benutzergruppen definiert",
+                "no-groups-hint": "Verwenden Sie das Stiftsymbol oben, um sie zu definieren.",
+                "no-matches": "Keine Benutzergruppen entsprechen „{{term}}“"
               }
           },
             "progress": {

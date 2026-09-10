@@ -11,7 +11,18 @@
                 "inherited-tags": "Grupos de usuários herdados",
                 "no-assigned": "Nenhum grupo de usuários atribuído",
                 "no-inherited": "Nenhum grupo de usuários herdado",
-                "add-btn": "Adicionar"
+                "add-btn": "Adicionar",
+                "edit-dictionary": "Editar a lista de grupos de usuários",
+                "summary": "Visível para {{total}} grupos · {{direct}} diretos, {{inherited}} herdados",
+                "summary-none": "Não atribuído a nenhum grupo de usuários",
+                "filter-placeholder": "Filtrar grupos de usuários",
+                "badge-inherited": "herdado",
+                "badge-also-inherited": "+ herdado",
+                "badge-orphan": "fora da lista",
+                "locked-hint": "Concedido por uma categoria superior. Altere lá.",
+                "no-groups": "Nenhum grupo de usuários definido ainda",
+                "no-groups-hint": "Use o lápis acima para defini-los.",
+                "no-matches": "Nenhum grupo de usuários corresponde a “{{term}}”"
               }
           },
             "progress": {

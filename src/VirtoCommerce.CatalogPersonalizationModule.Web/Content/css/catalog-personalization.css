@@ -1,20 +1,218 @@
-﻿.head-select {
-    width: 80%;
+.vcp-groups {
+    padding: 10px 0 4px;
 }
 
-button.btn.head-button {
-    background: #43b0e6;
-    color: #fff;
-    height: 30px;
-    line-height: 28px;
-    padding: 0 10px;
-    width: 15%;
+.vcp-groups__head {
+    display: flex;
+    align-items: center;
+    margin-bottom: 3px;
 }
 
-    button.btn.head-button:hover {
-        background: #43b0e6;
+.vcp-groups__head-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: #8a8a8a;
+}
+
+.vcp-groups__head-edit {
+    margin-left: 6px;
+    font-size: 12px;
+    line-height: 1;
+    color: #43b0e6;
+    text-decoration: none;
+}
+
+    .vcp-groups__head-edit:hover {
+        color: #2f97cc;
     }
 
-td.table-col.checkbox {
-    width: 1%;
+.vcp-groups__summary {
+    margin-bottom: 10px;
+    font-size: 12px;
+    color: #777;
+}
+
+.vcp-groups__summary_empty {
+    color: #999;
+    font-style: italic;
+}
+
+.vcp-groups__filter {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.vcp-groups__filter-ico {
+    position: absolute;
+    left: 9px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: #b5b5b5;
+    pointer-events: none;
+}
+
+.vcp-groups__filter-input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 32px;
+    padding: 0 28px 0 27px;
+    border: 1px solid #dcdcdc;
+    border-radius: 3px;
+    background: #fff;
+    font-size: 13px;
+    color: #333;
+}
+
+    .vcp-groups__filter-input:focus {
+        border-color: #43b0e6;
+        outline: none;
+    }
+
+.vcp-groups__filter-clear {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: #b5b5b5;
+    text-decoration: none;
+}
+
+    .vcp-groups__filter-clear:hover {
+        color: #777;
+    }
+
+.vcp-groups__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid #e8e8e8;
+    border-radius: 3px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.vcp-groups__row {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    min-height: 32px;
+    margin: 0;
+    padding: 4px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    user-select: none;
+    /* The admin theme gives list items in a blade a hanging indent and a dash marker. */
+    text-indent: 0;
+}
+
+    .vcp-groups__row::before {
+        content: none;
+        display: none;
+    }
+
+    .vcp-groups__row:last-child {
+        border-bottom: none;
+    }
+
+    .vcp-groups__row:hover {
+        background: #f7fbfd;
+    }
+
+.vcp-groups__row_inherited {
+    background: #fafafa;
+}
+
+.vcp-groups__check {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 15px;
+    height: 15px;
+    margin-right: 9px;
+    border: 1px solid #c9c9c9;
+    border-radius: 2px;
+    background: #fff;
+    font-size: 10px;
+    line-height: 1;
+    color: #fff;
+}
+
+.vcp-groups__check_on {
+    border-color: #43b0e6;
+    background: #43b0e6;
+}
+
+.vcp-groups__check_inherited {
+    border-color: #c9c9c9;
+    background: #c9c9c9;
+}
+
+.vcp-groups__name {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-indent: 0;
+    font-size: 13px;
+    color: #333;
+}
+
+.vcp-groups__row_inherited .vcp-groups__name {
+    color: #8a8a8a;
+}
+
+.vcp-groups__name-ico {
+    margin-right: 5px;
+    color: #9b9b9b;
+}
+
+.vcp-groups__badges {
+    display: flex;
+    flex: 0 0 auto;
+    margin-left: 8px;
+}
+
+.vcp-groups__badge {
+    padding: 0 6px;
+    border-radius: 8px;
+    background: #eef0f2;
+    font-size: 13px;
+    line-height: 18px;
+    color: #7a828a;
+    white-space: nowrap;
+}
+
+    .vcp-groups__badge + .vcp-groups__badge {
+        margin-left: 4px;
+    }
+
+.vcp-groups__badge_warn {
+    background: #fdf1e0;
+    color: #a5741d;
+}
+
+.vcp-groups__empty {
+    padding: 16px 12px;
+    border: 1px dashed #e0e0e0;
+    border-radius: 3px;
+    background: #fcfcfc;
+    text-align: center;
+}
+
+.vcp-groups__empty-title {
+    font-size: 13px;
+    color: #666;
+}
+
+.vcp-groups__empty-hint {
+    margin-top: 3px;
+    font-size: 12px;
+    color: #999;
 }

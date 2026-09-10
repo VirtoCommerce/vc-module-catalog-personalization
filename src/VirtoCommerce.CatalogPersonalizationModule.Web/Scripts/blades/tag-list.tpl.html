@@ -1,63 +1,59 @@
 <div class="blade-content">
     <div class="blade-inner">
         <div class="inner-block">
-            <fieldset style="margin-top: 12px;">
-                <legend>{{ 'personalization.blades.tag-list.labels.select-tags' | translate }}</legend>
-                <div class="form-group">
-                    <label class="form-label">{{ 'personalization.blades.tag-list.labels.available-tags' | translate }} <a href="" ng-click="editTagsDictionary()" class="form-edit" va-permission="pricing:read"><i class="form-ico fa fa-pencil"></i></a></label>
-                    <div class="form-input">
-                        <ui-select ng-model="blade.selectedTag" class="head-select">
-                            <ui-select-match placeholder="{{ 'personalization.blades.tag-list.labels.select-tags' | translate }}">{{$select.selected}}</ui-select-match>
-                            <ui-select-choices repeat="x in blade.availableTags | filter: $select.search">
-                                <span ng-bind-html="x | highlight: $select.search"></span>
-                            </ui-select-choices>
-                        </ui-select>
-                        <button class="btn head-button" type="button" ng-disabled="!blade.selectedTag" ng-click="blade.assignTag(blade.selectedTag)">{{ 'personalization.blades.tag-list.labels.add-btn' | translate }}</button>
-                    </div>
+            <div class="vcp-groups">
+                <div class="vcp-groups__head">
+                    <span class="vcp-groups__head-label">{{ 'personalization.blades.tag-list.labels.available-tags' | translate }}</span>
+                    <a href="" ng-click="editTagsDictionary()" class="vcp-groups__head-edit"
+                       va-permission="platform:setting:update"
+                       title="{{ 'personalization.blades.tag-list.labels.edit-dictionary' | translate }}">
+                        <i class="fa fa-pencil"></i>
+                    </a>
                 </div>
-            </fieldset>
 
-            <div class="sub-t">{{ 'personalization.blades.tag-list.labels.assigned-tags' | translate }}</div>
-            <div class="table-wrapper">
-                <table class="table">
-                    <tbody>
-                        <tr class="table-item" ng-repeat="data in blade.assignedTags">
-                            <td class="table-col checkbox">
-                                <label class="form-control __checkbox">
-                                    <input type="checkbox" ng-model="data.$selected">
-                                    <span class="check"></span>
-                                </label>
-                            </td>
-                            <td class="table-col" ng-click='blade.selectNode(data)'>
-                                <span class="table-t">{{data.value}}</span>
-                                <span class="table-descr">{{data.value}}</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <p class="note" ng-if="!blade.assignedTags.length">{{ 'personalization.blades.tag-list.labels.no-assigned' | translate }}</p>
+                <div class="vcp-groups__summary" ng-if="blade.rows.length">
+                    <span ng-if="blade.stats.total">{{ blade.summaryText }}</span>
+                    <span class="vcp-groups__summary_empty" ng-if="!blade.stats.total">{{ 'personalization.blades.tag-list.labels.summary-none' | translate }}</span>
+                </div>
 
-            <div class="sub-t">{{ 'personalization.blades.tag-list.labels.inherited-tags' | translate }}</div>
-            <div class="table-wrapper">
-                <table class="table">
-                    <tbody>
-                    <tr class="table-item" ng-repeat="data in blade.currentEntity.inheritedTags">
-                        <td class="table-col checkbox">
-                            <label class="form-control __checkbox">
-                                <input type="checkbox" ng-model="data.$selected" ng-disabled ="true">
-                                <span class="check"></span>
-                            </label>
-                        </td>
-                        <td class="table-col" ng-click='blade.selectNode(data)'>
-                            <span class="table-t">{{data}}</span>
-                            <span class="table-descr">{{data}}</span>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="vcp-groups__filter" ng-if="blade.showFilter()">
+                    <i class="fa fa-search vcp-groups__filter-ico"></i>
+                    <input type="text" ng-model="blade.filter" class="vcp-groups__filter-input"
+                           placeholder="{{ 'personalization.blades.tag-list.labels.filter-placeholder' | translate }}" />
+                    <a href="" class="vcp-groups__filter-clear" ng-if="blade.filter" ng-click="blade.clearFilter()">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+
+                <ul class="vcp-groups__list" ng-if="blade.visibleRows.length">
+                    <li class="vcp-groups__row"
+                        ng-repeat="row in blade.visibleRows track by row.value"
+                        ng-class="{ 'vcp-groups__row_inherited': row.isInherited && !row.isAssigned, 'vcp-groups__row_on': row.isAssigned }"
+                        ng-click="blade.toggle(row)"
+                        title="{{ row.isInherited ? ('personalization.blades.tag-list.labels.locked-hint' | translate) : '' }}">
+                        <span class="vcp-groups__check" ng-class="{ 'vcp-groups__check_on': row.isAssigned, 'vcp-groups__check_inherited': !row.isAssigned && row.isInherited }">
+                            <i class="fa fa-check" ng-if="row.isAssigned || row.isInherited"></i>
+                        </span>
+                        <span class="vcp-groups__name">
+                            <i class="fa fa-users vcp-groups__name-ico" ng-if="row.isAny"></i>{{ row.displayName }}
+                        </span>
+                        <span class="vcp-groups__badges">
+                            <span class="vcp-groups__badge" ng-if="row.isInherited && row.isAssigned">{{ 'personalization.blades.tag-list.labels.badge-also-inherited' | translate }}</span>
+                            <span class="vcp-groups__badge" ng-if="row.isInherited && !row.isAssigned">{{ 'personalization.blades.tag-list.labels.badge-inherited' | translate }}</span>
+                            <span class="vcp-groups__badge vcp-groups__badge_warn" ng-if="row.isOrphan">{{ 'personalization.blades.tag-list.labels.badge-orphan' | translate }}</span>
+                        </span>
+                    </li>
+                </ul>
+
+                <div class="vcp-groups__empty" ng-if="!blade.rows.length && !blade.isLoading">
+                    <div class="vcp-groups__empty-title">{{ 'personalization.blades.tag-list.labels.no-groups' | translate }}</div>
+                    <div class="vcp-groups__empty-hint">{{ 'personalization.blades.tag-list.labels.no-groups-hint' | translate }}</div>
+                </div>
+
+                <div class="vcp-groups__empty" ng-if="blade.rows.length && !blade.visibleRows.length">
+                    <div class="vcp-groups__empty-title">{{ blade.noMatchText }}</div>
+                </div>
             </div>
-            <p class="note" ng-if="!blade.currentEntity.inheritedTags.length">{{ 'personalization.blades.tag-list.labels.no-inherited' | translate }}</p>
         </div>
     </div>
 </div>

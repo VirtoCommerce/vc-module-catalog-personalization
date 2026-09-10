@@ -69,7 +69,12 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                             .ToArray();
 
                         taggedItems = await GetTaggedItemsByIdsAsync(taggedItemIds);
-                        result[category.Id].AddRange(taggedItems.SelectMany(x => x.Tags.Select(y => EffectiveTag.InheritedTag(y))));
+                        //The category's own outline is inside its own outlines, so its tagged item comes back with
+                        //the descendants. Its tags were already added as non-inherited above, and a category does
+                        //not inherit from itself.
+                        result[category.Id].AddRange(taggedItems
+                            .Where(x => !x.EntityId.EqualsIgnoreCase(category.Id))
+                            .SelectMany(x => x.Tags.Select(y => EffectiveTag.InheritedTag(y))));
 
                         //Also need to propagate __any tag up the hierarchy if category contains  products that aren't tagged
                         //Using for this a comparison  of the count of tagged products in the module storage and the real products count from original store of catalog subsystem 
