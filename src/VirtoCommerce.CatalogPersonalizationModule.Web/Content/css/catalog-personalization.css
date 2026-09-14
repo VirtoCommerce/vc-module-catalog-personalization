@@ -122,6 +122,18 @@
         background: #f7fbfd;
     }
 
+    /* Keyboard focus has to be visible for Tab navigation to be usable. The :focus rule carries
+       browsers without :focus-visible; the second rule takes the ring back off for mouse clicks. */
+    .vcp-groups__row:focus {
+        outline: 2px solid #43b0e6;
+        outline-offset: -2px;
+        background: #f7fbfd;
+    }
+
+    .vcp-groups__row:focus:not(:focus-visible) {
+        outline: none;
+    }
+
 .vcp-groups__row_inherited {
     background: #fafafa;
 }

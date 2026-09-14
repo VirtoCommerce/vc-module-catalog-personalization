@@ -25,11 +25,17 @@
                     </a>
                 </div>
 
-                <ul class="vcp-groups__list" ng-if="blade.visibleRows.length">
+                <ul class="vcp-groups__list" ng-if="blade.visibleRows.length"
+                    role="group"
+                    aria-label="{{ 'personalization.blades.tag-list.labels.available-tags' | translate }}">
                     <li class="vcp-groups__row"
                         ng-repeat="row in blade.visibleRows track by row.value"
                         ng-class="{ 'vcp-groups__row_inherited': row.isInherited && !row.isAssigned, 'vcp-groups__row_on': row.isAssigned }"
+                        tabindex="0"
+                        role="checkbox"
+                        aria-checked="{{ !!row.isAssigned }}"
                         ng-click="blade.toggle(row)"
+                        ng-keydown="blade.onRowKeydown($event, row)"
                         title="{{ row.isInherited ? ('personalization.blades.tag-list.labels.locked-hint' | translate) : '' }}">
                         <span class="vcp-groups__check" ng-class="{ 'vcp-groups__check_on': row.isAssigned, 'vcp-groups__check_inherited': !row.isAssigned && row.isInherited }">
                             <i class="fa fa-check" ng-if="row.isAssigned || row.isInherited"></i>

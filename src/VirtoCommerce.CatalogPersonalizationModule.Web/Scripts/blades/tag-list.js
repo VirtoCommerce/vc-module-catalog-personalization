@@ -121,6 +121,18 @@ angular.module('virtoCommerce.catalogPersonalizationModule')
                 updateStats();
             };
 
+            // Rows are reachable with Tab and toggled with Space, per the ARIA checkbox pattern
+            // (Enter is deliberately not bound - it belongs to buttons, not checkboxes).
+            // Without preventDefault the blade scrolls a page down on every Space.
+            blade.onRowKeydown = function (event, row) {
+                var isSpace = event.key === ' ' || event.key === 'Spacebar' ||
+                    event.which === 32 || event.keyCode === 32;
+                if (isSpace) {
+                    event.preventDefault();
+                    blade.toggle(row);
+                }
+            };
+
             blade.clearFilter = function () {
                 blade.filter = '';
             };
