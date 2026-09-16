@@ -9,11 +9,10 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
   <ItemGroup>
-    
-    <PackageReference Include="VirtoCommerce.CatalogModule.Data" Version="3.1029.0" />
+    <PackageReference Include="VirtoCommerce.CatalogModule.Data" Version="3.1029.4" />
     <PackageReference Include="VirtoCommerce.CoreModule.Core" Version="3.1007.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.1039.0" />
-    <PackageReference Include="VirtoCommerce.SearchModule.Core" Version="3.1004.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.1039.11" />
+    <PackageReference Include="VirtoCommerce.SearchModule.Core" Version="3.1004.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.CatalogPersonalizationModule.Core\VirtoCommerce.CatalogPersonalizationModule.Core.csproj" />

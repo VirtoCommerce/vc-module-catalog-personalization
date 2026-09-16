@@ -11,7 +11,18 @@
                 "inherited-tags": "Groupes d'utilisateurs hérités",
                 "no-assigned": "Aucun groupe d'utilisateurs attribué",
                 "no-inherited": "Aucun groupe d'utilisateurs hérité",
-                "add-btn": "Ajouter"
+                "add-btn": "Ajouter",
+                "edit-dictionary": "Modifier la liste des groupes d'utilisateurs",
+                "summary": "Visible par {{total}} groupes · {{direct}} directs, {{inherited}} hérités",
+                "summary-none": "Attribué à aucun groupe d'utilisateurs",
+                "filter-placeholder": "Filtrer les groupes d'utilisateurs",
+                "badge-inherited": "hérité",
+                "badge-also-inherited": "+ hérité",
+                "badge-orphan": "absent de la liste",
+                "locked-hint": "Accordé par une catégorie parente. Modifiez-le à cet endroit.",
+                "no-groups": "Aucun groupe d'utilisateurs défini pour le moment",
+                "no-groups-hint": "Utilisez le crayon ci-dessus pour les définir.",
+                "no-matches": "Aucun groupe d'utilisateurs ne correspond à « {{term}} »"
               }
           },
             "progress": {
