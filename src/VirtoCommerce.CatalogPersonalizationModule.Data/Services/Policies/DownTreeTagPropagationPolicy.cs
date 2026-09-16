@@ -54,9 +54,11 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Data.Services
                                                           .Select(x => x.Id)
                                                           .Distinct(StringComparer.OrdinalIgnoreCase)
                                                           .ToArray();
+                        //An outline ends with the entity itself, so its own tagged item has to be skipped here:
+                        //its tags were already added as non-inherited above, and an entity does not inherit from itself.
                         result[entity.Id].AddRange(taggedItems
-                            .Where(x => outlineItemsIds
-                            .Contains(x.EntityId))
+                            .Where(x => outlineItemsIds.Contains(x.EntityId)
+                                        && !x.EntityId.EqualsIgnoreCase(entity.Id))
                             .SelectMany(x => x.Tags
                                 .Select(y => EffectiveTag.InheritedTag(y))));
 

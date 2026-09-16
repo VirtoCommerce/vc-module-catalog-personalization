@@ -11,7 +11,18 @@
                 "inherited-tags": "継承されたユーザーグループ",
                 "no-assigned": "割り当てられたユーザーグループはありません",
                 "no-inherited": "継承されたユーザーグループはありません",
-                "add-btn": "追加"
+                "add-btn": "追加",
+                "edit-dictionary": "ユーザーグループ一覧を編集",
+                "summary": "{{total}} グループに表示 · 直接 {{direct}}、継承 {{inherited}}",
+                "summary-none": "どのユーザーグループにも割り当てられていません",
+                "filter-placeholder": "ユーザーグループを絞り込む",
+                "badge-inherited": "継承",
+                "badge-also-inherited": "+ 継承",
+                "badge-orphan": "一覧にありません",
+                "locked-hint": "親カテゴリーから付与されています。親カテゴリーで変更してください。",
+                "no-groups": "ユーザーグループがまだ定義されていません",
+                "no-groups-hint": "上の鉛筆アイコンから定義してください。",
+                "no-matches": "「{{term}}」に一致するユーザーグループはありません"
               }
           },
             "progress": {
