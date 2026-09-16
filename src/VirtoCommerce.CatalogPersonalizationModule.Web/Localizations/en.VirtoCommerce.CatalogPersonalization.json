@@ -11,7 +11,18 @@
                 "inherited-tags": "Inherited user groups",
                 "no-assigned": "No user groups assigned",
                 "no-inherited": "No user groups inherited",
-                "add-btn": "Add"
+                "add-btn": "Add",
+                "edit-dictionary": "Edit user group list",
+                "summary": "Visible to {{total}} groups · {{direct}} direct, {{inherited}} inherited",
+                "summary-none": "Not assigned to any user group",
+                "filter-placeholder": "Filter user groups",
+                "badge-inherited": "inherited",
+                "badge-also-inherited": "+ inherited",
+                "badge-orphan": "not in list",
+                "locked-hint": "Granted by a parent category. Change it there.",
+                "no-groups": "No user groups defined yet",
+                "no-groups-hint": "Use the pencil above to define them.",
+                "no-matches": "No user groups match “{{term}}”"
               }
           },
             "progress": {

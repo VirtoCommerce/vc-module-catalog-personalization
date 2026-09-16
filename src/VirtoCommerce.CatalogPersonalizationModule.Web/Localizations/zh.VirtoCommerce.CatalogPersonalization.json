@@ -11,7 +11,18 @@
                 "inherited-tags": "继承的用户组",
                 "no-assigned": "没有分配的用户组",
                 "no-inherited": "没有继承的用户组",
-                "add-btn": "添加"
+                "add-btn": "添加",
+                "edit-dictionary": "编辑用户组列表",
+                "summary": "对 {{total}} 个用户组可见 · 直接 {{direct}} 个，继承 {{inherited}} 个",
+                "summary-none": "未分配到任何用户组",
+                "filter-placeholder": "筛选用户组",
+                "badge-inherited": "继承",
+                "badge-also-inherited": "+ 继承",
+                "badge-orphan": "不在列表中",
+                "locked-hint": "由上级类目授予，请在该类目中修改。",
+                "no-groups": "尚未定义任何用户组",
+                "no-groups-hint": "请使用上方的铅笔图标进行定义。",
+                "no-matches": "没有与“{{term}}”匹配的用户组"
               }
           },
             "progress": {
