@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Hangfire;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +11,7 @@ using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
 using VirtoCommerce.CatalogPersonalizationModule.Web.BackgroundJobs;
 using VirtoCommerce.CatalogPersonalizationModule.Web.Model;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Jobs;
 using VirtoCommerce.Platform.Core.PushNotifications;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
@@ -27,6 +27,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         private readonly IUserNameResolver _userNameResolver;
         private readonly IPushNotificationManager _pushNotificationManager;
         private readonly ISettingsManager _settingsManager;
+        private readonly IBackgroundJob _backgroundJob;
 
         private const int _duplicateKey = 2601;
         private const int _duplicatePrimaryKey = 2627;
@@ -36,7 +37,8 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
             ITaggedItemOutlinesSynchronizer taggedItemOutlineSync,
             IUserNameResolver userNameResolver,
             IPushNotificationManager pushNotificationManager,
-            ISettingsManager settingsManager)
+            ISettingsManager settingsManager,
+            IBackgroundJob backgroundJob)
         {
             _taggedItemService = taggedItemService;
             _searchService = searchService;
@@ -44,6 +46,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
             _userNameResolver = userNameResolver;
             _pushNotificationManager = pushNotificationManager;
             _settingsManager = settingsManager;
+            _backgroundJob = backgroundJob;
         }
 
         /// <summary>
@@ -139,8 +142,9 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
 
             if (tagsInheritancePolicy.EqualsIgnoreCase("UpTree"))
             {
-                var jobId = BackgroundJob.Enqueue<TaggedItemOutlinesSynchronizationJob>(x => x.Run(notification, JobCancellationToken.Null, null));
-                notification.JobId = jobId;
+                var payload = AbstractTypeFactory<TaggedItemOutlinesSynchronizationJobPayload>.TryCreateInstance();
+                payload.Notification = notification;
+                notification.JobId = await _backgroundJob.Enqueue<TaggedItemOutlinesSynchronizationJob>(payload);
             }
             else
             {
@@ -160,9 +164,9 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         [HttpPost]
         [Route("outlines/synchronization/cancel")]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
-        public ActionResult CancelSynchronization([FromBody] TaggedItemOutlinesSynchronizationRequest cancellationRequest)
+        public async Task<ActionResult> CancelSynchronization([FromBody] TaggedItemOutlinesSynchronizationRequest cancellationRequest)
         {
-            BackgroundJob.Delete(cancellationRequest.JobId);
+            await _backgroundJob.Cancel(cancellationRequest.JobId);
             return NoContent();
         }
     }

@@ -35,6 +35,20 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Core
                     DefaultValue = "0/15 * * * *"
                 };
 
+                /// <summary>
+                /// Turns the scheduled tagged item outlines synchronization on or off. The background-job engine needs a
+                /// boolean enabler for a setting-driven schedule, so this replaces the old "enabled when
+                /// <see cref="TagsInheritancePolicy"/> is UpTree" rule at the schedule level. The scheduled run still does
+                /// nothing unless the policy is UpTree, so the default (true) keeps the previous behavior.
+                /// </summary>
+                public static SettingDescriptor EnableOutlinesSynchronizationJob { get; } = new SettingDescriptor
+                {
+                    Name = "CatalogPersonalization.EnableOutlinesSynchronizationJob",
+                    GroupName = "Personalization|General",
+                    ValueType = SettingValueType.Boolean,
+                    DefaultValue = true,
+                };
+
                 public static SettingDescriptor LogTaggedItemsChanges { get; } = new SettingDescriptor
                 {
                     Name = "CatalogPersonalization.LogTaggedItemsChanges",
@@ -59,6 +73,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Core
                         {
                             TagsInheritancePolicy,
                             CronExpression,
+                            EnableOutlinesSynchronizationJob,
                             EventBasedIndexation,
                             LogTaggedItemsChanges
                         };

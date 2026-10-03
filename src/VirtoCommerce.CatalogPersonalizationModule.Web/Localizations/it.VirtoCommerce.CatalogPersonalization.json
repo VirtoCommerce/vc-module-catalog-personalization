@@ -57,6 +57,10 @@
           "description": "Specifica l'espressione cron per pianificare le attività di sincronizzazione. Ad esempio: '0/x * * * *' per ogni x minuti, '0 */x * * *' per ogni x ore, '15 */x * * *' per minuti specifici ogni x ore, o '0 0 */x * *' per ogni x giorni.",
           "title": "Espressione cron per i lavori di sincronizzazione dei contorni (valido solo con la politica di propagazione UpTree)."
         },
+        "EnableOutlinesSynchronizationJob": {
+          "description": "Run the outline synchronization on the schedule set by the cron expression. Scheduled runs only do work when the propagation policy is UpTree.",
+          "title": "Enable scheduled outline synchronization"
+        },
         "LogTaggedItemsChanges": {
           "description": "Abilita la registrazione delle modifiche ai gruppi di utenti assegnati a prodotti e categorie.",
           "title": "Registrare le modifiche ai gruppi di utenti"

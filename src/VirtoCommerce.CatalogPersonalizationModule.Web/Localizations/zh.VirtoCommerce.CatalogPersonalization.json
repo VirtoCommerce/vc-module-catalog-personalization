@@ -57,6 +57,10 @@
           "description": "指定cron表达式以安排同步任务。例如：'0/x * * * *'表示每x分钟，'0 */x * * *'表示每x小时，'15 */x * * *'表示每x小时的特定分钟，或'0 0 */x * *'表示每x天。",
           "title": "轮廓同步作业的cron表达式（仅在UpTree传播策略下有效）。"
         },
+        "EnableOutlinesSynchronizationJob": {
+          "description": "Run the outline synchronization on the schedule set by the cron expression. Scheduled runs only do work when the propagation policy is UpTree.",
+          "title": "Enable scheduled outline synchronization"
+        },
         "LogTaggedItemsChanges": {
           "description": "启用对分配给产品和类别的用户组更改的日志记录。",
           "title": "记录用户组更改"
