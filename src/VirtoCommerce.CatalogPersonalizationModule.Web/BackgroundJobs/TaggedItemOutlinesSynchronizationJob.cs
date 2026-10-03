@@ -1,17 +1,20 @@
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
-using Hangfire;
-using Hangfire.Server;
+using VirtoCommerce.CatalogPersonalizationModule.Core;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
+using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Exceptions;
+using VirtoCommerce.Platform.Core.Jobs;
 using VirtoCommerce.Platform.Core.PushNotifications;
+using VirtoCommerce.Platform.Core.Settings;
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Web.BackgroundJobs
 {
-    public class TaggedItemOutlinesSynchronizationJob
+    public class TaggedItemOutlinesSynchronizationJob : IBackgroundJobHandler<TaggedItemOutlinesSynchronizationJobPayload>
     {
         public const string JobId = "TagOutlinesSynchronization";
 
@@ -20,12 +23,36 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.BackgroundJobs
         private readonly ITaggedItemOutlinesSynchronizer _taggedOutlineSync;
         private readonly ITaggedItemSearchService _taggedItemSearchService;
         private readonly IPushNotificationManager _pushNotificationManager;
+        private readonly ISettingsManager _settingsManager;
 
-        public TaggedItemOutlinesSynchronizationJob(ITaggedItemSearchService taggedItemSearchService, ITaggedItemOutlinesSynchronizer taggedOutlineSync, IPushNotificationManager pushNotificationManager)
+        public TaggedItemOutlinesSynchronizationJob(ITaggedItemSearchService taggedItemSearchService, ITaggedItemOutlinesSynchronizer taggedOutlineSync, IPushNotificationManager pushNotificationManager, ISettingsManager settingsManager)
         {
             _taggedItemSearchService = taggedItemSearchService;
             _taggedOutlineSync = taggedOutlineSync;
             _pushNotificationManager = pushNotificationManager;
+            _settingsManager = settingsManager;
+        }
+
+        /// <summary>
+        /// Runs a synchronization. A payload with a <see cref="TaggedItemOutlinesSynchronizationJobPayload.Notification"/>
+        /// is a manual run started from the admin UI and reports progress through it; a payload without one is a
+        /// scheduled run and reports nothing.
+        /// </summary>
+        public virtual async Task Execute(TaggedItemOutlinesSynchronizationJobPayload payload, IJobExecutionContext context, CancellationToken cancellationToken = default)
+        {
+            if (payload?.Notification is not null)
+            {
+                await Run(payload.Notification, context.JobId, cancellationToken);
+                return;
+            }
+
+            // The schedule's enabler is a boolean setting (the engine supports nothing else), so the UpTree rule that
+            // used to gate the Hangfire schedule is checked here: outlines only need syncing under that policy.
+            var policy = await _settingsManager.GetValueAsync<string>(ModuleConstants.Settings.General.TagsInheritancePolicy);
+            if (policy.EqualsIgnoreCase("UpTree"))
+            {
+                await PerformSynchronization(_ => { }, cancellationToken);
+            }
         }
 
         public async Task Run()
@@ -34,11 +61,10 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.BackgroundJobs
             {
             }
 
-            await PerformSynchronization(progressCallback, null);
+            await PerformSynchronization(progressCallback, CancellationToken.None);
         }
 
-
-        public async Task Run(TaggedItemOutlineSyncPushNotification notification, IJobCancellationToken cancellationToken, PerformContext context)
+        protected virtual async Task Run(TaggedItemOutlineSyncPushNotification notification, string jobId, CancellationToken cancellationToken)
         {
             async void progressCallback(TaggedItemOutlineSyncProgressInfo x)
             {
@@ -46,7 +72,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.BackgroundJobs
                 notification.Errors = x.Errors;
                 notification.ProcessedCount = x.ProcessedCount;
                 notification.TotalCount = x.TotalCount;
-                notification.JobId = context.BackgroundJob.Id;
+                notification.JobId = jobId;
 
                 await _pushNotificationManager.SendAsync(notification);
             }
@@ -55,7 +81,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.BackgroundJobs
             {
                 await PerformSynchronization(progressCallback, cancellationToken);
             }
-            catch (JobAbortedException)
+            catch (OperationCanceledException)
             {
                 //do nothing
             }
@@ -71,7 +97,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.BackgroundJobs
             }
         }
 
-        public async Task PerformSynchronization(Action<TaggedItemOutlineSyncProgressInfo> progressCallback, IJobCancellationToken cancellationToken)
+        public async Task PerformSynchronization(Action<TaggedItemOutlineSyncProgressInfo> progressCallback, CancellationToken cancellationToken)
         {
             var criteria = new TaggedItemSearchCriteria
             {
@@ -90,11 +116,11 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.BackgroundJobs
 
             progressCallback(progressInfo);
 
-            cancellationToken?.ThrowIfCancellationRequested();
+            cancellationToken.ThrowIfCancellationRequested();
 
             for (var i = 0; i < result.TotalCount; i += BatchCount)
             {
-                cancellationToken?.ThrowIfCancellationRequested();
+                cancellationToken.ThrowIfCancellationRequested();
 
                 criteria.Skip = i;
                 criteria.Take = BatchCount;
