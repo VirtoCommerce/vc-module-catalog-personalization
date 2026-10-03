@@ -13,6 +13,7 @@ using VirtoCommerce.CatalogPersonalizationModule.Core;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Events;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Handlers;
+using VirtoCommerce.CatalogPersonalizationModule.Data.Jobs;
 using VirtoCommerce.CatalogPersonalizationModule.Data.MySql;
 using VirtoCommerce.CatalogPersonalizationModule.Data.PostgreSql;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Repositories;
@@ -25,6 +26,7 @@ using VirtoCommerce.CatalogPersonalizationModule.Web.ExportImport;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.ExportImport;
+using VirtoCommerce.Platform.Core.Jobs;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
@@ -32,7 +34,6 @@ using VirtoCommerce.Platform.Data.Extensions;
 using VirtoCommerce.Platform.Data.MySql.Extensions;
 using VirtoCommerce.Platform.Data.PostgreSql.Extensions;
 using VirtoCommerce.Platform.Data.SqlServer.Extensions;
-using VirtoCommerce.Platform.Hangfire;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
 
@@ -84,6 +85,18 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
             serviceCollection.AddSingleton<PersonalizationExportImport>();
 
             serviceCollection.AddTransient<LogChangesChangedEventHandler>();
+            serviceCollection.AddBackgroundJob<LogEntityChangesJobHandler, LogEntityChangesJobPayload>(triggerable: false);
+
+            // Scheduled outlines synchronization, registered here rather than in PostInitialize: the schedule is now a DI
+            // registration the background-job engine picks up, re-evaluated whenever the enabler or cron setting changes.
+            // The enabler must be a boolean, so the old "only under UpTree" rule moved into the job (see Execute). The id is
+            // the one the Hangfire WatchJobSetting registration generated ({Type}.{Method}), so on the Hangfire engine this
+            // replaces the old recurring entry. The same handler also serves manual runs from the admin UI.
+            serviceCollection.AddRecurringJob<TaggedItemOutlinesSynchronizationJob, TaggedItemOutlinesSynchronizationJobPayload>(schedule => schedule
+                .WithId($"{nameof(TaggedItemOutlinesSynchronizationJob)}.{nameof(TaggedItemOutlinesSynchronizationJob.Run)}")
+                .FromSettings(
+                    ModuleConstants.Settings.General.EnableOutlinesSynchronizationJob,
+                    ModuleConstants.Settings.General.CronExpression));
             serviceCollection.AddTransient<TaggedItemChangedEventHandler>();
 
             serviceCollection.AddTransient<ITagPropagationPolicy>(provider =>
@@ -113,16 +126,6 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
 
             var permissionsRegistrar = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
             permissionsRegistrar.RegisterPermissions(ModuleInfo.Id, "Catalog Personalization", ModuleConstants.Security.Permissions.AllPermissions);
-
-            var recurringJobService = appBuilder.ApplicationServices.GetService<IRecurringJobService>();
-
-            recurringJobService.WatchJobSetting(
-                new SettingCronJobBuilder()
-                    .SetEnabledEvaluator(x => "UpTree".EqualsIgnoreCase((string)x))
-                    .SetEnablerSetting(ModuleConstants.Settings.General.TagsInheritancePolicy)
-                    .SetCronSetting(ModuleConstants.Settings.General.CronExpression)
-                    .ToJob<TaggedItemOutlinesSynchronizationJob>(x => x.Run())
-                    .Build());
 
             // Add tagged items document source to the category or product indexing configuration
             var documentIndexingConfigurations = appBuilder.ApplicationServices.GetRequiredService<IEnumerable<IndexDocumentConfiguration>>()?.ToList();

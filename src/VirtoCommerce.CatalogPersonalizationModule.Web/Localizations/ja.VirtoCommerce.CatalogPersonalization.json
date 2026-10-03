@@ -57,6 +57,10 @@
           "description": "同期タスクをスケジュールするためのcron式を指定します。例：'0/x * * * *'はx分ごと、'0 */x * * *'はx時間ごと、'15 */x * * *'はx時間ごとの特定の分、または'0 0 */x * *'はx日ごと。",
           "title": "アウトライン同期ジョブのcron式（UpTree伝播ポリシーでのみ有効）。"
         },
+        "EnableOutlinesSynchronizationJob": {
+          "description": "Run the outline synchronization on the schedule set by the cron expression. Scheduled runs only do work when the propagation policy is UpTree.",
+          "title": "Enable scheduled outline synchronization"
+        },
         "LogTaggedItemsChanges": {
           "description": "製品やカテゴリに割り当てられたユーザーグループの変更を記録する機能を有効にします。",
           "title": "ユーザーグループの変更を記録"
