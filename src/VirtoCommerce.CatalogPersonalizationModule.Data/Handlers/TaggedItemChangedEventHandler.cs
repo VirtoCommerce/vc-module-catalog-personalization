@@ -37,12 +37,12 @@ public class TaggedItemChangedEventHandler : IEventHandler<TaggedItemChangedEven
         {
             ArgumentNullException.ThrowIfNull(message);
 
-            EnqueueIndexDocuments(message, KnownDocumentTypes.Product, typeof(ProductTaggedItemDocumentBuilder));
-            EnqueueIndexDocuments(message, KnownDocumentTypes.Category, typeof(CategoryTaggedItemDocumentBuilder));
+            await EnqueueIndexDocumentsAsync(message, KnownDocumentTypes.Product, typeof(ProductTaggedItemDocumentBuilder));
+            await EnqueueIndexDocumentsAsync(message, KnownDocumentTypes.Category, typeof(CategoryTaggedItemDocumentBuilder));
         }
     }
 
-    private void EnqueueIndexDocuments(TaggedItemChangedEvent message, string documentType, Type documentBuilder)
+    private async Task EnqueueIndexDocumentsAsync(TaggedItemChangedEvent message, string documentType, Type documentBuilder)
     {
         var indexChanges = message.ChangedEntries
             .Where(x => x.OldEntry.EntityType.EqualsIgnoreCase(documentType))
@@ -56,7 +56,7 @@ public class TaggedItemChangedEventHandler : IEventHandler<TaggedItemChangedEven
 
         if (indexChanges.Length > 0)
         {
-            _indexingJobService.EnqueueIndexAndDeleteDocuments(indexChanges, JobPriority.Normal,
+            await _indexingJobService.EnqueueIndexAndDeleteDocumentsAsync(indexChanges, JobPriority.Normal,
                 _configurations.GetDocumentBuilders(documentType, documentBuilder).ToList());
         }
     }
