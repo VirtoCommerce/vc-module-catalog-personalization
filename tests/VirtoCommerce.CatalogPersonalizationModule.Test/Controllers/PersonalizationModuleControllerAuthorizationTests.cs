@@ -2,9 +2,9 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Authorization;
 using VirtoCommerce.CatalogPersonalizationModule.Core;
+using VirtoCommerce.CatalogPersonalizationModule.Web.Authorization;
 using VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api;
 using Xunit;
-using CatalogPermissions = VirtoCommerce.CatalogModule.Core.ModuleConstants.Security.Permissions;
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Test.Controllers
 {
@@ -17,9 +17,9 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Test.Controllers
         }
 
         [Theory]
-        [InlineData(nameof(PersonalizationModuleController.GetTaggedItem), CatalogPermissions.Read)]
-        [InlineData(nameof(PersonalizationModuleController.GetTagsCount), CatalogPermissions.Read)]
-        [InlineData(nameof(PersonalizationModuleController.Search), CatalogPermissions.Read)]
+        [InlineData(nameof(PersonalizationModuleController.GetTaggedItem), CatalogReadAuthorizationRequirement.PolicyName)]
+        [InlineData(nameof(PersonalizationModuleController.GetTagsCount), CatalogReadAuthorizationRequirement.PolicyName)]
+        [InlineData(nameof(PersonalizationModuleController.Search), CatalogReadAuthorizationRequirement.PolicyName)]
         [InlineData(nameof(PersonalizationModuleController.UpdateTaggedItem), ModuleConstants.Security.Permissions.Update)]
         [InlineData(nameof(PersonalizationModuleController.RunOutlinesSynchronization), ModuleConstants.Security.Permissions.Update)]
         [InlineData(nameof(PersonalizationModuleController.CancelSynchronization), ModuleConstants.Security.Permissions.Update)]

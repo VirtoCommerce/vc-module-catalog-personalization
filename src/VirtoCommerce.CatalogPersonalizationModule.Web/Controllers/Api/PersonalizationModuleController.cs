@@ -9,6 +9,7 @@ using VirtoCommerce.CatalogPersonalizationModule.Core;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
+using VirtoCommerce.CatalogPersonalizationModule.Web.Authorization;
 using VirtoCommerce.CatalogPersonalizationModule.Web.BackgroundJobs;
 using VirtoCommerce.CatalogPersonalizationModule.Web.Model;
 using VirtoCommerce.Platform.Core.Common;
@@ -16,7 +17,6 @@ using VirtoCommerce.Platform.Core.Jobs;
 using VirtoCommerce.Platform.Core.PushNotifications;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
-using CatalogPermissions = VirtoCommerce.CatalogModule.Core.ModuleConstants.Security.Permissions;
 
 namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
 {
@@ -57,7 +57,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         /// </summary>
         [HttpGet]
         [Route("taggeditem/{id}")]
-        [Authorize(CatalogPermissions.Read)]
+        [Authorize(CatalogReadAuthorizationRequirement.PolicyName)]
         [ProducesResponseType(typeof(TaggedItem), StatusCodes.Status200OK)]
         public async Task<ActionResult<TaggedItem>> GetTaggedItem(string id)
         {
@@ -77,7 +77,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         /// </summary>
         [HttpGet]
         [Route("taggeditem/{id}/tags/count")]
-        [Authorize(CatalogPermissions.Read)]
+        [Authorize(CatalogReadAuthorizationRequirement.PolicyName)]
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         public async Task<ActionResult<int>> GetTagsCount(string id)
         {
@@ -124,7 +124,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         /// </summary>
         [HttpPost]
         [Route("search")]
-        [Authorize(CatalogPermissions.Read)]
+        [Authorize(CatalogReadAuthorizationRequirement.PolicyName)]
         [ProducesResponseType(typeof(TaggedItemSearchResult), StatusCodes.Status200OK)]
         public async Task<ActionResult<TaggedItemSearchResult>> Search([FromBody] TaggedItemSearchCriteria criteria)
         {
