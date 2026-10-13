@@ -19,6 +19,7 @@ using VirtoCommerce.CatalogPersonalizationModule.Data.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Search.Indexing;
 using VirtoCommerce.CatalogPersonalizationModule.Data.Services;
 using VirtoCommerce.CatalogPersonalizationModule.Data.SqlServer;
+using VirtoCommerce.CatalogPersonalizationModule.Web.Authorization;
 using VirtoCommerce.CatalogPersonalizationModule.Web.BackgroundJobs;
 using VirtoCommerce.CatalogPersonalizationModule.Web.ExportImport;
 using VirtoCommerce.Platform.Core.Common;
@@ -78,6 +79,8 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web
             serviceCollection.AddSingleton<CategoryTaggedItemDocumentBuilder>();
 
             serviceCollection.AddSingleton<PersonalizationExportImport>();
+
+            serviceCollection.AddCatalogReadAuthorization();
 
             serviceCollection.AddTransient<LogChangesChangedEventHandler>();
             serviceCollection.AddTransient<TaggedItemChangedEventHandler>();

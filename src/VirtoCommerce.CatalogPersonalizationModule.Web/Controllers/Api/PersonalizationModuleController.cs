@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Hangfire;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using VirtoCommerce.CatalogPersonalizationModule.Core;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Model.Search;
 using VirtoCommerce.CatalogPersonalizationModule.Core.Services;
+using VirtoCommerce.CatalogPersonalizationModule.Web.Authorization;
 using VirtoCommerce.CatalogPersonalizationModule.Web.BackgroundJobs;
 using VirtoCommerce.CatalogPersonalizationModule.Web.Model;
 using VirtoCommerce.Platform.Core.Common;
@@ -19,6 +21,7 @@ using VirtoCommerce.Platform.Core.Settings;
 namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
 {
     [Route("api/personalization")]
+    [Authorize]
     public class PersonalizationModuleController : Controller
     {
         private readonly ITaggedItemService _taggedItemService;
@@ -51,6 +54,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         /// </summary>
         [HttpGet]
         [Route("taggeditem/{id}")]
+        [Authorize(CatalogReadAuthorizationRequirement.PolicyName)]
         [ProducesResponseType(typeof(TaggedItem), StatusCodes.Status200OK)]
         public async Task<ActionResult<TaggedItem>> GetTaggedItem(string id)
         {
@@ -70,6 +74,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         /// </summary>
         [HttpGet]
         [Route("taggeditem/{id}/tags/count")]
+        [Authorize(CatalogReadAuthorizationRequirement.PolicyName)]
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         public async Task<ActionResult<int>> GetTagsCount(string id)
         {
@@ -91,6 +96,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         /// </summary>
         [HttpPut]
         [Route("taggeditem")]
+        [Authorize(ModuleConstants.Security.Permissions.Update)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> UpdateTaggedItem([FromBody] TaggedItem taggedItem)
         {
@@ -115,6 +121,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         /// </summary>
         [HttpPost]
         [Route("search")]
+        [Authorize(CatalogReadAuthorizationRequirement.PolicyName)]
         [ProducesResponseType(typeof(TaggedItemSearchResult), StatusCodes.Status200OK)]
         public async Task<ActionResult<TaggedItemSearchResult>> Search([FromBody] TaggedItemSearchCriteria criteria)
         {
@@ -127,6 +134,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         /// </summary>
         [HttpPost]
         [Route("outlines/synchronize")]
+        [Authorize(ModuleConstants.Security.Permissions.Update)]
         [ProducesResponseType(typeof(TaggedItemOutlineSyncPushNotification), StatusCodes.Status200OK)]
         public async Task<ActionResult<TaggedItemOutlineSyncPushNotification>> RunOutlinesSynchronization()
         {
@@ -159,6 +167,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Web.Controllers.Api
         /// </summary>
         [HttpPost]
         [Route("outlines/synchronization/cancel")]
+        [Authorize(ModuleConstants.Security.Permissions.Update)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public ActionResult CancelSynchronization([FromBody] TaggedItemOutlinesSynchronizationRequest cancellationRequest)
         {

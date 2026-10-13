@@ -4,7 +4,7 @@
     <noWarn>1591;NU1608</noWarn>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="coverlet.collector" Version="6.0.4">
+    <PackageReference Include="coverlet.collector" Version="10.1.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -17,5 +17,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\VirtoCommerce.CatalogPersonalizationModule.Core\VirtoCommerce.CatalogPersonalizationModule.Core.csproj" />
     <ProjectReference Include="..\..\src\VirtoCommerce.CatalogPersonalizationModule.Data\VirtoCommerce.CatalogPersonalizationModule.Data.csproj" />
+    <ProjectReference Include="..\..\src\VirtoCommerce.CatalogPersonalizationModule.Web\VirtoCommerce.CatalogPersonalizationModule.Web.csproj" />
   </ItemGroup>
 </Project>
