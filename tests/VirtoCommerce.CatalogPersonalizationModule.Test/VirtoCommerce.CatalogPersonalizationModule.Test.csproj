@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
-    <noWarn>1591;NU1608</noWarn>
+    <noWarn>1591;NU1608;NU1902;NU1903</noWarn>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="8.0.1">
@@ -17,5 +17,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\VirtoCommerce.CatalogPersonalizationModule.Core\VirtoCommerce.CatalogPersonalizationModule.Core.csproj" />
     <ProjectReference Include="..\..\src\VirtoCommerce.CatalogPersonalizationModule.Data\VirtoCommerce.CatalogPersonalizationModule.Data.csproj" />
+    <ProjectReference Include="..\..\src\VirtoCommerce.CatalogPersonalizationModule.Web\VirtoCommerce.CatalogPersonalizationModule.Web.csproj" />
   </ItemGroup>
 </Project>
