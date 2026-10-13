@@ -17,5 +17,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\VirtoCommerce.CatalogPersonalizationModule.Core\VirtoCommerce.CatalogPersonalizationModule.Core.csproj" />
     <ProjectReference Include="..\..\src\VirtoCommerce.CatalogPersonalizationModule.Data\VirtoCommerce.CatalogPersonalizationModule.Data.csproj" />
+    <ProjectReference Include="..\..\src\VirtoCommerce.CatalogPersonalizationModule.Web\VirtoCommerce.CatalogPersonalizationModule.Web.csproj" />
   </ItemGroup>
 </Project>
