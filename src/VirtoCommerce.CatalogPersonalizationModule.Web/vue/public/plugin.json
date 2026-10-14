@@ -1,0 +1,4 @@
+{
+  // Catalog personalization admin UI for the Admin Shell host (Module Federation remote): extends the Catalog blades
+  "remote": { "name": "personalization_admin", "exposed": "./Module" }
+}

@@ -1,0 +1,27 @@
+{
+  "PERSONALIZATION": {
+    "TAGS": {
+      "FILTER": "Filter tags",
+      "ANY": "any",
+      "INHERITED": "inherited",
+      "ALSO_INHERITED": "also inherited",
+      "EMPTY": "No tags. Tags come from the Customer.MemberGroups setting.",
+      "EDIT_DICTIONARY": "Edit tags",
+      "TITLE": "Tags"
+    },
+    "SYNC": {
+      "TITLE": "Synchronize outlines",
+      "CANCEL": "Cancel"
+    },
+    "JOB": {
+      "TITLE": "Progress",
+      "STARTED": "Start",
+      "FINISHED": "End",
+      "ELAPSED": "Elapsed",
+      "PROCESSED": "Processed",
+      "ERRORS": "Errors"
+    },
+    "SAVE": "Save",
+    "RESET": "Reset"
+  }
+}
