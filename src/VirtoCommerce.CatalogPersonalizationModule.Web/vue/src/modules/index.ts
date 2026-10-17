@@ -19,13 +19,14 @@ for (const [blade, entityType] of [
   });
 }
 
-// "Synchronize outlines" on the Personalization settings group (legacy settingsDetail widget)
+// "Synchronize outlines" on the Settings blade while the Personalization group is chosen in its tree
+// (legacy settingsDetail widget); the blade keeps the chosen group in its query (?group=Personalization|General)
 registerExternalWidget({
   id: "PersonalizationOutlinesSync",
   title: "Synchronize outlines",
   component: markRaw(OutlinesSyncWidget),
-  targetBlades: ["PlatformSettingsGroup"],
-  isVisible: (blade) => blade?.param === "Personalization|General",
+  targetBlades: ["PlatformSettings"],
+  isVisible: (blade) => /^Personalization(\||$)/.test(blade?.query?.group ?? ""),
 });
 
 export default defineAppModule({
