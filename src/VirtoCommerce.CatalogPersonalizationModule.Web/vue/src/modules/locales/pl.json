@@ -1,0 +1,27 @@
+{
+  "PERSONALIZATION": {
+    "TAGS": {
+      "FILTER": "Filtruj tagi",
+      "ANY": "dowolny",
+      "INHERITED": "odziedziczone",
+      "ALSO_INHERITED": "również odziedziczone",
+      "EMPTY": "Brak tagów. Tagi pochodzą z ustawienia Customer.MemberGroups.",
+      "EDIT_DICTIONARY": "Edytuj tagi",
+      "TITLE": "Tagi"
+    },
+    "SYNC": {
+      "TITLE": "Synchronizuj zarysy",
+      "CANCEL": "Anuluj"
+    },
+    "JOB": {
+      "TITLE": "Postęp",
+      "STARTED": "Start",
+      "FINISHED": "Koniec",
+      "ELAPSED": "Upłynęło",
+      "PROCESSED": "Przetworzono",
+      "ERRORS": "Błędy"
+    },
+    "SAVE": "Zapisz",
+    "RESET": "Resetuj"
+  }
+}

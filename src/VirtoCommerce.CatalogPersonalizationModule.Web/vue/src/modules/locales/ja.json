@@ -1,0 +1,27 @@
+{
+  "PERSONALIZATION": {
+    "TAGS": {
+      "FILTER": "タグを絞り込む",
+      "ANY": "すべて",
+      "INHERITED": "継承",
+      "ALSO_INHERITED": "継承もあり",
+      "EMPTY": "タグがありません。タグは Customer.MemberGroups 設定から取得されます。",
+      "EDIT_DICTIONARY": "タグを編集",
+      "TITLE": "タグ"
+    },
+    "SYNC": {
+      "TITLE": "アウトラインを同期",
+      "CANCEL": "キャンセル"
+    },
+    "JOB": {
+      "TITLE": "進行状況",
+      "STARTED": "開始",
+      "FINISHED": "終了",
+      "ELAPSED": "経過時間",
+      "PROCESSED": "処理済み",
+      "ERRORS": "エラー"
+    },
+    "SAVE": "保存",
+    "RESET": "リセット"
+  }
+}

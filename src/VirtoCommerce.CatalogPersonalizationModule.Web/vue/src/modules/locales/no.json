@@ -1,0 +1,27 @@
+{
+  "PERSONALIZATION": {
+    "TAGS": {
+      "FILTER": "Filtrer etiketter",
+      "ANY": "alle",
+      "INHERITED": "arvet",
+      "ALSO_INHERITED": "også arvet",
+      "EMPTY": "Ingen etiketter. Etikettene kommer fra innstillingen Customer.MemberGroups.",
+      "EDIT_DICTIONARY": "Rediger etiketter",
+      "TITLE": "Etiketter"
+    },
+    "SYNC": {
+      "TITLE": "Synkroniser kategoristier",
+      "CANCEL": "Avbryt"
+    },
+    "JOB": {
+      "TITLE": "Fremdrift",
+      "STARTED": "Start",
+      "FINISHED": "Slutt",
+      "ELAPSED": "Medgått tid",
+      "PROCESSED": "Behandlet",
+      "ERRORS": "Feil"
+    },
+    "SAVE": "Lagre",
+    "RESET": "Tilbakestill"
+  }
+}

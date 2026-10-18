@@ -1,0 +1,27 @@
+{
+  "PERSONALIZATION": {
+    "TAGS": {
+      "FILTER": "Filtrar tags",
+      "ANY": "qualquer",
+      "INHERITED": "herdado",
+      "ALSO_INHERITED": "também herdado",
+      "EMPTY": "Nenhuma tag. As tags vêm da configuração Customer.MemberGroups.",
+      "EDIT_DICTIONARY": "Editar tags",
+      "TITLE": "Tags"
+    },
+    "SYNC": {
+      "TITLE": "Sincronizar contornos",
+      "CANCEL": "Cancelar"
+    },
+    "JOB": {
+      "TITLE": "Progresso",
+      "STARTED": "Início",
+      "FINISHED": "Fim",
+      "ELAPSED": "Decorrido",
+      "PROCESSED": "Processados",
+      "ERRORS": "Erros"
+    },
+    "SAVE": "Salvar",
+    "RESET": "Redefinir"
+  }
+}
