@@ -1,0 +1,27 @@
+{
+  "PERSONALIZATION": {
+    "TAGS": {
+      "FILTER": "تصفية الوسوم",
+      "ANY": "أي وسم",
+      "INHERITED": "موروث",
+      "ALSO_INHERITED": "موروث أيضًا",
+      "EMPTY": "لا توجد وسوم. تأتي الوسوم من الإعداد Customer.MemberGroups.",
+      "EDIT_DICTIONARY": "تحرير الوسوم",
+      "TITLE": "الوسوم"
+    },
+    "SYNC": {
+      "TITLE": "مزامنة مسارات الكتالوج",
+      "CANCEL": "إلغاء"
+    },
+    "JOB": {
+      "TITLE": "التقدم",
+      "STARTED": "البدء",
+      "FINISHED": "الانتهاء",
+      "ELAPSED": "الوقت المنقضي",
+      "PROCESSED": "تمت المعالجة",
+      "ERRORS": "الأخطاء"
+    },
+    "SAVE": "حفظ",
+    "RESET": "إعادة تعيين"
+  }
+}

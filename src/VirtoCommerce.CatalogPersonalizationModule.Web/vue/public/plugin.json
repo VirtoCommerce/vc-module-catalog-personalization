@@ -1,0 +1,3 @@
+{
+  "remote": { "name": "personalization_admin", "exposed": "./Module" }
+}

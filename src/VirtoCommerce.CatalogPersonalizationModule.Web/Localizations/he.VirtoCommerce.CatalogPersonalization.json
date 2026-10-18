@@ -1,0 +1,82 @@
+{
+  "personalization": {
+    "main-menu-title": "התאמה אישית",
+    "blades": {
+      "tag-list": {
+        "labels": {
+          "title": "קבוצות משתמשים",
+          "select-tags": "יש לבחור קבוצות משתמשים לשיוך",
+          "available-tags": "קבוצות משתמשים זמינות",
+          "assigned-tags": "קבוצות משתמשים משויכות",
+          "inherited-tags": "קבוצות משתמשים בירושה",
+          "no-assigned": "אין קבוצות משתמשים משויכות",
+          "no-inherited": "אין קבוצות משתמשים בירושה",
+          "add-btn": "הוספה",
+          "edit-dictionary": "עריכת רשימת קבוצות המשתמשים",
+          "summary": "גלוי לקבוצות: {{total}} · ישירות: {{direct}}, בירושה: {{inherited}}",
+          "summary-none": "לא משויך לאף קבוצת משתמשים",
+          "filter-placeholder": "סינון קבוצות משתמשים",
+          "badge-inherited": "בירושה",
+          "badge-also-inherited": "+ בירושה",
+          "badge-orphan": "לא ברשימה",
+          "locked-hint": "הוקצה על ידי קטגוריית אב. יש לשנות זאת שם.",
+          "no-groups": "עדיין לא הוגדרו קבוצות משתמשים",
+          "no-groups-hint": "יש להשתמש בעיפרון שלמעלה כדי להגדיר אותן.",
+          "no-matches": "אין קבוצות משתמשים התואמות ל-\"{{term}}\""
+        }
+      },
+      "progress": {
+        "labels": {
+          "total": "סה״כ",
+          "processed": "פריטים שעובדו",
+          "error-count": "מספר שגיאות"
+        }
+      }
+    },
+    "widgets": {
+      "tagsWidget": {
+        "title": "קבוצות משתמשים",
+        "assigned": "משויכות",
+        "inherited": "בירושה"
+      },
+      "run-sync": {
+        "title": "סנכרון נתיבי הקטלוג"
+      }
+    },
+    "tags": {
+      "__any": "כולם"
+    }
+  },
+  "settings": {
+    "CatalogPersonalization": {
+      "TagsInheritancePolicy": {
+        "description": "DownTree - מפיץ את כל קבוצות המשתמשים המשויכות לקטגוריות אל כל הצאצאים שלהן. UpTree - מפיץ את קבוצות המשתמשים במעלה ההיררכיה, מהצאצאים אל ההורים",
+        "title": "המדיניות שנבחרה להפצת קבוצות משתמשים"
+      },
+      "CronExpression": {
+        "description": "יש לציין את ביטוי ה-Cron לתזמון משימות הסנכרון. לדוגמה: '0/x * * * *' לכל x דקות, '0 */x * * *' לכל x שעות, '15 */x * * *' לדקה מסוימת בכל x שעות, או '0 0 */x * *' לכל x ימים.",
+        "title": "ביטוי Cron למשימות סנכרון נתיבי הקטלוג (תקף רק עם מדיניות ההפצה UpTree)."
+      },
+      "EnableOutlinesSynchronizationJob": {
+        "description": "הרצת סנכרון נתיבי הקטלוג לפי התזמון שנקבע בביטוי ה-Cron. הרצות מתוזמנות מבצעות עבודה רק כאשר מדיניות ההפצה היא UpTree.",
+        "title": "הפעלת סנכרון מתוזמן של נתיבי הקטלוג"
+      },
+      "LogTaggedItemsChanges": {
+        "description": "הפעלת רישום של שינויים בקבוצות המשתמשים המשויכות למוצרים ולקטגוריות.",
+        "title": "רישום שינויים בקבוצות משתמשים"
+      },
+      "EventBasedIndexation": {
+        "description": "הפעלת אינדוקס מבוסס אירועים עבור קבוצות משתמשים. כשהאפשרות מופעלת, קבוצות המשתמשים עוברות אינדוקס אוטומטית כאשר מתרחשים שינויים.",
+        "title": "הפעלת אינדוקס מבוסס אירועים עבור קבוצות משתמשים"
+      }
+    }
+  },
+  "module": {
+    "VirtoCommerce.CatalogPersonalization": {
+      "description": "ייצוא/ייבוא של קבוצות משתמשים"
+    }
+  },
+  "permissions": {
+    "personalization:update": "עדכון קבוצות משתמשים"
+  }
+}

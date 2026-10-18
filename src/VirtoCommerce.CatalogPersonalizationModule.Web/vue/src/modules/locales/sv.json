@@ -1,0 +1,27 @@
+{
+  "PERSONALIZATION": {
+    "TAGS": {
+      "FILTER": "Filtrera taggar",
+      "ANY": "alla",
+      "INHERITED": "ärvd",
+      "ALSO_INHERITED": "även ärvd",
+      "EMPTY": "Inga taggar. Taggarna kommer från inställningen Customer.MemberGroups.",
+      "EDIT_DICTIONARY": "Redigera taggar",
+      "TITLE": "Taggar"
+    },
+    "SYNC": {
+      "TITLE": "Synkronisera kategorisökvägar",
+      "CANCEL": "Avbryt"
+    },
+    "JOB": {
+      "TITLE": "Förlopp",
+      "STARTED": "Start",
+      "FINISHED": "Slut",
+      "ELAPSED": "Förfluten tid",
+      "PROCESSED": "Bearbetade",
+      "ERRORS": "Fel"
+    },
+    "SAVE": "Spara",
+    "RESET": "Återställ"
+  }
+}

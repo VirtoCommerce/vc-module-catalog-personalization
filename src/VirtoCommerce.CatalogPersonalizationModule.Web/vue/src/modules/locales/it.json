@@ -1,0 +1,27 @@
+{
+  "PERSONALIZATION": {
+    "TAGS": {
+      "FILTER": "Filtra tag",
+      "ANY": "qualsiasi",
+      "INHERITED": "ereditato",
+      "ALSO_INHERITED": "anche ereditato",
+      "EMPTY": "Nessun tag. I tag provengono dall'impostazione Customer.MemberGroups.",
+      "EDIT_DICTIONARY": "Modifica tag",
+      "TITLE": "Tag"
+    },
+    "SYNC": {
+      "TITLE": "Sincronizza contorni",
+      "CANCEL": "Annulla"
+    },
+    "JOB": {
+      "TITLE": "Avanzamento",
+      "STARTED": "Inizio",
+      "FINISHED": "Fine",
+      "ELAPSED": "Trascorso",
+      "PROCESSED": "Elaborati",
+      "ERRORS": "Errori"
+    },
+    "SAVE": "Salva",
+    "RESET": "Reimposta"
+  }
+}

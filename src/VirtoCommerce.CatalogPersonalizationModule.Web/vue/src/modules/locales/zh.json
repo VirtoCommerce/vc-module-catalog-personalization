@@ -1,0 +1,27 @@
+{
+  "PERSONALIZATION": {
+    "TAGS": {
+      "FILTER": "筛选标签",
+      "ANY": "任意",
+      "INHERITED": "继承",
+      "ALSO_INHERITED": "也有继承",
+      "EMPTY": "没有标签。标签来自 Customer.MemberGroups 设置。",
+      "EDIT_DICTIONARY": "编辑标签",
+      "TITLE": "标签"
+    },
+    "SYNC": {
+      "TITLE": "同步轮廓",
+      "CANCEL": "取消"
+    },
+    "JOB": {
+      "TITLE": "进度",
+      "STARTED": "开始",
+      "FINISHED": "结束",
+      "ELAPSED": "已用时间",
+      "PROCESSED": "已处理",
+      "ERRORS": "错误"
+    },
+    "SAVE": "保存",
+    "RESET": "重置"
+  }
+}

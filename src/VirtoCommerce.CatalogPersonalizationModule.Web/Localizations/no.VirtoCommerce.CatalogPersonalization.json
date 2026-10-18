@@ -1,0 +1,82 @@
+{
+  "personalization": {
+    "main-menu-title": "Personalisering",
+    "blades": {
+      "tag-list": {
+        "labels": {
+          "title": "Brukergrupper",
+          "select-tags": "Velg brukergrupper som skal tilordnes",
+          "available-tags": "Tilgjengelige brukergrupper",
+          "assigned-tags": "Tilordnede brukergrupper",
+          "inherited-tags": "Arvede brukergrupper",
+          "no-assigned": "Ingen brukergrupper er tilordnet",
+          "no-inherited": "Ingen brukergrupper er arvet",
+          "add-btn": "Legg til",
+          "edit-dictionary": "Rediger listen over brukergrupper",
+          "summary": "Synlig for {{total}} grupper · {{direct}} direkte, {{inherited}} arvet",
+          "summary-none": "Ikke tilordnet noen brukergruppe",
+          "filter-placeholder": "Filtrer brukergrupper",
+          "badge-inherited": "arvet",
+          "badge-also-inherited": "+ arvet",
+          "badge-orphan": "ikke i listen",
+          "locked-hint": "Gitt av en overordnet kategori. Endre det der.",
+          "no-groups": "Ingen brukergrupper er definert ennå",
+          "no-groups-hint": "Bruk blyanten ovenfor for å definere dem.",
+          "no-matches": "Ingen brukergrupper samsvarer med «{{term}}»"
+        }
+      },
+      "progress": {
+        "labels": {
+          "total": "Totalt antall",
+          "processed": "Antall behandlet",
+          "error-count": "Antall feil"
+        }
+      }
+    },
+    "widgets": {
+      "tagsWidget": {
+        "title": "Brukergrupper",
+        "assigned": "Tilordnet",
+        "inherited": "Arvet"
+      },
+      "run-sync": {
+        "title": "Synkroniser kategoristier"
+      }
+    },
+    "tags": {
+      "__any": "Alle"
+    }
+  },
+  "settings": {
+    "CatalogPersonalization": {
+      "TagsInheritancePolicy": {
+        "description": "DownTree - sprer alle brukergrupper som er tilordnet kategorier, til alle etterkommerne deres. UpTree - sprer brukergrupper oppover i hierarkiet fra etterkommere til overordnede",
+        "title": "Valgt policy for spredning av brukergrupper"
+      },
+      "CronExpression": {
+        "description": "Angi cron-uttrykket for å planlegge synkroniseringsoppgaver. For eksempel: '0/x * * * *' for hvert x. minutt, '0 */x * * *' for hver x. time, '15 */x * * *' for bestemte minutter hver x. time, eller '0 0 */x * *' for hver x. dag.",
+        "title": "Cron-uttrykk for synkroniseringsjobber for kategoristier (gjelder bare med spredningspolicyen UpTree)."
+      },
+      "EnableOutlinesSynchronizationJob": {
+        "description": "Kjør synkroniseringen av kategoristier etter tidsplanen som er angitt av cron-uttrykket. Planlagte kjøringer utfører bare arbeid når spredningspolicyen er UpTree.",
+        "title": "Aktiver planlagt synkronisering av kategoristier"
+      },
+      "LogTaggedItemsChanges": {
+        "description": "Aktiver logging av endringer i brukergrupper som er tilordnet produkter og kategorier.",
+        "title": "Logg endringer i brukergrupper"
+      },
+      "EventBasedIndexation": {
+        "description": "Aktiver hendelsesbasert indeksering for brukergrupper. Når dette er aktivert, indekseres brukergrupper automatisk når det skjer endringer.",
+        "title": "Aktiver hendelsesbasert indeksering for brukergrupper"
+      }
+    }
+  },
+  "module": {
+    "VirtoCommerce.CatalogPersonalization": {
+      "description": "Eksport/import av brukergrupper"
+    }
+  },
+  "permissions": {
+    "personalization:update": "Oppdatere brukergrupper"
+  }
+}

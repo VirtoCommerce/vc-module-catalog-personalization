@@ -1,0 +1,27 @@
+{
+  "PERSONALIZATION": {
+    "TAGS": {
+      "FILTER": "סינון תגיות",
+      "ANY": "כל תגית",
+      "INHERITED": "בירושה",
+      "ALSO_INHERITED": "גם בירושה",
+      "EMPTY": "אין תגיות. התגיות מגיעות מההגדרה Customer.MemberGroups.",
+      "EDIT_DICTIONARY": "עריכת תגיות",
+      "TITLE": "תגיות"
+    },
+    "SYNC": {
+      "TITLE": "סנכרון נתיבי הקטלוג",
+      "CANCEL": "ביטול"
+    },
+    "JOB": {
+      "TITLE": "התקדמות",
+      "STARTED": "התחלה",
+      "FINISHED": "סיום",
+      "ELAPSED": "זמן שחלף",
+      "PROCESSED": "עובדו",
+      "ERRORS": "שגיאות"
+    },
+    "SAVE": "שמירה",
+    "RESET": "איפוס"
+  }
+}
