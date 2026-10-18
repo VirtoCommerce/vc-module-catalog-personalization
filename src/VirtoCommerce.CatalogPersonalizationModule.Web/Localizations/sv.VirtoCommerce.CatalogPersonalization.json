@@ -1,0 +1,82 @@
+{
+  "personalization": {
+    "main-menu-title": "Personalisering",
+    "blades": {
+      "tag-list": {
+        "labels": {
+          "title": "Användargrupper",
+          "select-tags": "Välj användargrupper att tilldela",
+          "available-tags": "Tillgängliga användargrupper",
+          "assigned-tags": "Tilldelade användargrupper",
+          "inherited-tags": "Ärvda användargrupper",
+          "no-assigned": "Inga användargrupper har tilldelats",
+          "no-inherited": "Inga användargrupper har ärvts",
+          "add-btn": "Lägg till",
+          "edit-dictionary": "Redigera listan över användargrupper",
+          "summary": "Synlig för {{total}} grupper · {{direct}} direkt, {{inherited}} ärvda",
+          "summary-none": "Inte tilldelad någon användargrupp",
+          "filter-placeholder": "Filtrera användargrupper",
+          "badge-inherited": "ärvd",
+          "badge-also-inherited": "+ ärvd",
+          "badge-orphan": "finns inte i listan",
+          "locked-hint": "Tilldelad via en överordnad kategori. Ändra det där.",
+          "no-groups": "Inga användargrupper har definierats ännu",
+          "no-groups-hint": "Använd pennan ovan för att definiera dem.",
+          "no-matches": "Inga användargrupper matchar ”{{term}}”"
+        }
+      },
+      "progress": {
+        "labels": {
+          "total": "Totalt antal",
+          "processed": "Antal bearbetade",
+          "error-count": "Antal fel"
+        }
+      }
+    },
+    "widgets": {
+      "tagsWidget": {
+        "title": "Användargrupper",
+        "assigned": "Tilldelade",
+        "inherited": "Ärvda"
+      },
+      "run-sync": {
+        "title": "Synkronisera kategorisökvägar"
+      }
+    },
+    "tags": {
+      "__any": "Alla"
+    }
+  },
+  "settings": {
+    "CatalogPersonalization": {
+      "TagsInheritancePolicy": {
+        "description": "DownTree - sprider alla användargrupper som tilldelats kategorier till alla deras underordnade. UpTree - sprider användargrupper uppåt i hierarkin från underordnade till överordnade",
+        "title": "Vald princip för spridning av användargrupper"
+      },
+      "CronExpression": {
+        "description": "Ange cron-uttrycket för att schemalägga synkroniseringsuppgifter. Till exempel: '0/x * * * *' för var x:e minut, '0 */x * * *' för var x:e timme, '15 */x * * *' för specifika minuter var x:e timme eller '0 0 */x * *' för var x:e dag.",
+        "title": "Cron-uttryck för synkroniseringsjobb för kategorisökvägar (gäller endast med spridningsprincipen UpTree)."
+      },
+      "EnableOutlinesSynchronizationJob": {
+        "description": "Kör synkroniseringen av kategorisökvägar enligt schemat som anges av cron-uttrycket. Schemalagda körningar utför bara arbete när spridningsprincipen är UpTree.",
+        "title": "Aktivera schemalagd synkronisering av kategorisökvägar"
+      },
+      "LogTaggedItemsChanges": {
+        "description": "Aktivera loggning av ändringar i användargrupper som tilldelats produkter och kategorier.",
+        "title": "Logga ändringar i användargrupper"
+      },
+      "EventBasedIndexation": {
+        "description": "Aktivera händelsebaserad indexering för användargrupper. När det är aktiverat indexeras användargrupper automatiskt när ändringar sker.",
+        "title": "Aktivera händelsebaserad indexering för användargrupper"
+      }
+    }
+  },
+  "module": {
+    "VirtoCommerce.CatalogPersonalization": {
+      "description": "Export/import av användargrupper"
+    }
+  },
+  "permissions": {
+    "personalization:update": "Uppdatera användargrupper"
+  }
+}

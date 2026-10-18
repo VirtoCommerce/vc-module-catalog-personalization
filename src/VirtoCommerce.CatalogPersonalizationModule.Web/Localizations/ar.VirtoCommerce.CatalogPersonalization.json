@@ -1,4 +1,52 @@
 {
+  "personalization": {
+    "main-menu-title": "التخصيص",
+    "blades": {
+      "tag-list": {
+        "labels": {
+          "title": "مجموعات المستخدمين",
+          "select-tags": "اختر مجموعات المستخدمين المراد تعيينها",
+          "available-tags": "مجموعات المستخدمين المتاحة",
+          "assigned-tags": "مجموعات المستخدمين المعيّنة",
+          "inherited-tags": "مجموعات المستخدمين الموروثة",
+          "no-assigned": "لا توجد مجموعات مستخدمين معيّنة",
+          "no-inherited": "لا توجد مجموعات مستخدمين موروثة",
+          "add-btn": "إضافة",
+          "edit-dictionary": "تحرير قائمة مجموعات المستخدمين",
+          "summary": "مرئي للمجموعات: {{total}} · مباشرة: {{direct}}، موروثة: {{inherited}}",
+          "summary-none": "غير معيّن لأي مجموعة مستخدمين",
+          "filter-placeholder": "تصفية مجموعات المستخدمين",
+          "badge-inherited": "موروثة",
+          "badge-also-inherited": "+ موروثة",
+          "badge-orphan": "غير موجودة في القائمة",
+          "locked-hint": "ممنوحة من فئة أصلية. غيّرها هناك.",
+          "no-groups": "لم تُحدَّد مجموعات مستخدمين بعد",
+          "no-groups-hint": "استخدم القلم أعلاه لتحديدها.",
+          "no-matches": "لا توجد مجموعات مستخدمين تطابق «{{term}}»"
+        }
+      },
+      "progress": {
+        "labels": {
+          "total": "العدد الإجمالي",
+          "processed": "عدد العناصر المعالَجة",
+          "error-count": "عدد الأخطاء"
+        }
+      }
+    },
+    "widgets": {
+      "tagsWidget": {
+        "title": "مجموعات المستخدمين",
+        "assigned": "المعيّنة",
+        "inherited": "الموروثة"
+      },
+      "run-sync": {
+        "title": "مزامنة مسارات الكتالوج"
+      }
+    },
+    "tags": {
+      "__any": "الجميع"
+    }
+  },
   "settings": {
     "CatalogPersonalization": {
       "TagsInheritancePolicy": {
@@ -21,6 +69,11 @@
         "description": "تفعيل الفهرسة المستندة إلى الأحداث لمجموعات المستخدمين. عند التفعيل، تُفهرَس مجموعات المستخدمين تلقائيًا عند حدوث تغييرات.",
         "title": "تفعيل الفهرسة المستندة إلى الأحداث لمجموعات المستخدمين"
       }
+    }
+  },
+  "module": {
+    "VirtoCommerce.CatalogPersonalization": {
+      "description": "تصدير واستيراد مجموعات المستخدمين"
     }
   },
   "permissions": {
