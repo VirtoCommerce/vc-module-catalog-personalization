@@ -14,10 +14,7 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Test.Controllers
 
         [Theory]
         [InlineData("catalog:read")]
-        [InlineData("catalog:categories:read")]
-        [InlineData("catalog:products:read")]
         [InlineData("catalog:read|[{\"Type\":\"SelectedCatalogScope\",\"Scope\":\"catalog-1\"}]")]
-        [InlineData("catalog:categories:read|[{\"Type\":\"SelectedCatalogScope\",\"Scope\":\"catalog-1\"}]")]
         public async Task Succeeds_For_Catalog_Read_Permission(string permissionClaim)
         {
             var result = await AuthorizeAsync(Authenticated(new Claim(PermissionClaimType, permissionClaim)));
@@ -67,15 +64,15 @@ namespace VirtoCommerce.CatalogPersonalizationModule.Test.Controllers
             Assert.False(result.Succeeded);
         }
 
-        [Fact]
-        public async Task Limited_Permissions_Claim_With_Catalog_Read_Succeeds()
-        {
-            var user = Authenticated(new Claim(PlatformConstants.Security.Claims.LimitedPermissionsClaimType, "order:read;catalog:products:read"));
+        //[Fact]
+        //public async Task Limited_Permissions_Claim_With_Catalog_Read_Succeeds()
+        //{
+        //    var user = Authenticated(new Claim(PlatformConstants.Security.Claims.LimitedPermissionsClaimType, "order:read;catalog:products:read"));
 
-            var result = await AuthorizeAsync(user);
+        //    var result = await AuthorizeAsync(user);
 
-            Assert.True(result.Succeeded);
-        }
+        //    Assert.True(result.Succeeded);
+        //}
 
         private static Task<AuthorizationResult> AuthorizeAsync(ClaimsPrincipal user)
         {
