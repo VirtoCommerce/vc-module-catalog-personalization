@@ -1,0 +1,27 @@
+{
+  "PERSONALIZATION": {
+    "TAGS": {
+      "FILTER": "Фильтр тегов",
+      "ANY": "любой",
+      "INHERITED": "наследуется",
+      "ALSO_INHERITED": "также наследуется",
+      "EMPTY": "Нет тегов. Теги берутся из настройки Customer.MemberGroups.",
+      "EDIT_DICTIONARY": "Изменить теги",
+      "TITLE": "Теги"
+    },
+    "SYNC": {
+      "TITLE": "Синхронизировать контуры",
+      "CANCEL": "Отменить"
+    },
+    "JOB": {
+      "TITLE": "Ход выполнения",
+      "STARTED": "Начало",
+      "FINISHED": "Конец",
+      "ELAPSED": "Прошло",
+      "PROCESSED": "Обработано",
+      "ERRORS": "Ошибки"
+    },
+    "SAVE": "Сохранить",
+    "RESET": "Сбросить"
+  }
+}

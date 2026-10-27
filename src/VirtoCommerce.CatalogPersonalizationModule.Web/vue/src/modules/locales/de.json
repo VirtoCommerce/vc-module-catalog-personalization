@@ -1,0 +1,27 @@
+{
+  "PERSONALIZATION": {
+    "TAGS": {
+      "FILTER": "Tags filtern",
+      "ANY": "beliebig",
+      "INHERITED": "geerbt",
+      "ALSO_INHERITED": "auch geerbt",
+      "EMPTY": "Keine Tags. Tags stammen aus der Einstellung Customer.MemberGroups.",
+      "EDIT_DICTIONARY": "Tags bearbeiten",
+      "TITLE": "Tags"
+    },
+    "SYNC": {
+      "TITLE": "Umrisse synchronisieren",
+      "CANCEL": "Abbrechen"
+    },
+    "JOB": {
+      "TITLE": "Fortschritt",
+      "STARTED": "Start",
+      "FINISHED": "Ende",
+      "ELAPSED": "Verstrichen",
+      "PROCESSED": "Verarbeitet",
+      "ERRORS": "Fehler"
+    },
+    "SAVE": "Speichern",
+    "RESET": "Zurücksetzen"
+  }
+}

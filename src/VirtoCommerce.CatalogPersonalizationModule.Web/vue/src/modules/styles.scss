@@ -1,0 +1,12 @@
+// Layout shared by the personalization blades.
+
+.tags-form {
+  padding: 20px 22px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  &__hint {
+    color: var(--neutrals-500);
+    font-size: 13px;
+  }
+}
