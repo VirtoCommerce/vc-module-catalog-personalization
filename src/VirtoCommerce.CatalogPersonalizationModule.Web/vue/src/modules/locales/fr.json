@@ -1,0 +1,27 @@
+{
+  "PERSONALIZATION": {
+    "TAGS": {
+      "FILTER": "Filtrer les tags",
+      "ANY": "tous",
+      "INHERITED": "hérité",
+      "ALSO_INHERITED": "également hérité",
+      "EMPTY": "Aucun tag. Les tags proviennent du paramètre Customer.MemberGroups.",
+      "EDIT_DICTIONARY": "Modifier les tags",
+      "TITLE": "Tags"
+    },
+    "SYNC": {
+      "TITLE": "Synchroniser les contours",
+      "CANCEL": "Annuler"
+    },
+    "JOB": {
+      "TITLE": "Progression",
+      "STARTED": "Début",
+      "FINISHED": "Fin",
+      "ELAPSED": "Écoulé",
+      "PROCESSED": "Traités",
+      "ERRORS": "Erreurs"
+    },
+    "SAVE": "Enregistrer",
+    "RESET": "Réinitialiser"
+  }
+}

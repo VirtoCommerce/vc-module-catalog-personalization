@@ -1,0 +1,82 @@
+{
+  "personalization": {
+    "main-menu-title": "Personointi",
+    "blades": {
+      "tag-list": {
+        "labels": {
+          "title": "Käyttäjäryhmät",
+          "select-tags": "Valitse liitettävät käyttäjäryhmät",
+          "available-tags": "Käytettävissä olevat käyttäjäryhmät",
+          "assigned-tags": "Liitetyt käyttäjäryhmät",
+          "inherited-tags": "Perityt käyttäjäryhmät",
+          "no-assigned": "Käyttäjäryhmiä ei ole liitetty",
+          "no-inherited": "Käyttäjäryhmiä ei ole peritty",
+          "add-btn": "Lisää",
+          "edit-dictionary": "Muokkaa käyttäjäryhmäluetteloa",
+          "summary": "Näkyy ryhmille: {{total}} · suoraan {{direct}}, perittynä {{inherited}}",
+          "summary-none": "Ei liitetty mihinkään käyttäjäryhmään",
+          "filter-placeholder": "Suodata käyttäjäryhmiä",
+          "badge-inherited": "peritty",
+          "badge-also-inherited": "+ peritty",
+          "badge-orphan": "ei luettelossa",
+          "locked-hint": "Määritetty yläkategoriassa. Muuta sitä siellä.",
+          "no-groups": "Käyttäjäryhmiä ei ole vielä määritetty",
+          "no-groups-hint": "Määritä ne yllä olevalla kynäpainikkeella.",
+          "no-matches": "Mikään käyttäjäryhmä ei vastaa hakua ”{{term}}”"
+        }
+      },
+      "progress": {
+        "labels": {
+          "total": "Kokonaismäärä",
+          "processed": "Käsiteltyjen määrä",
+          "error-count": "Virheiden määrä"
+        }
+      }
+    },
+    "widgets": {
+      "tagsWidget": {
+        "title": "Käyttäjäryhmät",
+        "assigned": "Liitetyt",
+        "inherited": "Perityt"
+      },
+      "run-sync": {
+        "title": "Synkronoi rakennepolut"
+      }
+    },
+    "tags": {
+      "__any": "Kaikki"
+    }
+  },
+  "settings": {
+    "CatalogPersonalization": {
+      "TagsInheritancePolicy": {
+        "description": "DownTree - levittää kaikki kategorioihin liitetyt käyttäjäryhmät niiden kaikille jälkeläisille. UpTree - levittää käyttäjäryhmät hierarkiassa ylöspäin jälkeläisiltä vanhemmille",
+        "title": "Käyttäjäryhmien levitykseen valittu käytäntö"
+      },
+      "CronExpression": {
+        "description": "Määritä cron-lauseke synkronointitehtävien ajoittamiseksi. Esimerkiksi: '0/x * * * *' x minuutin välein, '0 */x * * *' x tunnin välein, '15 */x * * *' tietyllä minuutilla x tunnin välein tai '0 0 */x * *' x päivän välein.",
+        "title": "Cron-lauseke rakennepolkujen synkronointitehtäville (voimassa vain UpTree-levityskäytännön kanssa)."
+      },
+      "EnableOutlinesSynchronizationJob": {
+        "description": "Suorita rakennepolkujen synkronointi cron-lausekkeen määrittämän aikataulun mukaan. Ajoitetut suoritukset tekevät jotain vain, kun levityskäytäntö on UpTree.",
+        "title": "Ota käyttöön rakennepolkujen ajoitettu synkronointi"
+      },
+      "LogTaggedItemsChanges": {
+        "description": "Ota käyttöön tuotteisiin ja kategorioihin liitettyjen käyttäjäryhmien muutosten kirjaus.",
+        "title": "Kirjaa käyttäjäryhmien muutokset"
+      },
+      "EventBasedIndexation": {
+        "description": "Ota käyttöön käyttäjäryhmien tapahtumapohjainen indeksointi. Kun asetus on käytössä, käyttäjäryhmät indeksoidaan automaattisesti muutosten tapahtuessa.",
+        "title": "Ota käyttöön käyttäjäryhmien tapahtumapohjainen indeksointi"
+      }
+    }
+  },
+  "module": {
+    "VirtoCommerce.CatalogPersonalization": {
+      "description": "Käyttäjäryhmien vienti/tuonti"
+    }
+  },
+  "permissions": {
+    "personalization:update": "Päivitä käyttäjäryhmiä"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "PERSONALIZATION": {
+    "TAGS": {
+      "FILTER": "Suodata tunnisteita",
+      "ANY": "mikä tahansa",
+      "INHERITED": "peritty",
+      "ALSO_INHERITED": "myös peritty",
+      "EMPTY": "Ei tunnisteita. Tunnisteet tulevat asetuksesta Customer.MemberGroups.",
+      "EDIT_DICTIONARY": "Muokkaa tunnisteita",
+      "TITLE": "Tunnisteet"
+    },
+    "SYNC": {
+      "TITLE": "Synkronoi rakennepolut",
+      "CANCEL": "Peruuta"
+    },
+    "JOB": {
+      "TITLE": "Edistyminen",
+      "STARTED": "Alku",
+      "FINISHED": "Loppu",
+      "ELAPSED": "Kulunut aika",
+      "PROCESSED": "Käsitelty",
+      "ERRORS": "Virheet"
+    },
+    "SAVE": "Tallenna",
+    "RESET": "Palauta"
+  }
+}

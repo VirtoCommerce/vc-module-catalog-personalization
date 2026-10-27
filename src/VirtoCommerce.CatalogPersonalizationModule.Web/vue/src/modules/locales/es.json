@@ -1,0 +1,27 @@
+{
+  "PERSONALIZATION": {
+    "TAGS": {
+      "FILTER": "Filtrar etiquetas",
+      "ANY": "cualquiera",
+      "INHERITED": "heredado",
+      "ALSO_INHERITED": "también heredado",
+      "EMPTY": "No hay etiquetas. Las etiquetas provienen de la configuración Customer.MemberGroups.",
+      "EDIT_DICTIONARY": "Editar etiquetas",
+      "TITLE": "Etiquetas"
+    },
+    "SYNC": {
+      "TITLE": "Sincronizar esquemas",
+      "CANCEL": "Cancelar"
+    },
+    "JOB": {
+      "TITLE": "Progreso",
+      "STARTED": "Inicio",
+      "FINISHED": "Fin",
+      "ELAPSED": "Transcurrido",
+      "PROCESSED": "Procesados",
+      "ERRORS": "Errores"
+    },
+    "SAVE": "Guardar",
+    "RESET": "Restablecer"
+  }
+}
